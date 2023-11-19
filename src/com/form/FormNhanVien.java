@@ -524,11 +524,7 @@ public class FormNhanVien extends javax.swing.JPanel {
 //BẮT LỖI
 
     boolean validates() {
-//        if (txtMaNV.getText().equals("")) {
-//            JOptionPane.showMessageDialog(this, "MÃ NHÂN VIÊN KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-//            txtMaNV.requestFocus();
-//            return false;
-//        }
+
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "TÊN NHÂN VIÊN KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtTen.requestFocus();
@@ -549,14 +545,17 @@ public class FormNhanVien extends javax.swing.JPanel {
             txtMatKhau.requestFocus();
             return false;
         }
-//        if (txtEmail.getText().equals("")) {
-//            JOptionPane.showMessageDialog(this, "EMAIL KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-//            txtMatKhau.requestFocus();
-//            return false;
-//        }
         if (txtSDT.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtMatKhau.requestFocus();
+            return false;
+        } else if (!txtSDT.getText().matches("\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI LÀ SỐ! ", "CHÚ Ý!!!", 1);
+            txtSDT.requestFocus();
+            return false;
+        } else if (txtSDT.getText().length() != 10) {
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI ĐỦ 10 SỐ!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
+            txtSDT.requestFocus();
             return false;
         }
         boolean isRoleSelectedgt = false;
