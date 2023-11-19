@@ -4,12 +4,14 @@ import Class_DAO.NhanVien_DAO;
 import Class_Model.NhanVien_Model;
 import Class_Utils.Auth;
 import Class_Utils.MsgBox;
+import static com.model.AutoString.autoEmail;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import static com.model.AutoString.generateAutoID;
 
 public class FormNhanVien extends javax.swing.JPanel {
 
@@ -24,6 +26,8 @@ public class FormNhanVien extends javax.swing.JPanel {
         this.fillToTable();
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        txtMaNV.setEnabled(false);
+        txtEmail.setEnabled(false);
     }
 
     private void fillToTable() {
@@ -276,17 +280,14 @@ public class FormNhanVien extends javax.swing.JPanel {
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -296,19 +297,19 @@ public class FormNhanVien extends javax.swing.JPanel {
                         .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(txtSDT, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rdoNu)
-                            .addComponent(rdoNam)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(rdoNam)
+                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(rdoNVien)
@@ -431,6 +432,22 @@ public class FormNhanVien extends javax.swing.JPanel {
 
     private NhanVien_Model getForm() {
         NhanVien_Model model = new NhanVien_Model();
+        String maNV = generateAutoID(txtTen.getText());
+        model.setMANV(maNV);
+        model.setTENNV(txtTen.getText());
+        model.setDIACHI(txtDiaChi.getText());
+        String email = autoEmail(txtTen.getText()); // Gọi phương thức autoEmail để tạo địa chỉ email
+        model.setEMAIL(email);
+        model.setMATKHAU(new String(txtMatKhau.getPassword()));
+        model.setNGAYSINH(txtNgaySinh.getDate());
+        model.setSODT(txtSDT.getText());
+        model.setVITRICONGVIEC(rdiQLy.isSelected());
+        model.setGIOITINH(rdoNam.isSelected());
+        return model;
+    }
+
+    private NhanVien_Model getFormUpdate() {
+        NhanVien_Model model = new NhanVien_Model();
         model.setMANV(txtMaNV.getText());
         model.setTENNV(txtTen.getText());
         model.setDIACHI(txtDiaChi.getText());
@@ -454,6 +471,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         txtMatKhau.setText("");
         btgGioiTinh.clearSelection();
         btgVaiTro.clearSelection();
+        btnThem.setEnabled(true);
     }
 
     private void insert() {
@@ -467,6 +485,7 @@ public class FormNhanVien extends javax.swing.JPanel {
                 MsgBox.alert(this, "THÊM THÀNH CÔNG!");
             } catch (Exception e) {
                 MsgBox.alert(this, "THÊM THẤT BẠI!");
+                System.out.println(e);
             }
         } else {
             MsgBox.alert(this, "XÁC NHẬN MẬT KHẨU SAI!!!");
@@ -474,7 +493,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     }
 
     private void update() {
-        NhanVien_Model model = getForm();
+        NhanVien_Model model = getFormUpdate();
         try {
             dao.update(model);
             this.fillToTable();
@@ -505,11 +524,11 @@ public class FormNhanVien extends javax.swing.JPanel {
 //BẮT LỖI
 
     boolean validates() {
-        if (txtMaNV.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "MÃ NHÂN VIÊN KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-            txtMaNV.requestFocus();
-            return false;
-        }
+//        if (txtMaNV.getText().equals("")) {
+//            JOptionPane.showMessageDialog(this, "MÃ NHÂN VIÊN KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+//            txtMaNV.requestFocus();
+//            return false;
+//        }
         if (txtTen.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "TÊN NHÂN VIÊN KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtTen.requestFocus();
@@ -530,11 +549,11 @@ public class FormNhanVien extends javax.swing.JPanel {
             txtMatKhau.requestFocus();
             return false;
         }
-        if (txtEmail.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "EMAIL KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-            txtMatKhau.requestFocus();
-            return false;
-        }
+//        if (txtEmail.getText().equals("")) {
+//            JOptionPane.showMessageDialog(this, "EMAIL KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+//            txtMatKhau.requestFocus();
+//            return false;
+//        }
         if (txtSDT.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtMatKhau.requestFocus();
