@@ -19,6 +19,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     public FormKhachHang() {
         initComponents();
         init();
+        txtMaKH.setEnabled(false);
     }
 
     void init() {
