@@ -524,17 +524,17 @@ public class FormNhanVien extends javax.swing.JPanel {
             return false;
         }
         if (txtDiaChi.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "MẬT KHẨU KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            JOptionPane.showMessageDialog(this, "ĐỊA CHỈ KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtMatKhau.requestFocus();
             return false;
         }
         if (txtEmail.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "MẬT KHẨU KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            JOptionPane.showMessageDialog(this, "EMAIL KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtMatKhau.requestFocus();
             return false;
         }
         if (txtSDT.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "MẬT KHẨU KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtMatKhau.requestFocus();
             return false;
         }
