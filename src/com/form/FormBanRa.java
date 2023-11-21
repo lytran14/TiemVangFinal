@@ -834,7 +834,7 @@ public class FormBanRa extends javax.swing.JFrame {
                 ct.setTHANHTIEN(thanhTien);
                 ctdaoAO.insert(ct);
             }
-            MsgBox.confirm(this, "THANH TOÁN THÀNH CÔNG!");
+            MsgBox.confirm(this, "XÁC NHẬN THANH TOÁN THÀNH CÔNG!");
             this.fillTableHoaDon();
             this.reset();
         } catch (Exception e) {
