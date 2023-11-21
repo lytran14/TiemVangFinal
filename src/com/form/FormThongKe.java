@@ -123,7 +123,7 @@ public class FormThongKe extends javax.swing.JPanel {
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("KHÁCH HÀNG");
+        jLabel10.setText("BÁN RA");
         add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 230, 280, 50));
 
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
@@ -138,12 +138,12 @@ public class FormThongKe extends javax.swing.JPanel {
 
         jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel13.setText("KHÁCH HÀNG");
+        jLabel13.setText("MUA VÀO");
         add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 230, 280, 50));
 
         jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel14.setText("KHÁCH HÀNG");
+        jLabel14.setText("DOANH THU");
         add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(990, 230, 280, 50));
 
         jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
