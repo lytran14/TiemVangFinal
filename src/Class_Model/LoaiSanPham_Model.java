@@ -1,12 +1,15 @@
-
 package Class_Model;
 
-
 public class LoaiSanPham_Model {
-    
+
     private String maLSP;
     private String tenLSP;
     private String moTa;
+
+    @Override
+    public String toString() {
+        return this.tenLSP;
+    }
 
     public LoaiSanPham_Model() {
     }
@@ -40,6 +43,5 @@ public class LoaiSanPham_Model {
     public void setMoTa(String moTa) {
         this.moTa = moTa;
     }
-    
-    
+
 }

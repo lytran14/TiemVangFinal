@@ -1,4 +1,3 @@
-
 package Class_DAO;
 
 import Class_DBHelder.DBHelder_SQL;
@@ -6,7 +5,6 @@ import Class_Model.MuaVao_Model;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
 
@@ -18,22 +16,22 @@ public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
 
     @Override
     public void insert(MuaVao_Model entity) {
-        DBHelder_SQL.update(INSERT_SQL, 
-                entity.getMaMV(), 
-                entity.getMaKH(), 
-                entity.getMaNV(), 
-                entity.getNgayLap(), 
+        DBHelder_SQL.update(INSERT_SQL,
+                entity.getMaMV(),
+                entity.getMaKH(),
+                entity.getMaNV(),
+                entity.getNgayLap(),
                 entity.getTongGiaTri());
 
     }
 
     @Override
     public void update(MuaVao_Model entity) {
-        DBHelder_SQL.update(UPDATE_SQL, 
+        DBHelder_SQL.update(UPDATE_SQL,
                 entity.getMaKH(),
-                entity.getMaNV(), 
+                entity.getMaNV(),
                 entity.getNgayLap(),
-                entity.getTongGiaTri(), 
+                entity.getTongGiaTri(),
                 entity.getMaMV());
     }
 
@@ -77,8 +75,9 @@ public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
             throw new RuntimeException();
         }
     }
+
     public List<MuaVao_Model> selectByKyword(String kyword) {
-        String sql = "select * from MUAVAO where MAMV like ?";
-        return this.selectBySql(sql, "%" + kyword + "%");
+        String sql = "SELECT * FROM MUAVAO WHERE MAMV LIKE ? OR MAKH LIKE ?";
+        return this.selectBySql(sql, "%" + kyword + "%", "%" + kyword + "%");
     }
 }

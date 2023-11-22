@@ -1,4 +1,3 @@
-
 package Class_DAO;
 
 import Class_DBHelder.DBHelder_SQL;
@@ -7,14 +6,14 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String> {
 
-public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String>{
-    
     String INSERT_SQL = "insert into KHACHHANG(MAKH,TENKH,DIACHI,SODTKH,EMAIL,SOCCCD,GHICHU) values (?,?,?,?,?,?,?)";
     String UPDATE_SQL = "update KHACHHANG set TENKH = ?, DIACHI = ?, SODTKH = ?, EMAIL = ?, SOCCCD = ?, GHICHU = ? where MAKH = ?";
     String DELETE_SQL = "delete from KHACHHANG where MAKH = ?";
     String SELECT_ALL_SQL = "select * from KHACHHANG";
     String SELECT_BY_ID_SQL = "select * from KHACHHANG where MAKH = ?";
+    String SELECT_BY_SDT_ID_SQL = "SELECT * FROM Khachhang WHERE makh LIKE ? OR SODTKH LIKE ?";
 
     @Override
     public void insert(KhachHang_Model entity) {
@@ -45,13 +44,20 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String>{
         return list.get(0);
     }
 
+    public KhachHang_Model selectBysdt(String id) {
+        List<KhachHang_Model> list = selectBySql(SELECT_BY_SDT_ID_SQL, "%" + id + "%", "%" + id + "%");
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+
     @Override
     public List<KhachHang_Model> selectBySql(String sql, Object... args) {
         List<KhachHang_Model> list = new ArrayList<>();
         try {
             ResultSet rs = DBHelder_SQL.query(sql, args);
-            while(rs.next())
-            {
+            while (rs.next()) {
                 KhachHang_Model entity = new KhachHang_Model();
                 entity.setMaKH(rs.getString("MAKH"));
                 entity.setTenKH(rs.getString("TENKH"));
@@ -60,8 +66,8 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String>{
                 entity.setEmail(rs.getString("EMAIL"));
                 entity.setSoCCCD(rs.getString("SOCCCD"));
                 entity.setGhiChu(rs.getString("GHICHU"));
-               
-                list.add(entity);               
+
+                list.add(entity);
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -78,4 +84,5 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String>{
 //                + "MaNH not in (select MaNH from HocVien where MaKH=?)";
 //        return this.selectbySql(sql, "%"+keyword+"%",makh);
 //    }
+
 }

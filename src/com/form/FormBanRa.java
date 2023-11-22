@@ -2,9 +2,11 @@ package com.form;
 
 import Class_DAO.BanRaChiTiet_DAO;
 import Class_DAO.BanRa_DAO;
+import Class_DAO.KhachHang_DAO;
 import Class_DAO.SanPham_DAO;
 import Class_Model.BanRaChiTiet_Model;
 import Class_Model.BanRa_Model;
+import Class_Model.KhachHang_Model;
 import Class_Model.SanPham_Model;
 import Class_Utils.Auth;
 import Class_Utils.MsgBox;
@@ -25,6 +27,7 @@ public class FormBanRa extends javax.swing.JFrame {
     BanRa_DAO dao = new BanRa_DAO();
     BanRaChiTiet_DAO ctdaoAO = new BanRaChiTiet_DAO();
     SanPham_DAO spdao = new SanPham_DAO();
+    KhachHang_DAO khdao = new KhachHang_DAO();
 
     public FormBanRa() {
         initComponents();
@@ -94,6 +97,7 @@ public class FormBanRa extends javax.swing.JFrame {
             txtThanhToan.setText(String.format("%.0f", kh.getTONGGIATRI()));
 
             tblBanRa.setRowSelectionInterval(index, index);
+            fillToTenKH();
         } else {
             // Xử lý lỗi khi chỉ số hàng không hợp lệ
             System.err.println("Invalid row index: " + index);
@@ -128,11 +132,17 @@ public class FormBanRa extends javax.swing.JFrame {
         String maSP = txtMaSP.getText();
         SanPham_Model sanPham = spdao.selectById(maSP);
         if (sanPham != null) {
-            txtMaSP.setText(sanPham.getMASP());
+            // txtMaSP.setText(sanPham.getMASP());
             txtTenSP.setText(sanPham.getTENSP());
             txtDonGia.setText(String.format("%.0f", sanPham.getDONGIABAN()));
             txtLoaiSP.setText(sanPham.getLOAI());
         }
+    }
+
+    public void fillToTenKH() {
+        String maKh = txtKhachHang.getText();
+        KhachHang_Model khm = khdao.selectBysdt(maKh);
+        txtTenKHang.setText(khm.getTenKH());
     }
 
     @SuppressWarnings("unchecked")
@@ -157,6 +167,7 @@ public class FormBanRa extends javax.swing.JFrame {
         txtMaNV = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         btnThemKH = new javax.swing.JButton();
+        txtTenKHang = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         txtMaSP = new javax.swing.JTextField();
@@ -279,18 +290,23 @@ public class FormBanRa extends javax.swing.JFrame {
 
         jLabel4.setText("NGÀY");
 
+        txtNgayInHD.setEnabled(false);
+
         jLabel5.setText("Mã HD");
 
+        txtMaHD.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtMaHD.setEnabled(false);
 
+        txtKhachHang.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtKhachHangActionPerformed(evt);
             }
         });
 
-        jLabel6.setText("KHÁCH");
+        jLabel6.setText("KHÁCH HÀNG");
 
+        txtMaNV.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtMaNV.setEnabled(false);
 
         jLabel7.setText("Mã NV");
@@ -302,6 +318,9 @@ public class FormBanRa extends javax.swing.JFrame {
             }
         });
 
+        txtTenKHang.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtTenKHang.setEnabled(false);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -311,14 +330,16 @@ public class FormBanRa extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6)
                     .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNgayInHD, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(txtKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(btnThemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtNgayInHD, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 236, Short.MAX_VALUE)
+                        .addComponent(txtTenKHang, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnThemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
                     .addComponent(jLabel5))
@@ -326,7 +347,7 @@ public class FormBanRa extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(txtMaHD)
                     .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49))
+                .addGap(50, 50, 50))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -338,10 +359,10 @@ public class FormBanRa extends javax.swing.JFrame {
                             .addComponent(jLabel4)
                             .addComponent(txtNgayInHD, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel6)
-                                .addComponent(txtKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel6)
+                            .addComponent(txtKhachHang, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtTenKHang, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(btnThemKH, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -359,18 +380,21 @@ public class FormBanRa extends javax.swing.JFrame {
 
         jLabel3.setText("MÃ SP");
 
+        txtMaSP.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtMaSP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaSPActionPerformed(evt);
             }
         });
 
+        txtTenSP.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtTenSP.setEnabled(false);
 
         jLabel8.setText("TÊN SP");
 
         jLabel9.setText("LOẠI VÀNG");
 
+        txtTrongLuong.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtTrongLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTrongLuongActionPerformed(evt);
@@ -379,10 +403,12 @@ public class FormBanRa extends javax.swing.JFrame {
 
         jLabel10.setText("TRỌNG LƯỢNG");
 
+        txtDonGia.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtDonGia.setEnabled(false);
 
         jLabel11.setText("ĐƠN GIÁ");
 
+        txtThanhTien.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtThanhTien.setEnabled(false);
 
         jLabel12.setText("THÀNH TIỀN");
@@ -415,6 +441,7 @@ public class FormBanRa extends javax.swing.JFrame {
             }
         });
 
+        txtLoaiSP.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtLoaiSP.setEnabled(false);
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -501,14 +528,16 @@ public class FormBanRa extends javax.swing.JFrame {
 
         jLabel13.setText("TỔNG TIỀN");
 
-        txtTongTien.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtTongTien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtTongTien.setForeground(new java.awt.Color(255, 0, 51));
+        txtTongTien.setDisabledTextColor(new java.awt.Color(255, 0, 51));
         txtTongTien.setEnabled(false);
 
         jLabel14.setText("THANH TOÁN");
 
-        txtThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         txtThanhToan.setForeground(new java.awt.Color(255, 0, 51));
+        txtThanhToan.setDisabledTextColor(new java.awt.Color(255, 0, 51));
         txtThanhToan.setEnabled(false);
 
         btnXemHoaDon.setText("XEM TRƯỚC HD");
@@ -569,6 +598,9 @@ public class FormBanRa extends javax.swing.JFrame {
         tblHoaDonCT.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblHoaDonCTMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblHoaDonCTMousePressed(evt);
             }
         });
         jScrollPane2.setViewportView(tblHoaDonCT);
@@ -665,6 +697,7 @@ public class FormBanRa extends javax.swing.JFrame {
     private void txtMaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSPActionPerformed
         if (check()) {
             fillToFormSP();
+            txtMaSP.setEnabled(false);
             return;
         }
 
@@ -675,6 +708,7 @@ public class FormBanRa extends javax.swing.JFrame {
             return;
         } else if (checkkh()) {
             insert();
+            resetAll((DefaultTableModel) tblHoaDonCT.getModel());
             return;
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
@@ -690,16 +724,28 @@ public class FormBanRa extends javax.swing.JFrame {
             double donGia = Double.parseDouble(txtDonGia.getText());
             double thanhTien = trongLuong * donGia;
             txtThanhTien.setText(String.format("%.0f", thanhTien));
-            txtTongTien.setText(String.format("%.0f", thanhTien));
-            txtThanhToan.setText(String.format("%.0f", thanhTien));
+//            txtTongTien.setText(String.format("%.0f", thanhTien));
+//            txtThanhToan.setText(String.format("%.0f", thanhTien));
         } catch (NumberFormatException e) {
             MsgBox.alert(this, "LỖI: TRỌNG LƯỢNG KHÔNG HỢP LỆ!");
         }
     }//GEN-LAST:event_txtTrongLuongActionPerformed
 
     private void txtKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKhachHangActionPerformed
-
+        if (checkkh()) {
+            fillToTenKH();
+            return;
+        }
     }//GEN-LAST:event_txtKhachHangActionPerformed
+
+    private void tblHoaDonCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonCTMousePressed
+        if (evt.getClickCount() == 2) {
+            if (tblHoaDonCT.getSelectedColumn() != 3) {
+                JOptionPane.showMessageDialog(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
+                return;
+            }
+        }
+    }//GEN-LAST:event_tblHoaDonCTMousePressed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -748,6 +794,7 @@ public class FormBanRa extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaNV;
     private javax.swing.JTextField txtMaSP;
     private com.toedter.calendar.JDateChooser txtNgayInHD;
+    private javax.swing.JTextField txtTenKHang;
     private javax.swing.JTextField txtTenSP;
     private javax.swing.JTextField txtThanhTien;
     private javax.swing.JTextField txtThanhToan;
@@ -768,7 +815,7 @@ public class FormBanRa extends javax.swing.JFrame {
             donGia = Double.parseDouble(txtDonGia.getText());
         } catch (NumberFormatException e) {
             // Xử lý khi chuỗi không thể chuyển đổi thành số
-            JOptionPane.showMessageDialog(this, "Vui lòng nhập đúng định dạng số!");
+            JOptionPane.showMessageDialog(this, "TRỌNG LƯỢNG VUI LÒNG NHẬP SỐ!");
             return;
         }
         double thanhTien = trongLuong * donGia;
@@ -834,7 +881,7 @@ public class FormBanRa extends javax.swing.JFrame {
                 ct.setTHANHTIEN(thanhTien);
                 ctdaoAO.insert(ct);
             }
-            MsgBox.confirm(this, "XÁC NHẬN THANH TOÁN THÀNH CÔNG!");
+            MsgBox.confirm(this, "XÁC NHẬN THANH TOÁN!");
             this.fillTableHoaDon();
             this.reset();
         } catch (Exception e) {
@@ -846,6 +893,11 @@ public class FormBanRa extends javax.swing.JFrame {
     private void updateSelectedRow() {
         DefaultTableModel model = (DefaultTableModel) tblHoaDonCT.getModel();
         int selectedRow = tblHoaDonCT.getSelectedRow();
+        // Check if the selected column is the "Trọng lượng" column (assuming it's column index 3)
+        if (tblHoaDonCT.getSelectedColumn() != 3) {
+            JOptionPane.showMessageDialog(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
+            return;
+        }
         double trongLuong = Double.parseDouble(tblHoaDonCT.getValueAt(selectedRow, 3).toString());
         double donGia = Double.parseDouble(tblHoaDonCT.getValueAt(selectedRow, 4).toString());
         double thanhTien = trongLuong * donGia;
@@ -860,6 +912,7 @@ public class FormBanRa extends javax.swing.JFrame {
         }
         txtTongTien.setText(String.format("%.0f", tongTien));
         txtThanhToan.setText(String.format("%.0f", tongTien));
+        MsgBox.alert(this, "CẬP NHẬT TRỌNG LƯỢNG THÀNH CÔNG!");
     }
 
     void delete() {
@@ -888,22 +941,16 @@ public class FormBanRa extends javax.swing.JFrame {
         txtDonGia.setText("");
         txtLoaiSP.setText("");
         txtThanhTien.setText("");
-        txtTongTien.setText("");
-        txtThanhToan.setText("");
     }
 
     public void resetAll(DefaultTableModel model) {
         // Reset các trường dữ liệu
         txtMaHD.setText("");
+        txtTenKHang.setText("");
         txtKhachHang.setText("");
         txtNgayInHD.setDate(null);
         txtMaNV.setText("");
         txtLoaiSP.setText("");
-        txtMaSP.setText("");
-        txtTenSP.setText("");
-        txtTrongLuong.setText("");
-        txtDonGia.setText("");
-        txtThanhTien.setText("");
         txtTongTien.setText("");
         txtThanhToan.setText("");
         btnAdd.setEnabled(true);
@@ -912,6 +959,7 @@ public class FormBanRa extends javax.swing.JFrame {
         txtMaSP.setEnabled(true);
         txtTrongLuong.setEnabled(true);
         txtKhachHang.setEnabled(true);
+        reset();
         // Ẩn bảng tblHoaDonCT
         model.setRowCount(0);
     }
@@ -928,7 +976,6 @@ public class FormBanRa extends javax.swing.JFrame {
 
     boolean check() {
         String pName = txtMaSP.getText().trim();
-
         // Kiểm tra mã sản phẩm
         String sqlSP = "SELECT COUNT(*) FROM SANPHAM WHERE MASP = ?";
         try {
@@ -953,16 +1000,17 @@ public class FormBanRa extends javax.swing.JFrame {
     boolean checkkh() {
         // Kiểm tra mã khách hàng
         String khName = txtKhachHang.getText().trim();
-        String sqlKH = "SELECT COUNT(*) FROM KHACHHANG WHERE MAKH = ?";
+        String sqlKH = "SELECT COUNT(*) FROM KHACHHANG WHERE MAKH = ? OR SODTKH = ?";
         try {
             Connection con = Class_DBHelder.DBHelder_SQL.getDbConnection();
             PreparedStatement stmtKH = con.prepareStatement(sqlKH);
             stmtKH.setString(1, khName);
+            stmtKH.setString(2, khName);
             ResultSet resultSetKH = stmtKH.executeQuery();
             resultSetKH.next();
             int countKH = resultSetKH.getInt(1);
             if (countKH <= 0) {
-                JOptionPane.showMessageDialog(this, "MÃ KHÁCH HÀNG KHÔNG TỒN TẠI!");
+                JOptionPane.showMessageDialog(this, "MÃ KHÁCH HÀNG HOẶC SỐ ĐIỆN THOẠI KHÁCH HÀNG KHÔNG TỒN TẠI!");
                 txtKhachHang.grabFocus();
                 return false;
             }

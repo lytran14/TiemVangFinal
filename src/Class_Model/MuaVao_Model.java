@@ -5,6 +5,7 @@ import java.util.Date;
 
 
 public class MuaVao_Model  {
+    String tenkh ;
     String maMV ;
     String maNV ;
     String maKH ;
@@ -14,13 +15,24 @@ public class MuaVao_Model  {
     public MuaVao_Model() {
     }
 
-    public MuaVao_Model(String maMV, String maNV, String maKH, Date ngayLap, Double tongGiaTri) {
+    public MuaVao_Model(String tenkh, String maMV, String maNV, String maKH, Date ngayLap, Double tongGiaTri) {
+        this.tenkh = tenkh;
         this.maMV = maMV;
         this.maNV = maNV;
         this.maKH = maKH;
         this.ngayLap = ngayLap;
         this.tongGiaTri = tongGiaTri;
     }
+
+    public String getTenkh() {
+        return tenkh;
+    }
+
+    public void setTenkh(String tenkh) {
+        this.tenkh = tenkh;
+    }
+
+    
 
     public String getMaMV() {
         return maMV;

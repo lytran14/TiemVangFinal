@@ -11,10 +11,7 @@ public class BanRaChiTiet_Model {
     double DONGIABAN;
     double THANHTIEN;
 
-    @Override
-    public String toString() {
-        return this.TENSP;
-    }
+
 
     public BanRaChiTiet_Model() {
     }
