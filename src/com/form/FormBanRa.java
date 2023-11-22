@@ -395,6 +395,7 @@ public class FormBanRa extends javax.swing.JFrame {
         jLabel9.setText("LOẠI VÀNG");
 
         txtTrongLuong.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtTrongLuong.setEnabled(false);
         txtTrongLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTrongLuongActionPerformed(evt);
@@ -541,6 +542,11 @@ public class FormBanRa extends javax.swing.JFrame {
         txtThanhToan.setEnabled(false);
 
         btnXemHoaDon.setText("XEM TRƯỚC HD");
+        btnXemHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemHoaDonActionPerformed(evt);
+            }
+        });
 
         btnThanhToan.setText("THANH TOÁN");
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
@@ -661,6 +667,8 @@ public class FormBanRa extends javax.swing.JFrame {
             btnAdd.setEnabled(false);
             btnUpdate.setEnabled(false);
             btnDelete.setEnabled(false);
+            btnThanhToan.setEnabled(false);
+            btnXemHoaDon.setEnabled(false);
         }
         tblHoaDonCT.setVisible(true);
     }//GEN-LAST:event_tblBanRaMouseClicked
@@ -671,6 +679,8 @@ public class FormBanRa extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         add();
+        txtMaSP.setEnabled(true);
+        txtTrongLuong.setEnabled(false);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
@@ -698,6 +708,7 @@ public class FormBanRa extends javax.swing.JFrame {
         if (check()) {
             fillToFormSP();
             txtMaSP.setEnabled(false);
+            txtTrongLuong.setEnabled(true);
             return;
         }
 
@@ -715,6 +726,7 @@ public class FormBanRa extends javax.swing.JFrame {
 
     private void txtTrongLuongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTrongLuongActionPerformed
         String trongLuongText = txtTrongLuong.getText();
+
         if (trongLuongText.isEmpty()) {
             MsgBox.alert(this, "TRỌNG LƯỢNG KHÔNG ĐƯỢC TRỐNG!");
             return; // Thoát khỏi phương thức nếu chuỗi rỗng
@@ -724,8 +736,13 @@ public class FormBanRa extends javax.swing.JFrame {
             double donGia = Double.parseDouble(txtDonGia.getText());
             double thanhTien = trongLuong * donGia;
             txtThanhTien.setText(String.format("%.0f", thanhTien));
-//            txtTongTien.setText(String.format("%.0f", thanhTien));
-//            txtThanhToan.setText(String.format("%.0f", thanhTien));
+            if (trongLuong < 0) {
+                txtThanhTien.setText("");
+                MsgBox.alert(this, "TRỌNG LƯỢNG KHÔNG ĐƯỢC NHỎ HƠN 0!");
+
+                return; // Thoát khỏi phương thức nếu giá trị nhỏ hơn 0
+            }
+
         } catch (NumberFormatException e) {
             MsgBox.alert(this, "LỖI: TRỌNG LƯỢNG KHÔNG HỢP LỆ!");
         }
@@ -746,6 +763,10 @@ public class FormBanRa extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_tblHoaDonCTMousePressed
+
+    private void btnXemHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemHoaDonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnXemHoaDonActionPerformed
 
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -959,6 +980,8 @@ public class FormBanRa extends javax.swing.JFrame {
         txtMaSP.setEnabled(true);
         txtTrongLuong.setEnabled(true);
         txtKhachHang.setEnabled(true);
+        btnThanhToan.setEnabled(true);
+        btnXemHoaDon.setEnabled(true);
         reset();
         // Ẩn bảng tblHoaDonCT
         model.setRowCount(0);
