@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class FormBanRa extends javax.swing.JFrame {
@@ -33,10 +35,47 @@ public class FormBanRa extends javax.swing.JFrame {
         initComponents();
         init();
     }
+    //in Hoá đơn 
+
+    public JTable getTblBanRa() {
+        return tblHoaDonCT;
+    }
+
+    public JTextField getTxtMaNV() {
+        return txtMaNV;
+    }
+
+    public JTextField getTxtTenKH() {
+        return txtTenKHang;
+    }
+
+    public JTextField getTxtMaHD() {
+        return txtMaHD;
+    }
+
+    public JTextField getTxtThanhToan() {
+        return txtThanhToan;
+    }
+
+    public JTextField getTxtTongTien() {
+        return txtTongTien;
+    }
 
     void init() {
         this.fillTableHoaDon();
-
+        BanRa_Model kh = new BanRa_Model();
+        String mabr = autoID("HDB", "mabr", "banra"); // Gọi phương thức autoID để tạo mã KH mới
+        kh.setMABR(mabr);
+        txtMaHD.setText(mabr);
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String nowFormatted = formatter.format(now);
+        if (txtNgayInHD.getDate() == null) {
+            txtNgayInHD.setDate(now);
+            kh.setNGAYLAP(XDate.toDate(nowFormatted, "yyyy-MM-dd"));
+        } else {
+            kh.setNGAYLAP(txtNgayInHD.getDate());
+        }
     }
 
     void fillTableHoaDon() {
@@ -693,11 +732,11 @@ public class FormBanRa extends javax.swing.JFrame {
             fillToFormCT(selectedRow);
 
         }
-        //fillToFormCT(selectedRow);
     }//GEN-LAST:event_tblHoaDonCTMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
         resetAll((DefaultTableModel) tblHoaDonCT.getModel());
+        init();
     }//GEN-LAST:event_btnResetActionPerformed
 
     private void txtTimActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimActionPerformed
@@ -739,7 +778,6 @@ public class FormBanRa extends javax.swing.JFrame {
             if (trongLuong < 0) {
                 txtThanhTien.setText("");
                 MsgBox.alert(this, "TRỌNG LƯỢNG KHÔNG ĐƯỢC NHỎ HƠN 0!");
-
                 return; // Thoát khỏi phương thức nếu giá trị nhỏ hơn 0
             }
 
@@ -765,7 +803,8 @@ public class FormBanRa extends javax.swing.JFrame {
     }//GEN-LAST:event_tblHoaDonCTMousePressed
 
     private void btnXemHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemHoaDonActionPerformed
-        // TODO add your handling code here:
+        XuatHoaDonBanRa xuatHD = new XuatHoaDonBanRa(this); // Truyền tham chiếu của FormMuaVao
+        xuatHD.setVisible(true);
     }//GEN-LAST:event_btnXemHoaDonActionPerformed
 
     public static void main(String args[]) {
@@ -860,18 +899,9 @@ public class FormBanRa extends javax.swing.JFrame {
 
     private BanRa_Model getFormHoaDon() {
         BanRa_Model kh = new BanRa_Model();
-        String mabr = autoID("HDB", "mabr", "banra"); // Gọi phương thức autoID để tạo mã KH mới
-        kh.setMABR(mabr);
+        kh.setMABR(txtMaHD.getText());
         kh.setMAKH(txtKhachHang.getText());
-
-        Date now = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String nowFormatted = formatter.format(now);
-        if (txtNgayInHD.getDate() == null) {
-            kh.setNGAYLAP(XDate.toDate(nowFormatted, "yyyy-MM-dd"));
-        } else {
-            kh.setNGAYLAP(txtNgayInHD.getDate());
-        }
+        kh.setNGAYLAP(txtNgayInHD.getDate());
         if (txtMaNV.getText().equals("")) {
             kh.setMANV(Auth.user.getMANV());
         } else {
