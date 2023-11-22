@@ -19,7 +19,6 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -189,6 +188,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         btnThanhToan = new javax.swing.JButton();
         txtThanhToan = new javax.swing.JTextField();
+        btnXemTruoc = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblHDCT = new javax.swing.JTable();
 
@@ -261,9 +261,7 @@ public class FormMuaVao extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane1))
+            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -382,6 +380,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         jLabel9.setText("MÃ SẢN PHẨM");
 
         txtTrongLuong.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtTrongLuong.setEnabled(false);
         txtTrongLuong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTrongLuongActionPerformed(evt);
@@ -533,6 +532,13 @@ public class FormMuaVao extends javax.swing.JFrame {
         txtThanhToan.setDisabledTextColor(new java.awt.Color(255, 0, 51));
         txtThanhToan.setEnabled(false);
 
+        btnXemTruoc.setText("XEM TRƯỚC HOÁ ĐƠN");
+        btnXemTruoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTruocActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -541,7 +547,9 @@ public class FormMuaVao extends javax.swing.JFrame {
                 .addGap(50, 50, 50)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 467, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnXemTruoc, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addComponent(btnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -568,7 +576,9 @@ public class FormMuaVao extends javax.swing.JFrame {
                     .addComponent(jLabel14)
                     .addComponent(txtThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnThanhToan)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnThanhToan)
+                    .addComponent(btnXemTruoc))
                 .addGap(0, 0, 0))
         );
 
@@ -636,6 +646,8 @@ public class FormMuaVao extends javax.swing.JFrame {
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
         add();
+        txtMaSP.setEnabled(true);
+        txtTrongLuong.setEnabled(false);
     }//GEN-LAST:event_btnAddActionPerformed
 
     private void btnThemKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemKHActionPerformed
@@ -680,16 +692,15 @@ public class FormMuaVao extends javax.swing.JFrame {
             btnAdd.setEnabled(false);
             btnUpdate.setEnabled(false);
             btnDelete.setEnabled(false);
+            btnThanhToan.setEnabled(false);
+            btnXemTruoc.setEnabled(false);
         }
         tblHDCT.setVisible(true);
     }//GEN-LAST:event_tblHoaDonMouseClicked
 
     private void txtKhachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtKhachActionPerformed
-        if (!validates()) {
-            return;
-        } else if (checkkh()) {
-            insert();
-            resetAll((DefaultTableModel) tblHDCT.getModel());
+        if (checkkh()) {
+            fillToTenKH();
             return;
         }
     }//GEN-LAST:event_txtKhachActionPerformed
@@ -702,6 +713,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         if (check()) {
             fillToFormSP();
             txtMaSP.setEnabled(false);
+            txtTrongLuong.setEnabled(true);
             return;
         }
 
@@ -718,8 +730,12 @@ public class FormMuaVao extends javax.swing.JFrame {
             double donGia = Double.parseDouble(txtDonGia.getText());
             double thanhTien = trongLuong * donGia;
             txtThanhTien.setText(String.format("%.0f", thanhTien));
-            txtTongTien.setText(String.format("%.0f", thanhTien));
-            txtThanhToan.setText(String.format("%.0f", thanhTien));
+            if (trongLuong < 0) {
+                txtThanhTien.setText("");
+                MsgBox.alert(this, "TRỌNG LƯỢNG KHÔNG ĐƯỢC NHỎ HƠN 0!");
+
+                return; // Thoát khỏi phương thức nếu giá trị nhỏ hơn 0
+            }
         } catch (NumberFormatException e) {
             MsgBox.alert(this, "LỖI: TRỌNG LƯỢNG KHÔNG HỢP LỆ!");
         }
@@ -739,6 +755,10 @@ public class FormMuaVao extends javax.swing.JFrame {
         fillTableHD();
     }//GEN-LAST:event_btnTimActionPerformed
 
+    private void btnXemTruocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTruocActionPerformed
+
+    }//GEN-LAST:event_btnXemTruocActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -756,6 +776,7 @@ public class FormMuaVao extends javax.swing.JFrame {
     private javax.swing.JButton btnThemKH;
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JButton btnXemTruoc;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -949,7 +970,8 @@ public class FormMuaVao extends javax.swing.JFrame {
         btnUpdate.setEnabled(true);
         btnDelete.setEnabled(true);
         txtMaSP.setEnabled(true);
-        txtTrongLuong.setEnabled(true);
+        btnThanhToan.setEnabled(true);
+        btnXemTruoc.setEnabled(true);
         txtKhach.setEnabled(true);
         reset();
         // Ẩn bảng tblHoaDonCT
