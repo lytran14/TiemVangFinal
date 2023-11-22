@@ -20,6 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 public class FormMuaVao extends javax.swing.JFrame {
@@ -29,6 +31,26 @@ public class FormMuaVao extends javax.swing.JFrame {
     SanPham_DAO spdao = new SanPham_DAO();
     KhachHang_DAO khdao = new KhachHang_DAO();
 
+    public JTable getTblHDCT() {
+        return tblHDCT;
+    }
+
+    public JTextField getTxtTenKH() {
+        return txtTenKHang;
+    }
+
+    public JTextField getTxtMaHD() {
+        return txtMaHD;
+    }
+
+    public JTextField getTxtThanhToan() {
+        return txtThanhToan;
+    }
+
+    public JTextField getTxtTongTien() {
+        return txtTongTien;
+    }
+
     public FormMuaVao() {
         initComponents();
         init();
@@ -36,6 +58,19 @@ public class FormMuaVao extends javax.swing.JFrame {
 
     void init() {
         this.fillTableHD();
+        MuaVao_Model kh = new MuaVao_Model();
+        String mamv = autoID("HDM", "mamv", "muavao"); // Gọi phương thức autoID để tạo mã KH mới
+        kh.setMaMV(mamv);
+        txtMaHD.setText(mamv);
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String nowFormatted = formatter.format(now);
+        if (txtNgay.getDate() == null) {
+            txtNgay.setDate(now);
+            kh.setNgayLap(XDate.toDate(nowFormatted, "yyyy-MM-dd"));
+        } else {
+            kh.setNgayLap(txtNgay.getDate());
+        }
     }
 //LOAD DỮ LIỆU LÊN TABLE HOÁ ĐƠN MUA
 
@@ -87,15 +122,16 @@ public class FormMuaVao extends javax.swing.JFrame {
     public void fillToFormHoaDon(int index) {
         List<MuaVao_Model> list = dao.selectAll();
         if (index >= 0 && index < list.size()) {
-            MuaVao_Model kh = list.get(index);
-            txtKhach.setText(kh.getMaKH());
-            txtMaHD.setText(kh.getMaMV());
-            txtMaNV.setText(kh.getMaNV());
-            txtNgay.setDate(kh.getNgayLap());
+            MuaVao_Model hoaDon = list.get(index);
+            txtKhach.setText(hoaDon.getMaKH());
+            txtMaHD.setText(hoaDon.getMaMV());
+            txtMaNV.setText(hoaDon.getMaNV());
+            txtNgay.setDate(hoaDon.getNgayLap());
             tblHoaDon.setRowSelectionInterval(index, index);
             fillToTenKH();
-            txtTongTien.setText(String.format("%.0f", kh.getTongGiaTri()));
-            txtThanhToan.setText(String.format("%.0f", kh.getTongGiaTri()));
+            double tongGiaTri = hoaDon.getTongGiaTri();
+            txtTongTien.setText(String.format("%.0f", tongGiaTri));
+            txtThanhToan.setText(String.format("%.0f", tongGiaTri));
         } else {
             // Xử lý lỗi khi chỉ số hàng không hợp lệ
             System.err.println("Invalid row index: " + index);
@@ -250,6 +286,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -261,7 +298,6 @@ public class FormMuaVao extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jScrollPane1)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -707,6 +743,7 @@ public class FormMuaVao extends javax.swing.JFrame {
 
     private void btnRessetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRessetActionPerformed
         resetAll((DefaultTableModel) tblHDCT.getModel());
+        init();
     }//GEN-LAST:event_btnRessetActionPerformed
 
     private void txtMaSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaSPActionPerformed
@@ -756,7 +793,8 @@ public class FormMuaVao extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTimActionPerformed
 
     private void btnXemTruocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTruocActionPerformed
-
+        XuatHoaDonMua xuatHD = new XuatHoaDonMua(this); // Truyền tham chiếu của FormMuaVao
+        xuatHD.setVisible(true);
     }//GEN-LAST:event_btnXemTruocActionPerformed
 
     public static void main(String args[]) {
@@ -895,18 +933,9 @@ public class FormMuaVao extends javax.swing.JFrame {
     //GETFORM CHO HOÁ ĐƠN
     private MuaVao_Model getFormHoaDon() {
         MuaVao_Model kh = new MuaVao_Model();
-        String mamv = autoID("HDM", "mamv", "muavao"); // Gọi phương thức autoID để tạo mã KH mới
-        kh.setMaMV(mamv);
+        kh.setMaMV(txtMaHD.getText());
         kh.setMaKH(txtKhach.getText());
-
-        Date now = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String nowFormatted = formatter.format(now);
-        if (txtNgay.getDate() == null) {
-            kh.setNgayLap(XDate.toDate(nowFormatted, "yyyy-MM-dd"));
-        } else {
-            kh.setNgayLap(txtNgay.getDate());
-        }
+        kh.setNgayLap(txtNgay.getDate());
         if (txtMaNV.getText().equals("")) {
             kh.setMaNV(Auth.user.getMANV());
         } else {
@@ -922,7 +951,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         try {
             dao.insert(kh);
             String maMV = kh.getMaMV();
-            DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+            DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
             int rowCount = model.getRowCount();
             for (int i = 0; i < rowCount; i++) {
                 String maSP = model.getValueAt(i, 0).toString();
