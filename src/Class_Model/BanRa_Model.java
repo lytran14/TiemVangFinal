@@ -6,6 +6,7 @@ public class BanRa_Model {
 
     String MABR;
     String MAKH;
+    String tenKH ;
     String MANV;
     Date NGAYLAP;
     double TONGGIATRI ;
@@ -13,9 +14,10 @@ public class BanRa_Model {
     public BanRa_Model() {
     }
 
-    public BanRa_Model(String MABR, String MAKH, String MANV, Date NGAYLAP, double TONGGIATRI) {
+    public BanRa_Model(String MABR, String MAKH, String tenKH, String MANV, Date NGAYLAP, double TONGGIATRI) {
         this.MABR = MABR;
         this.MAKH = MAKH;
+        this.tenKH = tenKH;
         this.MANV = MANV;
         this.NGAYLAP = NGAYLAP;
         this.TONGGIATRI = TONGGIATRI;
@@ -35,6 +37,14 @@ public class BanRa_Model {
 
     public void setMAKH(String MAKH) {
         this.MAKH = MAKH;
+    }
+
+    public String getTenKH() {
+        return tenKH;
+    }
+
+    public void setTenKH(String tenKH) {
+        this.tenKH = tenKH;
     }
 
     public String getMANV() {
@@ -60,6 +70,6 @@ public class BanRa_Model {
     public void setTONGGIATRI(double TONGGIATRI) {
         this.TONGGIATRI = TONGGIATRI;
     }
-    
+
     
 }

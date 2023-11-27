@@ -131,6 +131,9 @@
     <Component class="javax.swing.JPasswordField" name="txtMKCu">
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtXacNhanMK">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtXacNhanMKActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JPasswordField" name="txtMKMoi">
     </Component>

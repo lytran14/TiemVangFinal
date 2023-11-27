@@ -17,12 +17,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 public class FormBanRa extends javax.swing.JFrame {
 
@@ -63,6 +68,7 @@ public class FormBanRa extends javax.swing.JFrame {
 
     void init() {
         this.fillTableHoaDon();
+        fillTongGiaTri();
         BanRa_Model kh = new BanRa_Model();
         String mabr = autoID("HDB", "mabr", "banra"); // Gọi phương thức autoID để tạo mã KH mới
         kh.setMABR(mabr);
@@ -76,6 +82,7 @@ public class FormBanRa extends javax.swing.JFrame {
         } else {
             kh.setNGAYLAP(txtNgayInHD.getDate());
         }
+        txtMaNV.setText((Auth.user.getMANV()));//lấy mã nhân viên từ user
     }
 
     void fillTableHoaDon() {
@@ -87,17 +94,17 @@ public class FormBanRa extends javax.swing.JFrame {
             for (BanRa_Model nh : list) {
                 Object[] row = {
                     nh.getMABR(),
-                    nh.getMAKH(),
+                    nh.getTenKH(),
                     nh.getNGAYLAP(),
                     String.format("%.0f", nh.getTONGGIATRI()),
                     nh.getMANV()
-
                 };
                 model.addRow(row);
+                fillTongGiaTri();
             }
         } catch (Exception e) {
             MsgBox.alert(this, "LỖI TRUY VẤN DỮ LIỆU!!!");
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
@@ -143,6 +150,23 @@ public class FormBanRa extends javax.swing.JFrame {
         }
     }
 
+    public class CustomTableModel extends DefaultTableModel {
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return false;
+        }
+    }
+
+    void fillTongGiaTri() {
+        double tongTien = 0;
+        for (int i = 0; i < tblBanRa.getRowCount(); i++) {
+            double thanhTienValue = Double.parseDouble(tblBanRa.getValueAt(i, 3).toString());
+            tongTien += thanhTienValue;
+        }
+        txtTongTienHang.setText(String.format("%.0f", tongTien));
+    }
+
     public void fillToFormCT(int selectedRow) {
         List<BanRaChiTiet_Model> list = ctdaoAO.selectsp_br(txtMaHD.getText());
         if (selectedRow >= 0 && selectedRow < list.size()) {
@@ -152,7 +176,6 @@ public class FormBanRa extends javax.swing.JFrame {
             txtTrongLuong.setText(String.valueOf(kh.getKHOILUONG()));
             txtDonGia.setText(String.format("%.0f", kh.getDONGIABAN()));
             txtThanhTien.setText(String.format("%.0f", kh.getTHANHTIEN()));
-
             // Cộng giá trị thành tiền vào tổng tiền
             double tongTien = 0;
             for (int i = 0; i < tblHoaDonCT.getRowCount(); i++) {
@@ -184,6 +207,33 @@ public class FormBanRa extends javax.swing.JFrame {
         txtTenKHang.setText(khm.getTenKH());
     }
 
+    void selectDay() {
+        LocalDate startDate = txtDateTu.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate endDate = txtDateDen.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        // Để bao gồm cả ngày startDate, bạn cần thay đổi endDate bằng cách thêm 1 ngày.
+        endDate = endDate.plusDays(1);
+        Date sqlStartDate = java.sql.Date.valueOf(startDate);
+        Date sqlEndDate = java.sql.Date.valueOf(endDate);
+        List<BanRa_Model> list = dao.getOrdersByDateRange(sqlStartDate, sqlEndDate);
+        DefaultTableModel model = (DefaultTableModel) tblBanRa.getModel();
+        model.setRowCount(0);
+        try {
+            for (BanRa_Model nh : list) {
+                Object[] row = {
+                    nh.getMABR(),
+                    nh.getTenKH(),
+                    nh.getNGAYLAP(),
+                    String.format("%.0f", nh.getTONGGIATRI()),
+                    nh.getMANV()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "LỖI TRUY VẤN DỮ LIỆU!!!");
+            System.out.println(e);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -196,6 +246,13 @@ public class FormBanRa extends javax.swing.JFrame {
         txtTim = new javax.swing.JTextField();
         btnTim = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
+        txtDateTu = new com.toedter.calendar.JDateChooser();
+        txtDateDen = new com.toedter.calendar.JDateChooser();
+        jLabel15 = new javax.swing.JLabel();
+        txtTongTienHang = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
+        btnLoc = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtNgayInHD = new com.toedter.calendar.JDateChooser();
@@ -263,7 +320,7 @@ public class FormBanRa extends javax.swing.JFrame {
 
             },
             new String [] {
-                "MÃ HD", "MÃ KH", "NGÀY LẬP", "TỔNG GIÁ TRỊ", "MÃ NV"
+                "MÃ HD", "TÊN KHÁCH HÀNG", "NGÀY LẬP", "TỔNG GIÁ TRỊ", "MÃ NV"
             }
         ));
         tblBanRa.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -288,6 +345,22 @@ public class FormBanRa extends javax.swing.JFrame {
 
         jLabel2.setText("TÌM KIẾM");
 
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel15.setText("TỔNG GIÁ TRỊ");
+
+        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+
+        jLabel16.setText("Từ");
+
+        jLabel17.setText("Đến");
+
+        btnLoc.setText("Lọc");
+        btnLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -295,33 +368,65 @@ public class FormBanRa extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addComponent(txtTim, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnTim))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 15, Short.MAX_VALUE))
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(txtTim, javax.swing.GroupLayout.PREFERRED_SIZE, 318, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnTim)
+                                .addGap(46, 46, 46))
+                            .addComponent(jScrollPane1)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(116, 116, 116)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(txtDateTu, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addContainerGap()
+                                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(txtDateDen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnLoc)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addGap(4, 4, 4)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnTim, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
-                    .addComponent(txtTim))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 273, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(448, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtTim)
+                    .addComponent(btnTim, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel16)
+                    .addComponent(jLabel17))
+                .addGap(5, 5, 5)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtDateTu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtDateDen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 527, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                            .addComponent(txtTongTienHang, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnLoc))
+                .addContainerGap())
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -378,7 +483,7 @@ public class FormBanRa extends javax.swing.JFrame {
                         .addComponent(txtTenKHang, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnThemKH, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 114, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 83, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
                     .addComponent(jLabel5))
@@ -474,7 +579,7 @@ public class FormBanRa extends javax.swing.JFrame {
             }
         });
 
-        btnReset.setText("RESET");
+        btnReset.setText("ĐƠN MỚI");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnResetActionPerformed(evt);
@@ -807,6 +912,11 @@ public class FormBanRa extends javax.swing.JFrame {
         xuatHD.setVisible(true);
     }//GEN-LAST:event_btnXemHoaDonActionPerformed
 
+    private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
+        selectDay();
+       fillTongGiaTri();
+    }//GEN-LAST:event_btnLocActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -818,6 +928,7 @@ public class FormBanRa extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
+    private javax.swing.JButton btnLoc;
     private javax.swing.JButton btnReset;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnThemKH;
@@ -830,6 +941,9 @@ public class FormBanRa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -847,6 +961,8 @@ public class FormBanRa extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable tblBanRa;
     private javax.swing.JTable tblHoaDonCT;
+    private com.toedter.calendar.JDateChooser txtDateDen;
+    private com.toedter.calendar.JDateChooser txtDateTu;
     private javax.swing.JTextField txtDonGia;
     private javax.swing.JTextField txtKhachHang;
     private javax.swing.JTextField txtLoaiSP;
@@ -860,6 +976,7 @@ public class FormBanRa extends javax.swing.JFrame {
     private javax.swing.JTextField txtThanhToan;
     private javax.swing.JTextField txtTim;
     private javax.swing.JTextField txtTongTien;
+    private javax.swing.JLabel txtTongTienHang;
     private javax.swing.JTextField txtTrongLuong;
     // End of variables declaration//GEN-END:variables
 

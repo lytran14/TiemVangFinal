@@ -61,6 +61,7 @@ public class FormNhanVien extends javax.swing.JPanel {
         txtDiaChi.setText(nv.getDIACHI());
         txtEmail.setText(nv.getEMAIL());
         txtMatKhau.setText("***********");
+        txtMatKhau.setEnabled(false);
         txtNgaySinh.setDate(nv.getNGAYSINH());
         txtSDT.setText(nv.getSODT());
         if (nv.isGIOITINH()) {
@@ -74,6 +75,14 @@ public class FormNhanVien extends javax.swing.JPanel {
             rdoNVien.setSelected(true);
         }
         tblNhanVien.setRowSelectionInterval(index, index);
+    }
+
+    void fillNV() {
+        String tenNV = txtTen.getText();
+        String maNV = generateAutoID(tenNV);
+        txtMaNV.setText(maNV);
+        String email = autoEmail(tenNV); // Gọi phương thức autoEmail để tạo địa chỉ email
+        txtEmail.setText(email);
     }
 
     @SuppressWarnings("unchecked")
@@ -143,6 +152,7 @@ public class FormNhanVien extends javax.swing.JPanel {
 
         jLabel3.setText("Mã Nhân Viên");
 
+        txtMaNV.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtMaNV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaNVActionPerformed(evt);
@@ -151,11 +161,22 @@ public class FormNhanVien extends javax.swing.JPanel {
 
         jLabel4.setText("Tên Nhân Viên");
 
+        txtTen.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtTen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTenActionPerformed(evt);
+            }
+        });
+
         jLabel5.setText("Mật Khẩu");
 
         jLabel6.setText("Ngày Sinh");
 
+        txtMatKhau.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
         jLabel7.setText("Địa Chỉ");
+
+        txtDiaChi.setDisabledTextColor(new java.awt.Color(0, 0, 0));
 
         jLabel8.setText("Email");
 
@@ -163,7 +184,11 @@ public class FormNhanVien extends javax.swing.JPanel {
 
         jLabel10.setText("Chức Vụ");
 
+        txtEmail.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
         jLabel12.setText("Số Điện Thoại");
+
+        txtSDT.setDisabledTextColor(new java.awt.Color(0, 0, 0));
 
         rdoNam.setBackground(new java.awt.Color(255, 255, 255));
         btgGioiTinh.add(rdoNam);
@@ -365,7 +390,8 @@ public class FormNhanVien extends javax.swing.JPanel {
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
         btnThem.setEnabled(true);
-        txtMaNV.setEnabled(true);
+        //txtMaNV.setEnabled(true);
+        txtMatKhau.setEnabled(true);
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void txtMaNVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaNVActionPerformed
@@ -393,6 +419,10 @@ public class FormNhanVien extends javax.swing.JPanel {
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
         delete();
     }//GEN-LAST:event_btnXoaActionPerformed
+
+    private void txtTenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenActionPerformed
+        fillNV();
+    }//GEN-LAST:event_txtTenActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -432,25 +462,11 @@ public class FormNhanVien extends javax.swing.JPanel {
 
     private NhanVien_Model getForm() {
         NhanVien_Model model = new NhanVien_Model();
-        String maNV = generateAutoID(txtTen.getText());
-        model.setMANV(maNV);
-        model.setTENNV(txtTen.getText());
-        model.setDIACHI(txtDiaChi.getText());
-        String email = autoEmail(txtTen.getText()); // Gọi phương thức autoEmail để tạo địa chỉ email
-        model.setEMAIL(email);
-        model.setMATKHAU(new String(txtMatKhau.getPassword()));
-        model.setNGAYSINH(txtNgaySinh.getDate());
-        model.setSODT(txtSDT.getText());
-        model.setVITRICONGVIEC(rdiQLy.isSelected());
-        model.setGIOITINH(rdoNam.isSelected());
-        return model;
-    }
-
-    private NhanVien_Model getFormUpdate() {
-        NhanVien_Model model = new NhanVien_Model();
+//        String maNV = generateAutoID(txtTen.getText());
         model.setMANV(txtMaNV.getText());
         model.setTENNV(txtTen.getText());
         model.setDIACHI(txtDiaChi.getText());
+        //       String email = autoEmail(txtTen.getText()); // Gọi phương thức autoEmail để tạo địa chỉ email
         model.setEMAIL(txtEmail.getText());
         model.setMATKHAU(new String(txtMatKhau.getPassword()));
         model.setNGAYSINH(txtNgaySinh.getDate());
@@ -493,7 +509,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     }
 
     private void update() {
-        NhanVien_Model model = getFormUpdate();
+        NhanVien_Model model = getForm();
         try {
             dao.update(model);
             this.fillToTable();
@@ -532,6 +548,18 @@ public class FormNhanVien extends javax.swing.JPanel {
         }
         if (txtMatKhau.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "MẬT KHẨU KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            txtMatKhau.requestFocus();
+            return false;
+        }// Kiểm tra mật khẩu theo biểu thức chính quy
+        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()-=_+\\[\\]{};':\"\\\\|,.<>/?]).{8,}$";
+        if (!txtMatKhau.getText().matches(regex)) {
+            String message = "Mật khẩu không hợp lệ.\n\n";
+            message += "Yêu cầu:\n";
+            message += "- Ít nhất 8 ký tự.\n";
+            message += "- Chứa ít nhất một chữ IN HOA.\n";
+            message += "- Chứa ít nhất một số.\n";
+            message += "- Chứa ít nhất một ký tự đặc biệt.";
+            JOptionPane.showMessageDialog(this, message, "Chú ý!", JOptionPane.WARNING_MESSAGE);
             txtMatKhau.requestFocus();
             return false;
         }

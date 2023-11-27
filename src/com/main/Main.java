@@ -32,6 +32,7 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
+
         tkKe = new FormThongKe();
         sp = new FormSanPham();
         lsp = new FormLoaiSanPham();
@@ -42,7 +43,7 @@ public class Main extends javax.swing.JFrame {
         kh = new FormKhachHang();
         nv = new FormNhanVien();
         new FormCuaSoChao(this, true).setVisible(true);
-        new FormDangNhap(this, true).setVisible(true);
+//        new FormDangNhap(this, true).setVisible(true);
         menu.initMoving(Main.this);
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
@@ -52,6 +53,7 @@ public class Main extends javax.swing.JFrame {
                     if (Auth.isLogin()) {
                         setForm(gv);
                     } else {
+                        gv.setVisible(false);
                         MsgBox.alert(null, "Vui lòng đăng nhập.");
                     }
                 } else if (index == 2) {
@@ -100,12 +102,15 @@ public class Main extends javax.swing.JFrame {
                     if (Auth.isLogin()) {
                         setForm(tkKe);
                     } else {
+
                         MsgBox.alert(null, "Vui lòng đăng nhập.");
                     }
                 } else if (index == 14) {
                     Auth.clear();
+                     dispose();
                     new FormDangNhap(Main.this, true).setVisible(true);
                 } else if (index == 15) {
+                    dispose();
                     new FormDoiMatKhau(Main.this, true).setVisible(true);
                 } else if (index == 16) {
                     if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
@@ -114,7 +119,11 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
-        setForm(new FormThongKe());
+        if (Auth.isLogin()) {
+            setForm(new FormThongKe());
+        } else {
+            new FormThongKe().setVisible(false);
+        }
     }
 
     private void setForm(JComponent com) {
@@ -184,6 +193,7 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel mainPanel;

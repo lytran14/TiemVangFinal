@@ -3,6 +3,9 @@ package com.form;
 import Class_DAO.NhanVien_DAO;
 import Class_Utils.Auth;
 import Class_Utils.MsgBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 public class FormDoiMatKhau extends javax.swing.JDialog {
 
@@ -18,22 +21,41 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
         if (!Auth.isLogin()) {
             return;
         }
-
-        String matKhau = new String(txtMKCu.getPassword());
         String matKhauMoi = new String(txtMKMoi.getPassword());
-        String matKhauMoi2 = new String(txtXacNhanMK.getPassword());
+        Auth.user.setMATKHAU(matKhauMoi);
+        dao.update(Auth.user);
+        MsgBox.alert(this, "ĐỔI MẬT KHẨU THÀNH CÔNG!");
+        dispose();
+        new FormDangNhap((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true);
 
-        if (!matKhau.equalsIgnoreCase(Auth.user.getMATKHAU())) {
+    }
+
+    boolean validates() {
+        if (!txtMKCu.getText().equalsIgnoreCase(Auth.user.getMATKHAU())) {
             MsgBox.alert(this, "SAI MẬT KHẨU ĐĂNG NHẬP!");
-        } else if (matKhau.equals(matKhauMoi)) {
-            MsgBox.alert(this, "MẬT KHẨU CŨ VÀ MẬT KHẨU MỚI KHÔNG ĐƯỢC GIỐNG NHAU!!");
-        } else if (!matKhauMoi.equals(matKhauMoi2)) {
-            MsgBox.alert(this, "MẬT KHẨU XÁC NHẬN KHÔNG TRÙNG KHỚP!");
-        } else {
-            Auth.user.setMATKHAU(matKhauMoi);
-            dao.update(Auth.user);
-            MsgBox.alert(this, "ĐỔI MẬT KHẨU THÀNH CÔNG!");
+            txtMKCu.requestFocus();
+            return false;
         }
+        if (txtMKMoi.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "MẬT KHẨU MỚI KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            txtMKMoi.requestFocus();
+            return false;
+        }
+        if (txtXacNhanMK.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "XÁC NHẬN MẬT KHẨU KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            txtXacNhanMK.requestFocus();
+            return false;
+        }
+        if (txtMKCu.getText().equals(txtMKMoi.getText())) {
+            MsgBox.alert(this, "MẬT KHẨU CŨ VÀ MẬT KHẨU MỚI KHÔNG ĐƯỢC GIỐNG NHAU!!");
+            txtMKCu.requestFocus();
+            return false;
+        } else if (!txtXacNhanMK.getText().equals(txtMKMoi.getText())) {
+            MsgBox.alert(this, "MẬT KHẨU XÁC NHẬN KHÔNG TRÙNG KHỚP!");
+            txtXacNhanMK.requestFocus();
+            return false;
+        }
+        return true;
     }
 
     @SuppressWarnings("unchecked")
@@ -70,6 +92,12 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHuyActionPerformed(evt);
+            }
+        });
+
+        txtXacNhanMK.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtXacNhanMKActionPerformed(evt);
             }
         });
 
@@ -132,12 +160,20 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDongYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDongYActionPerformed
-        doiMatKhau();
+        if (!validates()) {
+            return;
+        } else {
+            doiMatKhau();
+        }
     }//GEN-LAST:event_btnDongYActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnHuyActionPerformed
+
+    private void txtXacNhanMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtXacNhanMKActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtXacNhanMKActionPerformed
 
     public static void main(String args[]) {
 

@@ -27,6 +27,9 @@ public class FormKhachHang extends javax.swing.JFrame {
         this.fillToTable();
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        String maKH = autoID("KH", "MaKH", "KhachHang"); // Gọi phương thức autoID để tạo mã KH mới
+        txtMaKH.setText(maKH);
+        //txtGhiChu.setText((Auth.user.getMANV()));//lấy mã nhân viên từ user
     }
 
     private void fillToTable() {
@@ -124,6 +127,8 @@ public class FormKhachHang extends javax.swing.JFrame {
 
         jLabel2.setText("Mã Khách Hàng");
 
+        txtMaKH.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
         jLabel3.setText("Tên Khách Hàng");
 
         jLabel4.setText("Số CMND/CCCD");
@@ -136,6 +141,7 @@ public class FormKhachHang extends javax.swing.JFrame {
 
         txtGhiChu.setColumns(20);
         txtGhiChu.setRows(5);
+        txtGhiChu.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         jScrollPane2.setViewportView(txtGhiChu);
 
         jScrollPane3.setViewportView(jScrollPane2);
@@ -170,6 +176,13 @@ public class FormKhachHang extends javax.swing.JFrame {
             }
         });
 
+        txtTenKH.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
+        txtSoCCCD.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
+        txtDiaChi.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+
+        txtEmail.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtEmail.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtEmailActionPerformed(evt);
@@ -321,9 +334,9 @@ public class FormKhachHang extends javax.swing.JFrame {
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
         reset();
-        btnSua.setEnabled(false);
-        btnXoa.setEnabled(false);
+        init();
         btnThem.setEnabled(true);
+
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void tblKhachHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMouseClicked
@@ -373,19 +386,6 @@ public class FormKhachHang extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 private KhachHang_Model getForm() {
         KhachHang_Model kh = new KhachHang_Model();
-        String maKH = autoID("KH", "MaKH", "KhachHang"); // Gọi phương thức autoID để tạo mã KH mới
-        kh.setMaKH(maKH);
-        kh.setTenKH(txtTenKH.getText());
-        kh.setDiaChi(txtDiaChi.getText());
-        kh.setSoDTKH(txtSoDT.getText());
-        kh.setEmail(txtEmail.getText());
-        kh.setSoCCCD(txtSoCCCD.getText());
-        kh.setGhiChu(txtGhiChu.getText());
-        return kh;
-    }
-
-    private KhachHang_Model getFormm() {
-        KhachHang_Model kh = new KhachHang_Model();
         kh.setMaKH(txtMaKH.getText());
         kh.setTenKH(txtTenKH.getText());
         kh.setDiaChi(txtDiaChi.getText());
@@ -412,6 +412,7 @@ private KhachHang_Model getForm() {
             dao.insert(kh);
             this.fillToTable();
             this.reset();
+            this.init();
             MsgBox.alert(this, "THÊM THÀNH CÔNG!");
         } catch (Exception e) {
             MsgBox.alert(this, "THÊM THẤT BẠI!");
@@ -420,11 +421,12 @@ private KhachHang_Model getForm() {
     }
 
     private void update() {
-        KhachHang_Model kh = getFormm();
+        KhachHang_Model kh = getForm();
         try {
             dao.update(kh);
             this.fillToTable();
             this.reset();
+            this.init();
             MsgBox.alert(this, "CẬP NHẬT THÀNH CÔNG!");
         } catch (Exception e) {
             MsgBox.alert(this, "CẬP NHẬT THẤT BẠI");
@@ -442,6 +444,7 @@ private KhachHang_Model getForm() {
                     dao.delete(macd);
                     this.fillToTable();
                     this.reset();
+                    this.init();
                     MsgBox.alert(this, "XOÁ THÀNH CÔNG!");
                 } catch (Exception e) {
                     MsgBox.alert(this, "XOÁ THẤT BẠI!");
@@ -471,9 +474,17 @@ private KhachHang_Model getForm() {
             txtSoCCCD.requestFocus();
             return false;
         }
-        if (txtDiaChi.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "ĐỊA CHỈ KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-            txtDiaChi.requestFocus();
+        if (txtSoDT.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            txtSoDT.requestFocus();
+            return false;
+        } else if (!txtSoDT.getText().matches("\\d+(\\.\\d+)?")) {
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI LÀ SỐ! ", "CHÚ Ý!!!", 1);
+            txtSoDT.requestFocus();
+            return false;
+        } else if (txtSoDT.getText().length() != 10) {
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI ĐỦ 10 SỐ!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
+            txtSoDT.requestFocus();
             return false;
         }
         String emailPattern = "\\b[A-Za-z0-9._%+-]+@gmail\\.com\\b";
@@ -486,17 +497,10 @@ private KhachHang_Model getForm() {
             txtEmail.requestFocus();
             return false;
         }
-        if (txtSoDT.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-            txtSoDT.requestFocus();
-            return false;
-        } else if (!txtSoDT.getText().matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI LÀ SỐ! ", "CHÚ Ý!!!", 1);
-            txtSoDT.requestFocus();
-            return false;
-        } else if (txtSoDT.getText().length() != 10) {
-            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI ĐỦ 10 SỐ!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
-            txtSoDT.requestFocus();
+
+        if (txtDiaChi.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "ĐỊA CHỈ KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            txtDiaChi.requestFocus();
             return false;
         }
 

@@ -4,6 +4,7 @@ import Class_DBHelder.DBHelder_SQL;
 import Class_Model.BanRa_Model;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class BanRa_DAO extends EduSysDAO<BanRa_Model, String> {
@@ -75,8 +76,36 @@ public class BanRa_DAO extends EduSysDAO<BanRa_Model, String> {
         }
         return list;
     }
+
+    protected List<BanRa_Model> selectBySqlHoaDon(String sql, Object... args) {
+        List<BanRa_Model> list = new ArrayList<>();
+        try {
+            ResultSet rs = DBHelder_SQL.query(sql, args);
+            while (rs.next()) {
+                BanRa_Model entity = new BanRa_Model();
+                entity.setMABR(rs.getString("MABR"));
+                entity.setTenKH(rs.getString("TENKH"));
+                entity.setMANV(rs.getString("MANV"));
+                entity.setNGAYLAP(rs.getDate("NGAYLAP"));
+                entity.setTONGGIATRI(rs.getDouble("TONGGIATRI"));
+
+                list.add(entity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
     public List<BanRa_Model> selectByKyword(String kyword) {
-    String sql = "SELECT * FROM banra WHERE mabr LIKE ? OR makh LIKE ?";
-    return this.selectBySql(sql, "%" + kyword + "%", "%" + kyword + "%");
-}
+        String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
+                + "on kh.MAKH = br.MAKH WHERE br.mabr =? or kh.TENKH like ?";
+        return this.selectBySqlHoaDon(sql, "%" + kyword + "%", "%" + kyword + "%");
+    }
+
+    public List<BanRa_Model> getOrdersByDateRange(Date startDate, Date endDate) {
+        String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
+                + "on kh.MAKH = br.MAKH WHERE NGAYLAP >=? AND NGAYLAP <=? ORDER BY NGAYLAP ASC";
+        return selectBySqlHoaDon(sql, startDate, endDate);
+    }
 }

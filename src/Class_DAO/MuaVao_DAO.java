@@ -4,6 +4,7 @@ import Class_DBHelder.DBHelder_SQL;
 import Class_Model.MuaVao_Model;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
@@ -76,8 +77,35 @@ public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
         }
     }
 
+    protected List<MuaVao_Model> selectBySqlHoaDon(String sql, Object... args) {
+        List<MuaVao_Model> list = new ArrayList<>();
+        try {
+            ResultSet rs = DBHelder_SQL.query(sql, args);
+            while (rs.next()) {
+                MuaVao_Model entity = new MuaVao_Model();
+                entity.setMaMV(rs.getString("MAMV"));
+                entity.setTenkh(rs.getString("TENKH"));
+                entity.setMaNV(rs.getString("MANV"));
+                entity.setNgayLap(rs.getDate("NGAYLAP"));
+                entity.setTongGiaTri(rs.getDouble("TONGGIATRI"));
+
+                list.add(entity);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return list;
+    }
+
     public List<MuaVao_Model> selectByKyword(String kyword) {
-        String sql = "SELECT * FROM MUAVAO WHERE MAMV LIKE ? OR MAKH LIKE ?";
-        return this.selectBySql(sql, "%" + kyword + "%", "%" + kyword + "%");
+        String sql = "select br.MAMV, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from MUAVAO br inner join KHACHHANG kh\n"
+                + "on kh.MAKH = br.MAKH WHERE br.MAMV =? or kh.TENKH like ?";
+        return this.selectBySqlHoaDon(sql, "%" + kyword + "%", "%" + kyword + "%");
+    }
+
+    public List<MuaVao_Model> getOrdersByDateRange(Date startDate, Date endDate) {
+        String sql = "select br.MAMV, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from MUAVAO br inner join KHACHHANG kh\n"
+                + "on kh.MAKH = br.MAKH WHERE NGAYLAP >=? AND NGAYLAP <=? ORDER BY NGAYLAP ASC";
+        return selectBySqlHoaDon(sql, startDate, endDate);
     }
 }
