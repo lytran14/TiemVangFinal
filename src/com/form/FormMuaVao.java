@@ -20,8 +20,10 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -190,7 +192,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         KhachHang_Model khm = khdao.selectBysdt(maKh);
         txtTenKHang.setText(khm.getTenKH());
     }
-    
+
     void selectDay() {
         LocalDate startDate = txtNgayTu.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDate = txtNgayDen.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -218,7 +220,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         }
     }
 
- void fillTongGiaTri() {
+    void fillTongGiaTri() {
         double tongTien = 0;
         for (int i = 0; i < tblHoaDon.getRowCount(); i++) {
             double thanhTienValue = Double.parseDouble(tblHoaDon.getValueAt(i, 3).toString());
@@ -226,6 +228,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         }
         txtTongTienHang.setText(String.format("%.0f", tongTien));
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -573,7 +576,7 @@ public class FormMuaVao extends javax.swing.JFrame {
             }
         });
 
-        btnResset.setText("RESET");
+        btnResset.setText("ĐƠN MỚI");
         btnResset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRessetActionPerformed(evt);
@@ -810,9 +813,29 @@ public class FormMuaVao extends javax.swing.JFrame {
 
     private void tblHDCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCTMousePressed
         if (evt.getClickCount() == 2) {
-            if (tblHDCT.getSelectedColumn() != 2) {
+            int selectedRow = tblHDCT.getSelectedRow();
+            int tlColumnIndex = tblHDCT.getColumnModel().getColumnIndex("TRỌNG LƯỢNG");
+
+            if (tblHDCT.getSelectedColumn() == tlColumnIndex) {
+                tblHDCT.setEnabled(true);
+                tblHDCT.setRowSelectionAllowed(true); // Cho phép chọn hàng
+                tblHDCT.setColumnSelectionAllowed(true); // Cho phép chọn cột
+            } else {
                 MsgBox.alert(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
-                return;
+
+                DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
+                model.setColumnCount(tblHDCT.getColumnCount()); // Đảm bảo số lượng cột không thay đổi
+
+                tblHDCT.setEnabled(true);
+                tblHDCT.setRowSelectionAllowed(true); // Cho phép chọn hàng
+                tblHDCT.setColumnSelectionAllowed(true); // Cho phép chọn cột
+
+                tblHDCT.getColumnModel().getColumn(tlColumnIndex).setCellEditor(new DefaultCellEditor(new JTextField()));
+
+                // Kiểm tra chỉ mục hàng có hợp lệ hay không
+                if (selectedRow >= 0 && selectedRow < tblHDCT.getRowCount()) {
+                    tblHDCT.setRowSelectionInterval(selectedRow, selectedRow); // Chọn lại hàng đã chọn trước đó
+                }
             }
         }
     }//GEN-LAST:event_tblHDCTMousePressed
@@ -902,7 +925,7 @@ public class FormMuaVao extends javax.swing.JFrame {
     }//GEN-LAST:event_btnXemTruocActionPerformed
 
     private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
-      selectDay();
+        selectDay();
         fillTongGiaTri();
     }//GEN-LAST:event_btnLocActionPerformed
 
@@ -999,16 +1022,13 @@ public class FormMuaVao extends javax.swing.JFrame {
         }
         txtTongTien.setText(String.format("%.0f", tongTien));
         txtThanhToan.setText(String.format("%.0f", tongTien));
+
     }
 //CẬP NHẬT TRỌNG LƯỢNG CÁC SẢN PHẨM
 
     private void updateSelectedRow() {
         DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
         int selectedRow = tblHDCT.getSelectedRow();
-        if (tblHDCT.getSelectedColumn() != 2) {
-            MsgBox.alert(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
-            return;
-        }
         double trongLuong = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 2).toString());
         double donGia = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 3).toString());
         double thanhTien = trongLuong * donGia;

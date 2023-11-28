@@ -107,7 +107,7 @@ public class Main extends javax.swing.JFrame {
                     }
                 } else if (index == 14) {
                     Auth.clear();
-                     dispose();
+                    dispose();
                     new FormDangNhap(Main.this, true).setVisible(true);
                 } else if (index == 15) {
                     dispose();
@@ -119,11 +119,9 @@ public class Main extends javax.swing.JFrame {
                 }
             }
         });
-        if (Auth.isLogin()) {
-            setForm(new FormThongKe());
-        } else {
-            new FormThongKe().setVisible(false);
-        }
+
+        setForm(new FormThongKe());
+
     }
 
     private void setForm(JComponent com) {

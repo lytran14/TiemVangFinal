@@ -22,6 +22,7 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import javax.swing.DefaultCellEditor;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -900,9 +901,29 @@ public class FormBanRa extends javax.swing.JFrame {
 
     private void tblHoaDonCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonCTMousePressed
         if (evt.getClickCount() == 2) {
-            if (tblHoaDonCT.getSelectedColumn() != 3) {
-                JOptionPane.showMessageDialog(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
-                return;
+            int selectedRow = tblHoaDonCT.getSelectedRow();
+            int tlColumnIndex = tblHoaDonCT.getColumnModel().getColumnIndex("TRỌNG LƯỢNG");
+
+            if (tblHoaDonCT.getSelectedColumn() == tlColumnIndex) {
+                tblHoaDonCT.setEnabled(true);
+                tblHoaDonCT.setRowSelectionAllowed(true); // Cho phép chọn hàng
+                tblHoaDonCT.setColumnSelectionAllowed(true); // Cho phép chọn cột
+            } else {
+                MsgBox.alert(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
+
+                DefaultTableModel model = (DefaultTableModel) tblHoaDonCT.getModel();
+                model.setColumnCount(tblHoaDonCT.getColumnCount()); // Đảm bảo số lượng cột không thay đổi
+
+                tblHoaDonCT.setEnabled(true);
+                tblHoaDonCT.setRowSelectionAllowed(true); // Cho phép chọn hàng
+                tblHoaDonCT.setColumnSelectionAllowed(true); // Cho phép chọn cột
+
+                tblHoaDonCT.getColumnModel().getColumn(tlColumnIndex).setCellEditor(new DefaultCellEditor(new JTextField()));
+
+                // Kiểm tra chỉ mục hàng có hợp lệ hay không
+                if (selectedRow >= 0 && selectedRow < tblHoaDonCT.getRowCount()) {
+                    tblHoaDonCT.setRowSelectionInterval(selectedRow, selectedRow); // Chọn lại hàng đã chọn trước đó
+                }
             }
         }
     }//GEN-LAST:event_tblHoaDonCTMousePressed
@@ -914,7 +935,7 @@ public class FormBanRa extends javax.swing.JFrame {
 
     private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
         selectDay();
-       fillTongGiaTri();
+        fillTongGiaTri();
     }//GEN-LAST:event_btnLocActionPerformed
 
     public static void main(String args[]) {

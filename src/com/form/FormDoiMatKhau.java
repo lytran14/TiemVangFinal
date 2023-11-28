@@ -18,16 +18,12 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
     }
 
     private void doiMatKhau() {
-        if (!Auth.isLogin()) {
-            return;
-        }
         String matKhauMoi = new String(txtMKMoi.getPassword());
         Auth.user.setMATKHAU(matKhauMoi);
         dao.update(Auth.user);
         MsgBox.alert(this, "ĐỔI MẬT KHẨU THÀNH CÔNG!");
         dispose();
         new FormDangNhap((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true);
-
     }
 
     boolean validates() {
@@ -160,6 +156,10 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDongYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDongYActionPerformed
+         if (!Auth.isLogin()) {
+             MsgBox.alert(this, "CHƯA ĐĂNG NHẬP!");
+            return;
+        }
         if (!validates()) {
             return;
         } else {

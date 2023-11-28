@@ -3,6 +3,7 @@ package Class_DAO;
 import Class_DBHelder.DBHelder_SQL;
 import Class_Model.BanRa_Model;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -107,5 +108,20 @@ public class BanRa_DAO extends EduSysDAO<BanRa_Model, String> {
         String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
                 + "on kh.MAKH = br.MAKH WHERE NGAYLAP >=? AND NGAYLAP <=? ORDER BY NGAYLAP ASC";
         return selectBySqlHoaDon(sql, startDate, endDate);
+    }
+
+    public List<Integer> selectYear() {
+        String sql = "select distinct year(Ngaylap) Year from BANRA order by Year asc";
+        List<Integer> list = new ArrayList<>();
+        try {
+            ResultSet rs = DBHelder_SQL.query(sql);
+            while (rs.next()) {
+                list.add(rs.getInt(1));
+            }
+            rs.getStatement().getConnection().close();
+            return list;
+        } catch (SQLException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 }

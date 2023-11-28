@@ -635,7 +635,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnResset">
           <Properties>
-            <Property name="text" type="java.lang.String" value="RESET"/>
+            <Property name="text" type="java.lang.String" value="&#x110;&#x1a0;N M&#x1eda;I"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRessetActionPerformed"/>
