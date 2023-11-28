@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ThongKe_DAO {
@@ -32,5 +33,10 @@ public class ThongKe_DAO {
         String sql = "EXEC sp_ThongKe ?";
         String[] cols = {"soKH", "soBR", "soMV", "TongThu", "TongChi", "DoanhThu"};
         return getListOfArray(sql, cols, year);
+    }
+    public List<Object[]> getDThuFromDateToDate(Date stDate, Date enDate) {
+        String sql = "EXEC sp_ThongKeNgay ?,?";
+        String[] cols = {"soKH", "soBR", "soMV", "TongThu", "TongChi", "DoanhThu"};
+        return getListOfArray(sql, cols, stDate,enDate);
     }
 }

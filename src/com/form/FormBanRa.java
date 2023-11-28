@@ -212,7 +212,7 @@ public class FormBanRa extends javax.swing.JFrame {
         LocalDate startDate = txtDateTu.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate endDate = txtDateDen.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         // Để bao gồm cả ngày startDate, bạn cần thay đổi endDate bằng cách thêm 1 ngày.
-        endDate = endDate.plusDays(1);
+        //endDate = endDate.plusDays(1);
         Date sqlStartDate = java.sql.Date.valueOf(startDate);
         Date sqlEndDate = java.sql.Date.valueOf(endDate);
         List<BanRa_Model> list = dao.getOrdersByDateRange(sqlStartDate, sqlEndDate);

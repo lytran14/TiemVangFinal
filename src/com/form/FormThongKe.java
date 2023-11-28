@@ -2,8 +2,11 @@ package com.form;
 
 import Class_DAO.BanRa_DAO;
 import Class_DAO.ThongKe_DAO;
+import java.text.DecimalFormat;
+import java.util.Date;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class FormThongKe extends javax.swing.JPanel {
@@ -25,18 +28,29 @@ public class FormThongKe extends javax.swing.JPanel {
         }
     }
 
-    void fillTableDoanhThu() {
-        DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
-        model.setRowCount(0);
-        Integer nam = (Integer) cboNam.getSelectedItem();
-        if (nam != null) {
-            List<Object[]> list = dao.getDThu(nam); // Sử dụng giá trị của 'nam' thay vì giá trị cứng 2023
-            for (Object[] row : list) {
-                model.addRow(row);
+void fillTableDoanhThu() {
+    DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
+    model.setRowCount(0);
+    Integer nam = (Integer) cboNam.getSelectedItem();
+    if (nam != null) {
+        List<Object[]> list = dao.getDThu(nam);
+        
+        // Định dạng số
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+        
+        for (Object[] row : list) {
+            // Định dạng các giá trị số trong mảng row
+            for (int i = 0; i < row.length; i++) {
+                if (row[i] instanceof Number) {
+                    row[i] = decimalFormat.format(row[i]);
+                }
             }
+            
+            model.addRow(row);
         }
-        fillDoanhThu();
     }
+    fillDoanhThu();
+}
 
     void fillDoanhThu() {
         DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
@@ -58,6 +72,18 @@ public class FormThongKe extends javax.swing.JPanel {
             txtBanRa.setText("");
             txtMuaVao.setText("");
             txtDoanhThu.setText("");
+        }
+    }
+
+    void fillTableDoanhThuDay(Date startDate, Date endDate) {
+        DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
+        model.setRowCount(0);
+
+        // Truy vấn dữ liệu thống kê từ ngày đến ngày
+        List<Object[]> list = dao.getDThuFromDateToDate(startDate, endDate);
+
+        for (Object[] row : list) {
+            model.addRow(row);
         }
     }
 
@@ -145,6 +171,11 @@ public class FormThongKe extends javax.swing.JPanel {
         btnLoc.setBackground(new java.awt.Color(204, 204, 204));
         btnLoc.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnLoc.setText("LỌC");
+        btnLoc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocActionPerformed(evt);
+            }
+        });
         add(btnLoc, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 350, -1, 30));
 
         jPanel7.setLayout(new java.awt.GridLayout(1, 0));
@@ -226,6 +257,19 @@ public class FormThongKe extends javax.swing.JPanel {
     private void cboNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNamActionPerformed
         fillTableDoanhThu();
     }//GEN-LAST:event_cboNamActionPerformed
+
+    private void btnLocActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocActionPerformed
+        Date startDate = txtDateTu.getDate();
+        Date endDate = txtDateDen.getDate();
+
+        // Kiểm tra xem ngày bắt đầu và ngày kết thúc đã được chọn
+        if (startDate != null && endDate != null) {
+            fillTableDoanhThuDay(startDate, endDate);
+        } else {
+            // Hiển thị thông báo cho người dùng nếu ngày bắt đầu hoặc ngày kết thúc chưa được chọn
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn ngày bắt đầu và ngày kết thúc.");
+        }
+    }//GEN-LAST:event_btnLocActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
