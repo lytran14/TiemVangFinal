@@ -30,7 +30,7 @@ public class ThongKe_DAO {
     }
 
     public List<Object[]> getDThu(Integer year) {
-        String sql = "EXEC sp_ThongKe ?";
+        String sql = "EXEC sp_ThongKeNam ?";
         String[] cols = {"soKH", "soBR", "soMV", "TongThu", "TongChi", "DoanhThu"};
         return getListOfArray(sql, cols, year);
     }
