@@ -41,6 +41,7 @@ public class FormBanRa extends javax.swing.JFrame {
         initComponents();
         init();
     }
+    
     //in Hoá đơn 
 
     public JTable getTblBanRa() {
