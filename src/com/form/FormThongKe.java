@@ -36,7 +36,7 @@ void fillTableDoanhThu() {
         List<Object[]> list = dao.getDThu(nam);
         
         // Định dạng số
-        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
+        DecimalFormat decimalFormat = new DecimalFormat("#,###");
         
         for (Object[] row : list) {
             // Định dạng các giá trị số trong mảng row
