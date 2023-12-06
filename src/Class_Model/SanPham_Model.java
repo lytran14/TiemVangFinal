@@ -10,12 +10,13 @@ public class SanPham_Model {
     String MALOAISP;
     double DONGIABAN;
     String DONVITINH;
-    
+    String MADVTINH;
+    String HINH;
 
     public SanPham_Model() {
     }
 
-    public SanPham_Model(String MASP, String TENSP, String MOTA, double DONGIANHAP, String LOAI, String MALOAISP, double DONGIABAN, String DONVITINH) {
+    public SanPham_Model(String MASP, String TENSP, String MOTA, double DONGIANHAP, String LOAI, String MALOAISP, double DONGIABAN, String DONVITINH, String MADVTINH, String HINH) {
         this.MASP = MASP;
         this.TENSP = TENSP;
         this.MOTA = MOTA;
@@ -24,6 +25,24 @@ public class SanPham_Model {
         this.MALOAISP = MALOAISP;
         this.DONGIABAN = DONGIABAN;
         this.DONVITINH = DONVITINH;
+        this.MADVTINH = MADVTINH;
+        this.HINH = HINH;
+    }
+
+    public String getHINH() {
+        return HINH;
+    }
+
+    public void setHINH(String HINH) {
+        this.HINH = HINH;
+    }
+
+    public String getMADVTINH() {
+        return MADVTINH;
+    }
+
+    public void setMADVTINH(String MADVTINH) {
+        this.MADVTINH = MADVTINH;
     }
 
     public String getMASP() {
@@ -90,7 +109,9 @@ public class SanPham_Model {
         this.DONVITINH = DONVITINH;
     }
 
-   
-    
-    
+    @Override
+    public String toString() {
+        return this.LOAI;
+    }
+
 }

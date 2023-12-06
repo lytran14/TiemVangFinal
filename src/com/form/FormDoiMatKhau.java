@@ -51,6 +51,18 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
             txtXacNhanMK.requestFocus();
             return false;
         }
+        String regex = "^(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*()-=_+\\[\\]{};':\"\\\\|,.<>/?]).{8,}$";
+        if (!txtMKMoi.getText().matches(regex)) {
+            String message = "Mật khẩu không hợp lệ.\n\n";
+            message += "Yêu cầu:\n";
+            message += "- Ít nhất 8 ký tự.\n";
+            message += "- Chứa ít nhất một chữ IN HOA.\n";
+            message += "- Chứa ít nhất một số.\n";
+            message += "- Chứa ít nhất một ký tự đặc biệt.";
+            JOptionPane.showMessageDialog(this, message, "Chú ý!", JOptionPane.WARNING_MESSAGE);
+            txtMKMoi.requestFocus();
+            return false;
+        }
         return true;
     }
 
@@ -67,6 +79,8 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
         txtMKCu = new javax.swing.JPasswordField();
         txtXacNhanMK = new javax.swing.JPasswordField();
         txtMKMoi = new javax.swing.JPasswordField();
+
+        setUndecorated(true);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("ĐỔI MẬT KHẨU");
@@ -156,8 +170,8 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDongYActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDongYActionPerformed
-         if (!Auth.isLogin()) {
-             MsgBox.alert(this, "CHƯA ĐĂNG NHẬP!");
+        if (!Auth.isLogin()) {
+            MsgBox.alert(this, "CHƯA ĐĂNG NHẬP!");
             return;
         }
         if (!validates()) {
@@ -172,7 +186,7 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void txtXacNhanMKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtXacNhanMKActionPerformed
-        // TODO add your handling code here:
+
     }//GEN-LAST:event_txtXacNhanMKActionPerformed
 
     public static void main(String args[]) {

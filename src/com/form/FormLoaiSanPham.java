@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package com.form;
 
 import Class_DAO.LoaiSanPham_DAO;
@@ -16,19 +12,15 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Acer
- */
 public class FormLoaiSanPham extends javax.swing.JFrame {
 
     LoaiSanPham_DAO dao = new LoaiSanPham_DAO();
-    
+
     public FormLoaiSanPham() {
         initComponents();
         init();
         txtMaLSP.setEnabled(false);
-        
+
     }
 
     private void init() {
@@ -36,6 +28,8 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         this.fillToTable();
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        String maLSP = autoID("ML", "MALOAISP", "LOAISANPHAM"); // Gọi phương thức autoID để tạo mã KH mới
+        txtMaLSP.setText(maLSP);
     }
 
     private void fillToTable() {
@@ -48,7 +42,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
                     lsp.getMaLSP(),
                     lsp.getTenLSP(),
                     lsp.getMoTa()};
-                
+
                 model.addRow(row);
             }
         } catch (Exception e) {
@@ -59,14 +53,12 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
     public void fillToForm(int index) {
         List<LoaiSanPham_Model> list = dao.selectAll();
         LoaiSanPham_Model lsp = list.get(index);
-        
         txtMaLSP.setText(lsp.getMaLSP());
         txtTenLSP.setText(lsp.getTenLSP());
         txtMoTa.setText(lsp.getMoTa());
-        
         tblLoaiSP.setRowSelectionInterval(index, index);
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -163,57 +155,53 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(341, 341, 341)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                                .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(btnLamMoi))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(30, 30, 30)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtTenLSP)
-                                    .addComponent(txtMaLSP))))
-                        .addGap(744, 744, 744))))
+                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(btnLamMoi))
+                    .addComponent(txtTenLSP)
+                    .addComponent(txtMaLSP)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 440, Short.MAX_VALUE))
+                .addContainerGap(319, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMaLSP, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtTenLSP, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8))
                 .addGap(18, 18, 18)
-                .addComponent(jLabel13)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(jLabel13)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
+                    .addComponent(btnThem, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLamMoi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnSua, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(54, 110, 1220, -1));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 1220, -1));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "DANH SÁCH", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
@@ -260,84 +248,53 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        
+
         delete();
-        
+
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-       
+
         if (!validates()) {
             return;
         } else if (check()) {
             insert();
             return;
         }
-        
+
     }//GEN-LAST:event_btnThemActionPerformed
 
     private void btnSuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSuaActionPerformed
-        
+
         if (!validates()) {
             return;
         } else {
             update();
             return;
         }
-        
+
     }//GEN-LAST:event_btnSuaActionPerformed
 
     private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
-        
         reset();
-        btnSua.setEnabled(false);
-        btnXoa.setEnabled(false);
+        init();
         btnThem.setEnabled(true);
-        
+
     }//GEN-LAST:event_btnLamMoiActionPerformed
 
     private void tblLoaiSPMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblLoaiSPMouseClicked
-        
+
         int index = tblLoaiSP.getSelectedRow();
         fillToForm(index);
         btnSua.setEnabled(true);
         btnXoa.setEnabled(true);
         btnThem.setEnabled(false);
 //        txtMaLSP.setEditable(false);
-        
+
     }//GEN-LAST:event_tblLoaiSPMouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FormLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FormLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FormLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FormLoaiSanPham.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FormLoaiSanPham().setVisible(true);
@@ -366,24 +323,20 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
     private javax.swing.JTextField txtTenLSP;
     // End of variables declaration//GEN-END:variables
 
-    
     private LoaiSanPham_Model getForm() {
         LoaiSanPham_Model model = new LoaiSanPham_Model();
-        String maLSP = autoID("ML", "MALOAISP", "LOAISANPHAM"); // Gọi phương thức autoID để tạo mã KH mới
-        model.setMaLSP(maLSP);
-//        model.setMaLSP(txtMaLSP.getText());
+        model.setMaLSP(txtMaLSP.getText());
         model.setTenLSP(txtTenLSP.getText());
         model.setMoTa(txtMoTa.getText());
-       
         return model;
     }
-    
+
     private LoaiSanPham_Model getFormUpate() {
         LoaiSanPham_Model model = new LoaiSanPham_Model();
         model.setMaLSP(txtMaLSP.getText());
         model.setTenLSP(txtTenLSP.getText());
         model.setMoTa(txtMoTa.getText());
-       
+
         return model;
     }
 
@@ -391,7 +344,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
         txtMaLSP.setText("");
         txtTenLSP.setText("");
         txtMoTa.setText("");
-        
+
     }
 
     void insert() {
@@ -439,25 +392,19 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
 //BẮT LỖI
 
     boolean validates() {
-        
+
         if (txtTenLSP.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "TÊN LOẠI SẢN PHẨM KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtTenLSP.requestFocus();
             return false;
         }
-//        if (txtMoTa.getText().equals("")) {
-//            JOptionPane.showMessageDialog(this, "MÔ TẢ KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
-//            txtMoTa.requestFocus();
-//            return false;
-//        }
-        
         return true;
     }
 
     boolean check() {
-        String pName = txtMaLSP.getText().trim();
-// Thực hiện truy vấn để kiểm tra mã khách hàng
-        String sql = "SELECT COUNT(*) FROM LOAISANPHAM WHERE MALOAISP = ?";
+        String pName = txtTenLSP.getText().trim();
+// Thực hiện truy vấn để kiểm tra
+        String sql = "SELECT COUNT(*) FROM LOAISANPHAM WHERE TENLOAISP = ?";
         try {
             Connection con = Class_DBHelder.DBHelder_SQL.getDbConnection();
             PreparedStatement stmt = con.prepareStatement(sql);
@@ -467,7 +414,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
             int count = resultSet.getInt(1);
 
             if (count > 0) {
-                JOptionPane.showMessageDialog(this, "MÃ LOẠI SẢN PHẨM ĐÃ TỒN TẠI!");
+                JOptionPane.showMessageDialog(this, "TÊN LOẠI SẢN PHẨM ĐÃ TỒN TẠI!");
                 txtMaLSP.grabFocus();
                 return false;
             }

@@ -1,46 +1,55 @@
 package com.form;
 
+import com.toedter.calendar.JDateChooser;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
-//implements Printable
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
-public class XuatHoaDonBanRa extends javax.swing.JFrame {
+public class XuatHopDongCamDo extends javax.swing.JFrame {
 
-    private FormBanRa formBanRa;
+    private FormCamDo formCamDo;
 
-    public XuatHoaDonBanRa(FormBanRa form) {
+    public XuatHopDongCamDo(FormCamDo form) {
         initComponents();
         setLocationRelativeTo(this);
-        formBanRa = form; // Lưu trữ tham chiếu của FormMuaVao
-        init(formBanRa);
+        formCamDo = form; // Lưu trữ tham chiếu của FormMuaVao
+        init(formCamDo);
     }
 
-    void init(FormBanRa form1) {
-        JTable tblBan = form1.getTblBanRa();
+    void init(FormCamDo form1) {
+        JTable tblHDCT = form1.getTblHoaDonCT();
         JTextField txtTenKH = form1.getTxtTenKH();
-        JTextField txtTenNV = form1.getTxtMaNV();
+        JTextField txtCCCD = form1.getSoCCCD();
+        JTextField txtMaNV = form1.getTxtMaNV();
+        JTextField txtSoDT = form1.getSoDT();
         JTextField txtMaHD = form1.getTxtMaHD();
+        JTextField txtlaiXuat = form1.getlaiXuat();
+        JTextField txtTienChuoc = form1.getTxtTienPhaiTra();
         JTextField txtThanhToan = form1.getTxtThanhToan();
-        JTextField txtTongTien = form1.getTxtTongTien();
+        JDateChooser txtNgayBatDau = form1.getNgayBatDau();
+        JDateChooser txtNgayKetThuc = form1.getNgayKetThuc();
 
         String html = "<html>";
         html += "<div style='margin-left: 15px;'>";
-        html += "<h2 style='text-align: center;'>TIỆM VÀNG CHƯA CÓ TÊN</h2>";
+        html += "<h2 style='text-align: center;'>CỘNG HOÀ XÃ HỘI CHỦ NGHĨA VIỆT NAM<br></h2>";
+        html += "<p style='font-weight: normal;text-align: center;'>Độc Lập - Tự Do - Hạnh Phúc<br></p>";
+        html += "<h1 style='text-align: center;'>HỢP ĐỒNG CẦM ĐỒ<br></h1>";
+        html += "<h2 style='text-align: center;'>TIỆM VÀNG<br></h2>";
         html += "<p style='font-weight: normal;text-align: center;'>ĐC: Toà nhà FPT Polytechnic, Đ. Số 22, Thường Thạnh,<br></p>";
         html += "<p style='font-weight: normal;text-align: center;'> Q.Cái Răng, TP.Cần Thơ<br></p>";
         html += "<p style='font-weight: normal;text-align: center;'>SĐT: 0981 725 836<br></p>";
+        html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
         //thông tin đơn
         html += "<table style='font-weight: normal;'>";
         html += "<tr>";
@@ -49,7 +58,13 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
         html += "<th style='margin-left: 50px; font-weight: normal;'>Khách Hàng:</th>";
         html += "<td>" + txtTenKH.getText() + "</td>";
         html += "</tr>";
-        html += "<p style='font-weight: normal;'>Nhân Viên: " + txtTenNV.getText() + "</p>";
+        html += "<tr>";
+        html += "<th style='font-weight: normal;'>Số Căn Cước:</th>";
+        html += "<td>" + txtCCCD.getText() + "</td>";
+        html += "<th style='margin-left: 50px; font-weight: normal;'>Số Điện Thoại:</th>";
+        html += "<td>" + txtSoDT.getText() + "</td>";
+        html += "</tr>";
+        html += "<p style='font-weight: normal;'>Nhân Viên: " + txtMaNV.getText() + "</p>";
         html += "</table>";
 //ADD DATE TIME
         Date dd = new Date();
@@ -73,26 +88,25 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
         html += "<table style='max-width: 50%;'>";
         html += "<tr>"
                 + "<th style='font-weight: normal;'>Tên Sản Phẩm</th>"
-                + "<th style='font-weight: normal;'>Loại vàng</th>"
-                + "<th style='font-weight: normal;'>Trọng Lượng</th>"
+                + "<th style='font-weight: normal;'>Khối Lượng</th>"
                 + "<th style='font-weight: normal;'>Đơn Giá</th>"
-                + "<th style='font-weight: normal;'>Thành Tiền</th>"
+                + "<th style='font-weight: normal;'>Số Tiền Cầm</th>"
+                + "<th style='font-weight: normal;'>Lãi Xuất/Ngày</th>"
                 + "</tr>";
 //thêm sp vào hoá đơn
-        DefaultTableModel dt = (DefaultTableModel) tblBan.getModel();
-        for (int i = 0; i < tblBan.getRowCount(); i++) {
+        DefaultTableModel dt = (DefaultTableModel) tblHDCT.getModel();
+        for (int i = 0; i < tblHDCT.getRowCount(); i++) {
             String tenSP = dt.getValueAt(i, 1).toString();
-            String loaiv = dt.getValueAt(i, 2).toString();
-            String khoiluong = dt.getValueAt(i, 3).toString();
-            String dongia = dt.getValueAt(i, 4).toString();
-            String thanhtien = dt.getValueAt(i, 5).toString();
-            // lblhoadon.setText(lblhoadon.getText() + tenSP + "\t" + loaiv + "\t" + khoiluong + "\t" + dongia + "\t" + thanhtien + "<br>");
+            String khoiluong = dt.getValueAt(i, 2).toString();
+            String dongia = dt.getValueAt(i, 3).toString();
+            String soTien = dt.getValueAt(i, 4).toString();
+            String laixuat = dt.getValueAt(i, 5).toString();
             html += "<tr>";
             html += "<td style='text-align:center;font-weight: normal;'>" + tenSP + "</td>";
-            html += "<td style='text-align:center;font-weight: normal;'>" + loaiv + "</td>";
             html += "<td style='text-align:center;font-weight: normal;'>" + khoiluong + "</td>";
             html += "<td style='text-align:center;font-weight: normal;'>" + dongia + "</td>";
-            html += "<td style='text-align:center;font-weight: normal;'>" + thanhtien + "</td>";
+            html += "<td style='text-align:center;font-weight: normal;'>" + soTien + "</td>";
+            html += "<td style='text-align:center;font-weight: normal;'>" + laixuat + "</td>";
             html += "</tr>";
         }
         html += "</tr>";
@@ -100,10 +114,22 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
         html += "</div>";
         ////add tong bill
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
-        html += "<p style =text-align: right;'><b> Tổng Tiền : " + txtTongTien.getText() + "<br></b></p>";
-        html += "<p style =text-align: right;'><b> Thanh Toán: " + txtThanhToan.getText() + "<br></b></p>";
+        html += "<p style =text-align: left;font-weight: normal;'>Ngày Bắt Đầu : " + txtNgayBatDau.getDate() + "<br></p>";
+        html += "<p style =text-align: left;font-weight: normal;'>Ngày Kết Thúc : " + txtNgayKetThuc.getDate() + "<br></p>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
-        html += "<h6 style='text-align: center;'>CẢM ƠN QUÝ KHÁCH ĐÃ TIN TƯỞNG VÀ ỦNG HỘ!!<br></h6> ";
+        html += "<p style =text-align: right;'><b> Tiền Chuộc : " + txtTienChuoc.getText() + "<br></b></p>";
+        html += "<p style =text-align: right;'><b> Tổng Tiền Nhận: " + txtThanhToan.getText() + "<br></b></p>";
+        html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
+        html += "<table style='font-weight: normal;'>";
+        html += "<tr>";
+        html += "<th style='font-weight: normal;'>Người Nhận Tiền</th>";
+        html += "<td style ='display: flex;"
+                + "align-items: center;\n"
+                + "    justify-content: center;'>Người Phụ Trách</td>";
+        html += "</tr>";
+        html += "<br>";
+        html += "<br>";
+        html += "<br>";
         html += "</div>";
         html += "</html> ";
         blb.setContentType("text/html");
@@ -120,7 +146,7 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
         blb = new javax.swing.JEditorPane();
         txtForm = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -142,11 +168,11 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
 
         lblhoadon.setViewportView(blb);
 
-        getContentPane().add(lblhoadon, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 480, 550));
+        getContentPane().add(lblhoadon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 610, 560));
 
         txtForm.setBackground(new java.awt.Color(255, 255, 255));
         txtForm.setOpaque(true);
-        getContentPane().add(txtForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 510, 640));
+        getContentPane().add(txtForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 630, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -156,19 +182,27 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnInHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHDActionPerformed
-        //inHoaDon(lblhoadon);
         FilePrintClicked(blb);
     }//GEN-LAST:event_btnInHDActionPerformed
 
     public static void main(String args[]) {
+
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                FormBanRa form1 = new FormBanRa(); // Tạo instance của FormMuaVao
-                XuatHoaDonBanRa xuatHD = new XuatHoaDonBanRa(form1); // Truyền tham chiếu của FormMuaVao
-                xuatHD.setVisible(true);
+                FormCamDo form1 = new FormCamDo(); // Tạo instance của FormMuaVao
+                XuatHopDongCamDo xuatCDo = new XuatHopDongCamDo(form1); // Truyền tham chiếu của FormMuaVao
+                xuatCDo.setVisible(true);
             }
         });
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JEditorPane blb;
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnInHD;
+    private javax.swing.JScrollPane lblhoadon;
+    private javax.swing.JLabel txtForm;
+    // End of variables declaration//GEN-END:variables
 
     public void FilePrintClicked(JEditorPane label) {
         PrinterJob job = PrinterJob.getPrinterJob();
@@ -208,12 +242,4 @@ public class XuatHoaDonBanRa extends javax.swing.JFrame {
             }
         }
     }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JEditorPane blb;
-    private javax.swing.JButton btnHuy;
-    private javax.swing.JButton btnInHD;
-    private javax.swing.JScrollPane lblhoadon;
-    private javax.swing.JLabel txtForm;
-    // End of variables declaration//GEN-END:variables
 }

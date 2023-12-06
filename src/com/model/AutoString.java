@@ -93,7 +93,7 @@ public class AutoString {
     }
 
     
-//----------------------------/AUTO MÃ KHÁCH HÀNG/----------------------------/ 
+//----------------------------/AUTO MÃ/----------------------------/ 
     public static String autoID(String type, String idTable, String table) {
         int id = 0;
         Connection conn = DBHelder_SQL.getDbConnection();

@@ -8,8 +8,10 @@ import java.util.List;
 
 public class BanRaChiTiet_DAO extends EduSysDAO<BanRaChiTiet_Model, String> {
 
-    String INSERT_SQL = "insert into CHITIETBR(MABR,MASP,KHOILUONG,DONGIABAN,THANHTIEN) values (?,?,?,?,?)";
-    String UPDATE_SQL = "update CHITIETBR set MABR=?, MASP = ?, KHOILUONG = ?, DONGIABAN = ?, THANHTIEN = ? where MACTBR = ?";
+    String INSERT_SQL = "insert into CHITIETBR(MABR,MASP,KHOILUONG,DONGIABAN,THANHTIEN) "
+            + "values (?,?,?,?,?)";
+    String UPDATE_SQL = "update CHITIETBR set MABR=?, MASP = ?, KHOILUONG = ?, "
+            + "DONGIABAN = ?, THANHTIEN = ? where MACTBR = ?";
     String DELETE_SQL = "delete from CHITIETBR where masp = ?";
     String SELECT_ALL_SQL = "select * from CHITIETBR";
     String SELECT_BY_ID_SQL = "select * from CHITIETBR where MACTBR = ?";
@@ -62,7 +64,7 @@ public class BanRaChiTiet_DAO extends EduSysDAO<BanRaChiTiet_Model, String> {
             ResultSet rs = DBHelder_SQL.query(sql, args);
             while (rs.next()) {
                 BanRaChiTiet_Model entity = new BanRaChiTiet_Model();
-                
+
                 entity.setMASP(rs.getString("MASP"));
                 entity.setTENSP(rs.getString("TENSP"));
                 entity.setLOAISP(rs.getString("LOAI"));
@@ -79,7 +81,8 @@ public class BanRaChiTiet_DAO extends EduSysDAO<BanRaChiTiet_Model, String> {
     }
 
     public List<BanRaChiTiet_Model> selectsp_br(String maBR) {
-        String SELECT_HOADON_SANPHAM = "SELECT SP.MASP, SP.TENSP, SP.LOAI, CTBR.KHOILUONG, CTBR.DONGIABAN, CTBR.THANHTIEN,CTBR.MACTBR FROM \n"
+        String SELECT_HOADON_SANPHAM = "SELECT SP.MASP, SP.TENSP, SP.LOAI, "
+                + "CTBR.KHOILUONG, CTBR.DONGIABAN, CTBR.THANHTIEN,CTBR.MACTBR FROM \n"
                 + "SANPHAM SP\n"
                 + "INNER JOIN CHITIETBR CTBR ON SP.MASP = CTBR.MASP\n"
                 + "INNER JOIN BANRA BR ON BR.MABR = CTBR.MABR\n"
@@ -87,9 +90,9 @@ public class BanRaChiTiet_DAO extends EduSysDAO<BanRaChiTiet_Model, String> {
         return selectBySql(SELECT_HOADON_SANPHAM, maBR);
     }
 
-   public List<BanRaChiTiet_Model> hasHoaDonChiTiet(String maHoaDon) {
-   // boolean exists = false;
-    String sql = "SELECT COUNT(*) FROM CHITIETBR WHERE MABR = ?";
-    return selectBySql(sql, maHoaDon);
-}
+    public List<BanRaChiTiet_Model> hasHoaDonChiTiet(String maHoaDon) {
+        // boolean exists = false;
+        String sql = "SELECT COUNT(*) FROM CHITIETBR WHERE MABR = ?";
+        return selectBySql(sql, maHoaDon);
+    }
 }

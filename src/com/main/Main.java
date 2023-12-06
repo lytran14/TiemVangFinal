@@ -8,7 +8,6 @@ import com.form.FormCamDo;
 import com.form.FormCuaSoChao;
 import com.form.FormDangNhap;
 import com.form.FormDoiMatKhau;
-import com.form.FormGiaVang;
 import com.form.FormKhachHang;
 import com.form.FormLoaiSanPham;
 import com.form.FormMuaVao;
@@ -26,7 +25,6 @@ public class Main extends javax.swing.JFrame {
     private FormBanRa br;
     private FormMuaVao mv;
     private FormCamDo cd;
-    private FormGiaVang gv;
     private FormKhachHang kh;
     private FormNhanVien nv;
 
@@ -39,7 +37,6 @@ public class Main extends javax.swing.JFrame {
         br = new FormBanRa();
         mv = new FormMuaVao();
         cd = new FormCamDo();
-        gv = new FormGiaVang();
         kh = new FormKhachHang();
         nv = new FormNhanVien();
         new FormCuaSoChao(this, true).setVisible(true);
@@ -49,14 +46,8 @@ public class Main extends javax.swing.JFrame {
             @Override
             public void selected(int index) {
                 //System.out.println(".selected(): " + index);
-                if (index == 7) {
-                    if (Auth.isLogin()) {
-                        setForm(gv);
-                    } else {
-                        gv.setVisible(false);
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 2) {
+
+                if (index == 2) {
                     if (Auth.isLogin()) {
                         setForm(sp);
                     } else {
@@ -86,33 +77,33 @@ public class Main extends javax.swing.JFrame {
                     } else {
                         MsgBox.alert(null, "Vui lòng đăng nhập.");
                     }
-                } else if (index == 9) {
+                } else if (index == 8) {
                     if (Auth.isLogin()) {
                         setForm(kh);
                     } else {
                         MsgBox.alert(null, "Vui lòng đăng nhập.");
                     }
-                } else if (index == 11) {
+                } else if (index == 10) {
                     if (Auth.isLogin()) {
                         setForm(nv);
                     } else {
                         MsgBox.alert(null, "Vui lòng đăng nhập.");
                     }
-                } else if (index == 12) {
+                } else if (index == 11) {
                     if (Auth.isLogin()) {
                         setForm(tkKe);
                     } else {
 
                         MsgBox.alert(null, "Vui lòng đăng nhập.");
                     }
-                } else if (index == 14) {
+                } else if (index == 13) {
                     Auth.clear();
                     dispose();
                     new FormDangNhap(Main.this, true).setVisible(true);
-                } else if (index == 15) {
+                } else if (index == 14) {
                     dispose();
                     new FormDoiMatKhau(Main.this, true).setVisible(true);
-                } else if (index == 16) {
+                } else if (index == 15) {
                     if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
                         System.exit(0);
                     }

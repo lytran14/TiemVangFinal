@@ -37,6 +37,8 @@ public class FormCuaSoChao extends javax.swing.JDialog {
         pgb = new javax.swing.JProgressBar();
         jLabel1 = new javax.swing.JLabel();
 
+        setUndecorated(true);
+
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pgb.setStringPainted(true);

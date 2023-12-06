@@ -31,7 +31,7 @@ public class LoaiSanPham_DAO extends EduSysDAO<LoaiSanPham_Model, String>{
                 entity.getMoTa(),
                 entity.getMaLSP());
     }
-
+    
     @Override
     public void delete(String id) {
         DBHelder_SQL.update(DELETE_SQL, id);

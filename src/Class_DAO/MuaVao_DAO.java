@@ -9,8 +9,10 @@ import java.util.List;
 
 public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
 
-    String INSERT_SQL = "INSERT INTO MUAVAO(MaMV,MAKH,MANV,NGAYLAP,TONGGIATRI)VALUES (?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE MUAVAO SET MAKH = ?, MANV = ?, NGAYLAP = ?, TONGGIATRI =?, WHERE MaMV=?";
+    String INSERT_SQL = "INSERT INTO MUAVAO(MaMV,MAKH,MANV,NGAYLAP,TONGGIATRI)"
+            + "VALUES (?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE MUAVAO SET MAKH = ?, MANV = ?, NGAYLAP = ?, "
+            + "TONGGIATRI =?, WHERE MaMV=?";
     String DELETE_SQL = "DELETE FROM MUAVAO WHERE MaMV = ?";
     String SELECT_ALL_SQL = "SELECT * FROM MUAVAO";
     String SELECT_BY_ID_SQL = "SELECT * FROM MUAVAO WHERE MaMV = ?";
@@ -98,13 +100,15 @@ public class MuaVao_DAO extends EduSysDAO<MuaVao_Model, String> {
     }
 
     public List<MuaVao_Model> selectByKyword(String kyword) {
-        String sql = "select br.MAMV, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from MUAVAO br inner join KHACHHANG kh\n"
-                + "on kh.MAKH = br.MAKH WHERE br.MAMV =? or kh.TENKH like ?";
+        String sql = "select br.MAMV, kh.TENKH, br.MANV, br.NGAYLAP, "
+                + "br.TONGGIATRI from MUAVAO br inner join KHACHHANG kh\n"
+                + "on kh.MAKH = br.MAKH WHERE br.MAMV like ? or kh.TENKH like ?";
         return this.selectBySqlHoaDon(sql, "%" + kyword + "%", "%" + kyword + "%");
     }
 
     public List<MuaVao_Model> getOrdersByDateRange(Date startDate, Date endDate) {
-        String sql = "select br.MAMV, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from MUAVAO br inner join KHACHHANG kh\n"
+        String sql = "select br.MAMV, kh.TENKH, br.MANV, br.NGAYLAP, "
+                + "br.TONGGIATRI from MUAVAO br inner join KHACHHANG kh\n"
                 + "on kh.MAKH = br.MAKH WHERE NGAYLAP >=? AND NGAYLAP <=? ORDER BY NGAYLAP ASC";
         return selectBySqlHoaDon(sql, startDate, endDate);
     }

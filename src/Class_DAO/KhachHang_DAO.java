@@ -8,8 +8,10 @@ import java.util.List;
 
 public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String> {
 
-    String INSERT_SQL = "insert into KHACHHANG(MAKH,TENKH,DIACHI,SODTKH,EMAIL,SOCCCD,GHICHU) values (?,?,?,?,?,?,?)";
-    String UPDATE_SQL = "update KHACHHANG set TENKH = ?, DIACHI = ?, SODTKH = ?, EMAIL = ?, SOCCCD = ?, GHICHU = ? where MAKH = ?";
+    String INSERT_SQL = "insert into KHACHHANG(MAKH,TENKH,DIACHI,SODTKH,"
+            + "EMAIL,SOCCCD,GHICHU) values (?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "update KHACHHANG set TENKH = ?, DIACHI = ?, SODTKH = ?, "
+            + "EMAIL = ?, SOCCCD = ?, GHICHU = ? where MAKH = ?";
     String DELETE_SQL = "delete from KHACHHANG where MAKH = ?";
     String SELECT_ALL_SQL = "select * from KHACHHANG";
     String SELECT_BY_ID_SQL = "select * from KHACHHANG where MAKH = ?";
@@ -17,19 +19,33 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String> {
 
     @Override
     public void insert(KhachHang_Model entity) {
-        DBHelder_SQL.update(INSERT_SQL, entity.getMaKH(), entity.getTenKH(), entity.getDiaChi(), entity.getSoDTKH(), entity.getEmail(), entity.getSoCCCD(), entity.getGhiChu());
+        DBHelder_SQL.update(INSERT_SQL, 
+                entity.getMaKH(), 
+                entity.getTenKH(), 
+                entity.getDiaChi(), 
+                entity.getSoDTKH(), 
+                entity.getEmail(), 
+                entity.getSoCCCD(), 
+                entity.getGhiChu());
     }
 
     @Override
     public void update(KhachHang_Model entity) {
-        DBHelder_SQL.update(UPDATE_SQL, entity.getTenKH(), entity.getDiaChi(), entity.getSoDTKH(), entity.getEmail(), entity.getSoCCCD(), entity.getGhiChu(), entity.getMaKH());
+        DBHelder_SQL.update(UPDATE_SQL, 
+                entity.getTenKH(), 
+                entity.getDiaChi(), 
+                entity.getSoDTKH(), 
+                entity.getEmail(), 
+                entity.getSoCCCD(), 
+                entity.getGhiChu(), 
+                entity.getMaKH());
     }
 
     @Override
     public void delete(String id) {
         DBHelder_SQL.update(DELETE_SQL, id);
     }
-
+    
     @Override
     public List<KhachHang_Model> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
@@ -45,7 +61,8 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String> {
     }
 
     public KhachHang_Model selectBysdt(String id) {
-        List<KhachHang_Model> list = selectBySql(SELECT_BY_SDT_ID_SQL, "%" + id + "%", "%" + id + "%");
+        List<KhachHang_Model> list = selectBySql(SELECT_BY_SDT_ID_SQL, 
+                "%" + id + "%", "%" + id + "%");
         if (list.isEmpty()) {
             return null;
         }
@@ -74,15 +91,5 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String> {
         }
         return list;
     }
-//    public List <KhachHang_Model> selectByKyword(String kyword){
-//        String sql = "select * from NguoiHoc where HoTen like ?";
-//        return  this.selectbySql(sql, "%"+kyword+"%");
-//    }
-//    public List<KhachHang_Model> selectNotlCourse(int makh, String keyword){
-//        String sql = "Select * from NguoiHoc"
-//                + " where HoTen like ? and "
-//                + "MaNH not in (select MaNH from HocVien where MaKH=?)";
-//        return this.selectbySql(sql, "%"+keyword+"%",makh);
-//    }
 
 }

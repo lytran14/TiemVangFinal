@@ -8,8 +8,10 @@ import java.util.List;
 
 public class MuaVaoChiTiet_DAO extends EduSysDAO<MuaVaoChiTiet_Model, String> {
 
-    String INSERT_SQL = "insert into CHITIETMUAVAO(MAMV,MASP,KHOILUONG,DONGIAMUA,THANHTIEN) values (?,?,?,?,?)";
-    String UPDATE_SQL = "update CHITIETMUAVAO set MAMV=?, MASP = ?, KHOILUONG = ?, DONGIAMUA = ?, THANHTIEN = ? where MACTMV = ?";
+    String INSERT_SQL = "insert into CHITIETMUAVAO(MAMV,MASP,KHOILUONG,DONGIAMUA,THANHTIEN) "
+            + "values (?,?,?,?,?)";
+    String UPDATE_SQL = "update CHITIETMUAVAO set MAMV=?, MASP = ?, KHOILUONG = ?, "
+            + "DONGIAMUA = ?, THANHTIEN = ? where MACTMV = ?";
     String DELETE_SQL = "delete from CHITIETMUAVAO where masp = ?";
     String SELECT_ALL_SQL = "select * from CHITIETMUAVAO";
     String SELECT_BY_ID_SQL = "select * from CHITIETMUAVAO where MACTMV = ?";
@@ -53,6 +55,7 @@ public class MuaVaoChiTiet_DAO extends EduSysDAO<MuaVaoChiTiet_Model, String> {
     public List<MuaVaoChiTiet_Model> selectAll() {
         return selectBySql(SELECT_ALL_SQL);
     }
+    
     @Override
     protected List<MuaVaoChiTiet_Model> selectBySql(String sql, Object... args) {
         List<MuaVaoChiTiet_Model> list = new ArrayList<>();
@@ -77,14 +80,16 @@ public class MuaVaoChiTiet_DAO extends EduSysDAO<MuaVaoChiTiet_Model, String> {
     }
 
     public List<MuaVaoChiTiet_Model> selectsp() {
-        String SELECT_SANPHAM = "SELECT SP.MASP, SP.TENSP, SP.LOAI, CTMV.KHOILUONG, CTMV.DONGIAMUA, CTMV.THANHTIEN,CTMV.MACTMV FROM \n"
+        String SELECT_SANPHAM = "SELECT SP.MASP, SP.TENSP, SP.LOAI, CTMV.KHOILUONG, "
+                + "CTMV.DONGIAMUA, CTMV.THANHTIEN,CTMV.MACTMV FROM \n"
                 + "SANPHAM SP\n"
                 + "INNER JOIN CHITIETMUAVAO CTMV ON SP.MASP = CTMV.MASP\n"
                 + "INNER JOIN MUAVAO MV ON MV.MAMV = CTMV.MAMV\n";
         return selectBySql(SELECT_SANPHAM);
     }
     public List<MuaVaoChiTiet_Model> selectsp_br(String maMV) {
-        String SELECT_HOADON_SANPHAM = "SELECT SP.MASP, SP.TENSP, SP.LOAI, CTMV.KHOILUONG, CTMV.DONGIAMUA, CTMV.THANHTIEN,CTMV.MACTMV FROM \n"
+        String SELECT_HOADON_SANPHAM = "SELECT SP.MASP, SP.TENSP, SP.LOAI, "
+                + "CTMV.KHOILUONG, CTMV.DONGIAMUA, CTMV.THANHTIEN, CTMV.MACTMV FROM \n"
                 + "SANPHAM SP\n"
                 + "INNER JOIN CHITIETMUAVAO CTMV ON SP.MASP = CTMV.MASP\n"
                 + "INNER JOIN MUAVAO MV ON MV.MAMV = CTMV.MAMV\n"

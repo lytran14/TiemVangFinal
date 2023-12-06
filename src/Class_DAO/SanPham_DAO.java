@@ -1,4 +1,3 @@
-
 package Class_DAO;
 
 import Class_DBHelder.DBHelder_SQL;
@@ -9,8 +8,8 @@ import java.util.List;
 
 public class SanPham_DAO extends EduSysDAO<SanPham_Model, String> {
 
-    String INSERT_SQL = "insert into SANPHAM(MASP,TENSP,MOTA,DONGIANHAP,LOAI,MALOAISP,DONGIABAN,DONVITINH) values (?,?,?,?,?,?,?,?)";
-    String UPDATE_SQL = "update SANPHAM set TENSP = ?, MOTA = ?, DONGIANHAP = ?, LOAI = ?, MALOAISP = ?, DONGIABAN = ? ,DONVITINH=? where MASP = ?";
+    String INSERT_SQL = "insert into SANPHAM(MASP,TENSP,MOTA,DONGIANHAP,LOAI,MALOAISP,DONGIABAN,MADVTINH,DONVITINH,HINH) values (?,?,?,?,?,?,?,?,?,?)";
+    String UPDATE_SQL = "update SANPHAM set TENSP = ?, MOTA = ?, DONGIANHAP = ?, LOAI = ?, MALOAISP = ?, DONGIABAN = ? ,DONVITINH=?,HINH=? where MASP = ?";
     String DELETE_SQL = "delete from SANPHAM where MASP = ?";
     String SELECT_ALL_SQL = "select * from SANPHAM";
     String SELECT_BY_ID_SQL = "select * from SANPHAM where MASP = ?";
@@ -25,7 +24,9 @@ public class SanPham_DAO extends EduSysDAO<SanPham_Model, String> {
                 entity.getLOAI(),
                 entity.getMALOAISP(),
                 entity.getDONGIABAN(),
-                entity.getDONVITINH());
+                entity.getMADVTINH(),
+                entity.getDONVITINH(),
+                entity.getHINH());
     }
 
     @Override
@@ -37,7 +38,9 @@ public class SanPham_DAO extends EduSysDAO<SanPham_Model, String> {
                 entity.getLOAI(),
                 entity.getMALOAISP(),
                 entity.getDONGIABAN(),
+                //entity.getMADVTINH(),
                 entity.getDONVITINH(),
+                entity.getHINH(),
                 entity.getMASP()
         );
     }
@@ -76,6 +79,7 @@ public class SanPham_DAO extends EduSysDAO<SanPham_Model, String> {
                 entity.setMALOAISP(rs.getString("MALOAISP"));
                 entity.setDONGIABAN(rs.getDouble("DONGIABAN"));
                 entity.setDONVITINH(rs.getString("DONVITINH"));
+                entity.setHINH(rs.getString("HINH"));
                 list.add(entity);
             }
         } catch (Exception e) {

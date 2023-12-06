@@ -10,8 +10,10 @@ import java.util.List;
 
 public class BanRa_DAO extends EduSysDAO<BanRa_Model, String> {
 
-    String INSERT_SQL = "insert into BANRA(MABR,MAKH,MANV,NGAYLAP,TONGGIATRI) values (?,?,?,?,?)";
-    String UPDATE_SQL = "update BANRA set MAKH = ?, MANV = ?, NGAYLAP = ?, TONGGIATRI = ? where MABR = ?";
+    String INSERT_SQL = "insert into BANRA(MABR,MAKH,MANV,NGAYLAP,TONGGIATRI) "
+            + "values (?,?,?,?,?)";
+    String UPDATE_SQL = "update BANRA set MAKH = ?, MANV = ?, NGAYLAP = ?, "
+            + "TONGGIATRI = ? where MABR = ?";
     String DELETE_SQL = "delete from BANRA where MABR = ?";
     String SELECT_ALL_SQL = "select * from BANRA";
     String SELECT_BY_ID_SQL = "select * from BANRA where MABR = ?";
@@ -99,13 +101,15 @@ public class BanRa_DAO extends EduSysDAO<BanRa_Model, String> {
     }
 
     public List<BanRa_Model> selectByKyword(String kyword) {
-        String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
-                + "on kh.MAKH = br.MAKH WHERE br.mabr =? or kh.TENKH like ?";
+        String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, "
+                + "br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
+                + "on kh.MAKH = br.MAKH WHERE br.mabr like ? or kh.TENKH like ?";
         return this.selectBySqlHoaDon(sql, "%" + kyword + "%", "%" + kyword + "%");
     }
 
     public List<BanRa_Model> getOrdersByDateRange(Date startDate, Date endDate) {
-        String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
+        String sql = "select br.MABR, kh.TENKH, br.MANV, br.NGAYLAP, "
+                + "br.TONGGIATRI from BANRA br inner join KHACHHANG kh\n"
                 + "on kh.MAKH = br.MAKH WHERE NGAYLAP >=? AND NGAYLAP <=? ORDER BY NGAYLAP ASC";
         return selectBySqlHoaDon(sql, startDate, endDate);
     }

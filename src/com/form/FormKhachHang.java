@@ -384,7 +384,8 @@ public class FormKhachHang extends javax.swing.JFrame {
     private javax.swing.JTextField txtSoDT;
     private javax.swing.JTextField txtTenKH;
     // End of variables declaration//GEN-END:variables
-private KhachHang_Model getForm() {
+
+    private KhachHang_Model getForm() {
         KhachHang_Model kh = new KhachHang_Model();
         kh.setMaKH(txtMaKH.getText());
         kh.setTenKH(txtTenKH.getText());

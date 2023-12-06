@@ -1,30 +1,39 @@
-
 package Class_Model;
 
-
 public class ChiTietPhieuCam_Model {
-    
+
     private String maPhieu;
     private String maCam;
-    private float  soTienCam;
-    private float  khoiLuong;
-    private float  donGia;
+    private float soTienCam;
+    private float khoiLuong;
+    private float donGia;
+    private float laiXuatPT;
     private String maSP;
     private String tenSP;
-    private float  laiXuat;
+    private float laiXuat;
 
     public ChiTietPhieuCam_Model() {
     }
 
-    public ChiTietPhieuCam_Model(String maPhieu, String maCam, float soTienCam, float khoiLuong, float donGia, String maSP, String tenSP, float laiXuat) {
+    public ChiTietPhieuCam_Model(String maPhieu, String maCam, float soTienCam, float khoiLuong, float donGia, float laiXuatPT, String maSP, String tenSP, float laiXuat) {
         this.maPhieu = maPhieu;
         this.maCam = maCam;
         this.soTienCam = soTienCam;
         this.khoiLuong = khoiLuong;
         this.donGia = donGia;
+        this.laiXuatPT = laiXuatPT;
         this.maSP = maSP;
         this.tenSP = tenSP;
         this.laiXuat = laiXuat;
+    }
+
+  
+    public float getLaiXuatPT() {
+        return laiXuatPT;
+    }
+
+    public void setLaiXuatPT(float laiXuatPT) {
+        this.laiXuatPT = laiXuatPT;
     }
 
     public String getMaPhieu() {
@@ -59,6 +68,10 @@ public class ChiTietPhieuCam_Model {
         this.khoiLuong = khoiLuong;
     }
 
+  
+    
+    
+
     public float getDonGia() {
         return donGia;
     }
@@ -91,5 +104,4 @@ public class ChiTietPhieuCam_Model {
         this.laiXuat = laiXuat;
     }
 
-   
 }

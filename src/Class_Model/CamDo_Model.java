@@ -10,6 +10,9 @@ public class CamDo_Model {
     private Date ngayLap;
     private float soTienCam;
     private String maKH;
+    private String tenKH;
+    private String cccd;
+    private String sdtKH;
     private String maNV;
     private float soNgay;
     private Date ngayCam;
@@ -19,11 +22,14 @@ public class CamDo_Model {
     public CamDo_Model() {
     }
 
-    public CamDo_Model(String maCam, Date ngayLap, float soTienCam, String maKH, String maNV, float soNgay, Date ngayCam, Date ngayHetHan, boolean trangThai) {
+    public CamDo_Model(String maCam, Date ngayLap, float soTienCam, String maKH, String tenKH, String cccd, String sdtKH, String maNV, float soNgay, Date ngayCam, Date ngayHetHan, boolean trangThai) {
         this.maCam = maCam;
         this.ngayLap = ngayLap;
         this.soTienCam = soTienCam;
         this.maKH = maKH;
+        this.tenKH = tenKH;
+        this.cccd = cccd;
+        this.sdtKH = sdtKH;
         this.maNV = maNV;
         this.soNgay = soNgay;
         this.ngayCam = ngayCam;
@@ -61,6 +67,30 @@ public class CamDo_Model {
 
     public void setMaKH(String maKH) {
         this.maKH = maKH;
+    }
+
+    public String getTenKH() {
+        return tenKH;
+    }
+
+    public void setTenKH(String tenKH) {
+        this.tenKH = tenKH;
+    }
+
+    public String getCccd() {
+        return cccd;
+    }
+
+    public void setCccd(String cccd) {
+        this.cccd = cccd;
+    }
+
+    public String getSdtKH() {
+        return sdtKH;
+    }
+
+    public void setSdtKH(String sdtKH) {
+        this.sdtKH = sdtKH;
     }
 
     public String getMaNV() {
@@ -103,8 +133,5 @@ public class CamDo_Model {
         this.trangThai = trangThai;
     }
 
-    @Override
-    public String toString() {
-        return this.maKH;
-    }
+   
 }

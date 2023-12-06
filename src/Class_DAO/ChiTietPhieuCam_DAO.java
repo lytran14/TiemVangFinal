@@ -10,8 +10,10 @@ import java.util.List;
 
 public class ChiTietPhieuCam_DAO extends EduSysDAO<ChiTietPhieuCam_Model, String>{
     
-    String INSERT_SQL = "INSERT INTO PHIEUCAMDO(MACAM,SOTIENCAM,KHOILUONG,DONGIA,MASP,LAIXUAT)VALUES (?,?,?,?,?,?)";
-    String UPDATE_SQL = "UPDATE PHIEUCAMDO SET MACAM = ?, SOTIENCAM = ?, KHOILUONG = ?, DONGIA =?, MASP =?, LAIXUAT =? WHERE MAPHIEU=?";
+    String INSERT_SQL = "INSERT INTO PHIEUCAMDO(MACAM,SOTIENCAM,KHOILUONG,DONGIA,"
+            + "MASP,LAIXUAT)VALUES (?,?,?,?,?,?)";
+    String UPDATE_SQL = "UPDATE PHIEUCAMDO SET MACAM = ?, SOTIENCAM = ?, KHOILUONG = ?, "
+            + "DONGIA =?, MASP =?, LAIXUAT =? WHERE MAPHIEU=?";
     String DELETE_SQL = "DELETE FROM PHIEUCAMDO WHERE PHIEUMACAM = ?";
     String SELECT_ALL_SQL = "SELECT * FROM PHIEUCAMDO";
     String SELECT_BY_ID_SQL = "SELECT * FROM PHIEUCAMDO WHERE PHIEUMACAM = ?";
@@ -38,7 +40,7 @@ public class ChiTietPhieuCam_DAO extends EduSysDAO<ChiTietPhieuCam_Model, String
                 entity.getLaiXuat(),          
                 entity.getMaPhieu());
     }
-
+    
     @Override
     public void delete(String id) {
         DBHelder_SQL.update(DELETE_SQL, id);
@@ -65,12 +67,13 @@ public class ChiTietPhieuCam_DAO extends EduSysDAO<ChiTietPhieuCam_Model, String
             ResultSet rs = DBHelder_SQL.query(sql, args);
             while (rs.next()) {
                 ChiTietPhieuCam_Model entity = new ChiTietPhieuCam_Model();
+                
                 entity.setMaPhieu(rs.getString("MAPHIEU"));
-                entity.setMaCam(rs.getString("MACAM"));
                 entity.setSoTienCam(rs.getFloat("SOTIENCAM"));
                 entity.setKhoiLuong(rs.getFloat("KHOILUONG"));
                 entity.setDonGia(rs.getFloat("DONGIA"));
                 entity.setMaSP(rs.getString("MASP"));
+                entity.setTenSP(rs.getString("TENSP"));
                 entity.setLaiXuat(rs.getFloat("LAIXUAT"));
 
                 list.add(entity);
@@ -81,4 +84,22 @@ public class ChiTietPhieuCam_DAO extends EduSysDAO<ChiTietPhieuCam_Model, String
             throw new RuntimeException();
         }
     }
+    
+     public List<ChiTietPhieuCam_Model> selectsp_br(String maCam) {
+        String SELECT_HOADON_SANPHAM = "SELECT SP.MASP, SP.TENSP, pcd.KHOILUONG, "
+                + "pcd.DONGIA, pcd.SOTIENCAM, pcd.LAIXUAT, pcd.MAPHIEU FROM \n" +
+                 "SANPHAM SP\n" +
+                 "INNER JOIN PHIEUCAMDO pcd ON SP.MASP = pcd.MASP\n" +
+                 "INNER JOIN CAMDO cd ON cd.MACAM=pcd.MACAM\n" +
+                 "WHERE cd.MACAM = ?";
+        return selectBySql(SELECT_HOADON_SANPHAM, maCam);
+    }
+     
+     
+      public List<ChiTietPhieuCam_Model> hasHoaDonChiTiet(String maHoaDon) {
+        // boolean exists = false;
+        String sql = "SELECT COUNT(*) FROM PHIEUCAMDO WHERE MACAM = ?";
+        return selectBySql(sql, maHoaDon);
+    }
+      
 }

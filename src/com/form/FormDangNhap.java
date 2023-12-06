@@ -160,7 +160,8 @@ public class FormDangNhap extends javax.swing.JDialog {
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
-        int dialogResult = JOptionPane.showConfirmDialog(this, "BẠN THẬT SỰ MUỐN THOÁT ?",
+        int dialogResult = JOptionPane.showConfirmDialog(this, "BẠN THẬT SỰ MUỐN "
+                + "THOÁT ?",
             "Xác nhận thoát", JOptionPane.YES_NO_OPTION);
         if (dialogResult == JOptionPane.YES_OPTION) {
             System.exit(0);

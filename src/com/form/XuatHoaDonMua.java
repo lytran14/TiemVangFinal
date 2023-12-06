@@ -9,7 +9,7 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import javax.swing.JLabel;
+import javax.swing.JEditorPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -34,9 +34,11 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
         JTextField txtThanhToan = form1.getTxtThanhToan();
         JTextField txtTongTien = form1.getTxtTongTien();
         String html = "<html>";
+        html += "<div style='margin-left: 15px;'>";
         html += "<h2 style='text-align: center;'>TIỆM VÀNG CHƯA CÓ TÊN</h2>";
-        html += "<p style='font-weight: normal;'>ĐC: Toà nhà FPT Polytechnic, Đ. Số 22, Thường Thạnh, Q.Cái Răng, TP.Cần Thơ<br></p>";
-        html += "<p style='font-weight: normal;'>SĐT: 0981 725 836<br></p>";
+        html += "<p style='font-weight: normal;text-align: center;'>ĐC: Toà nhà FPT Polytechnic, Đ. Số 22, Thường Thạnh,<br></p>";
+        html += "<p style='font-weight: normal;text-align: center;'> Q.Cái Răng, TP.Cần Thơ<br></p>";
+        html += "<p style='font-weight: normal;text-align: center;'>SĐT: 0981 725 836<br></p>";
         //thông tin đơn
         html += "<table style='font-weight: normal;'>";
         html += "<tr>";
@@ -45,7 +47,7 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
         html += "<th style='margin-left: 50px; font-weight: normal;'>Khách Hàng:</th>";
         html += "<td>" + txtTenKH.getText() + "</td>";
         html += "</tr>";
-        html += "<p style='font-weight: normal;'>Nhân Viên: "+txtTenNV.getText()+"</p>";
+        html += "<p style='font-weight: normal;'>Nhân Viên: " + txtTenNV.getText() + "</p>";
         html += "</table>";
         //chi tiết đơn
         html += "<br>";
@@ -78,8 +80,8 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
         html += "</div>";
         ////add tong bill
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
-        html += "Tổng Tiền : " + txtTongTien.getText() + " VNĐ" + "<br>";
-        html += "Thanh Toán: " + txtThanhToan.getText() + " VNĐ" + "<br>";
+        html += "<p style =text-align: right;'><b> Tổng Tiền : " + txtTongTien.getText() + "<br></b></p>";
+        html += "<p style =text-align: right;'><b> Thanh Toán: " + txtThanhToan.getText() + "<br></b></p>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
         //ADD DATE TIME
         Date dd = new Date();
@@ -91,72 +93,31 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
         html += "<tr>";
         html += "<th style='font-weight: normal;'>Date:</th>";
         html += "<td>" + Date + "</td>";
-        html += "<th style='margin-left: 150px; font-weight: normal;'>Time:</th>";
+        html += "<th style='margin-left: 130px; font-weight: normal;'>Time:</th>";
         html += "<td>" + time + "</td>";
         html += "</tr>";
         html += "</table>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
         html += "<h6 style='text-align: center;'>CẢM ƠN QUÝ KHÁCH ĐÃ TIN TƯỞNG VÀ ỦNG HỘ!!<br></h6> ";
+        html += "</div>";
         html += "</html> ";
-        lblhoadon.setText(html);
-//        txtHoaDOn.setText("                         ************************************************************\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "                                     ------------------TIỆM VÀNG--------------\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "ĐC: Toà nhà FPT Polytechnic, Đ. Số 22, Thường Thạnh, Cái Răng, Cần Thơ\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "SĐT: 0981 725 836\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "Mã Hoá Đơn: " + txtMaHD.getText() + "\t\tKhách Hàng: " + txtTenKH.getText() + "\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "-----------------------------------------------------------------------------------------------------------\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "Loại vàng\t Trọng Lượng\t Đơn Giá\t Thành Tiền\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "-----------------------------------------------------------------------------------------------------------\n");
-//
-//        DefaultTableModel dt = (DefaultTableModel) tblHDCT.getModel();
-//        for (int i = 0; i < tblHDCT.getRowCount(); i++) {
-//            String loaiv = dt.getValueAt(i, 1).toString();
-//            String khoiluong = dt.getValueAt(i, 2).toString();
-//            String dongia = dt.getValueAt(i, 3).toString();
-//            String thanhtien = dt.getValueAt(i, 4).toString();
-//            txtHoaDOn.setText(txtHoaDOn.getText() + loaiv + "\t" + khoiluong + "\t" + dongia + "\t" + thanhtien + "\n");
-//        }
-////add tong bill
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "-----------------------------------------------------------------------------------------------------------\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "Tổng Tiền : " + txtTongTien.getText() + " VNĐ" + "\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "Thanh Toán: " + txtThanhToan.getText() + " VNĐ" + "\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "-----------------------------------------------------------------------------------------------------------\n ");
-//        //DATE TIME
-//        Date dd = new Date();
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        SimpleDateFormat dateTime = new SimpleDateFormat("HH:mm:ss");
-//        String Date = dateFormat.format(dd);
-//        String time = dateTime.format(dd);
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "-----------------------------------------------------------------------------------------------------------\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "Date: " + Date + "\t\tTime: " + time + "\n");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "-----------------------------------------------------------------------------------------------------------\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "*****************************************************************************************\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\tCẢM ƠN QUÝ KHÁCH ĐÃ TIN TƯỞNG VÀ ỦNG HỘ!!\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\t\t               ******\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\n ");
-//        txtHoaDOn.setText(txtHoaDOn.getText() + "\t\tCode by Nhom9\n ");
+        blb.setContentType("text/html");
+        blb.setText(html);
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblhoadon = new javax.swing.JLabel();
         btnHuy = new javax.swing.JButton();
         btnInHD = new javax.swing.JButton();
+        lblhoadon = new javax.swing.JScrollPane();
+        blb = new javax.swing.JEditorPane();
         txtForm = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setUndecorated(true);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        lblhoadon.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        lblhoadon.setText("jLabel1");
-        lblhoadon.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        getContentPane().add(lblhoadon, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 400, 470));
 
         btnHuy.setText("HUỶ");
         btnHuy.addActionListener(new java.awt.event.ActionListener() {
@@ -174,9 +135,13 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
         });
         getContentPane().add(btnInHD, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 590, 149, -1));
 
+        lblhoadon.setViewportView(blb);
+
+        getContentPane().add(lblhoadon, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 480, 560));
+
         txtForm.setBackground(new java.awt.Color(255, 255, 255));
         txtForm.setOpaque(true);
-        getContentPane().add(txtForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 430, 640));
+        getContentPane().add(txtForm, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 520, 640));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -186,7 +151,7 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
     }//GEN-LAST:event_btnHuyActionPerformed
 
     private void btnInHDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInHDActionPerformed
-        FilePrintClicked(lblhoadon);
+        FilePrintClicked(blb);
     }//GEN-LAST:event_btnInHDActionPerformed
 
     public static void main(String args[]) {
@@ -199,12 +164,13 @@ public class XuatHoaDonMua extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JEditorPane blb;
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnInHD;
-    private javax.swing.JLabel lblhoadon;
+    private javax.swing.JScrollPane lblhoadon;
     private javax.swing.JLabel txtForm;
     // End of variables declaration//GEN-END:variables
-public void FilePrintClicked(JLabel label) {
+public void FilePrintClicked(JEditorPane label) {
         PrinterJob job = PrinterJob.getPrinterJob();
         job.setPrintable(new Printable() {
             @Override
@@ -235,6 +201,7 @@ public void FilePrintClicked(JLabel label) {
         if (returningResult) {
             try {
                 job.print();
+                JOptionPane.showMessageDialog(this, "In Thành Công!");
                 dispose();
             } catch (PrinterException e) {
                 JOptionPane.showMessageDialog(this, "Không Thể In!");
