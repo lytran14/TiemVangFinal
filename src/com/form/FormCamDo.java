@@ -553,7 +553,7 @@ public class FormCamDo extends javax.swing.JFrame {
             }
         });
 
-        btnLamMoi.setText("LÀM MỚI");
+        btnLamMoi.setText("TẠO HOÁ ĐƠN MỚI");
         btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLamMoiActionPerformed(evt);
@@ -567,7 +567,7 @@ public class FormCamDo extends javax.swing.JFrame {
             }
         });
 
-        btnSua.setText("SỬA");
+        btnSua.setText("CẬP NHẬT");
         btnSua.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSuaActionPerformed(evt);
@@ -606,9 +606,9 @@ public class FormCamDo extends javax.swing.JFrame {
                         .addComponent(btnSua)
                         .addGap(18, 18, 18)
                         .addComponent(btnXoa)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnLamMoi)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap())
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtSoTienCam, javax.swing.GroupLayout.Alignment.LEADING)

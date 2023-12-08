@@ -16,6 +16,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -36,11 +37,13 @@ public class FormBanRa extends javax.swing.JFrame {
     BanRaChiTiet_DAO ctdaoAO = new BanRaChiTiet_DAO();
     SanPham_DAO spdao = new SanPham_DAO();
     KhachHang_DAO khdao = new KhachHang_DAO();
+    DecimalFormat dcf = new DecimalFormat("###,###");
 
     public FormBanRa() {
         initComponents();
         init();
     }
+
     //in Hoá đơn 
 
     public JTable getTblBanRa() {
@@ -99,7 +102,7 @@ public class FormBanRa extends javax.swing.JFrame {
                     nh.getMABR(),
                     nh.getTenKH(),
                     nh.getNGAYLAP(),
-                    String.format("%.0f", nh.getTONGGIATRI()), //nh.getMANV()
+                    dcf.format(nh.getTONGGIATRI()), //nh.getMANV()
                 };
                 model.addRow(row);
                 fillTongGiaTri();
@@ -121,8 +124,8 @@ public class FormBanRa extends javax.swing.JFrame {
                     nh.getTENSP(),
                     nh.getLOAISP(),
                     nh.getKHOILUONG(),
-                    String.format("%.0f", nh.getDONGIABAN()),
-                    String.format("%.0f", nh.getTHANHTIEN()),
+                    dcf.format(nh.getDONGIABAN()),
+                    dcf.format(nh.getTHANHTIEN()),
                     nh.getMACTBR()
                 };
                 model.addRow(row);
@@ -141,8 +144,8 @@ public class FormBanRa extends javax.swing.JFrame {
             txtMaHD.setText(kh.getMABR());
             txtMaNV.setText(kh.getMANV());
             txtNgayInHD.setDate(kh.getNGAYLAP());
-            txtTongTien.setText(String.format("%.0f", kh.getTONGGIATRI()));
-            txtThanhToan.setText(String.format("%.0f", kh.getTONGGIATRI()));
+            txtTongTien.setText(dcf.format(kh.getTONGGIATRI()));
+            txtThanhToan.setText(dcf.format(kh.getTONGGIATRI()));
 
             tblBanRa.setRowSelectionInterval(index, index);
             fillToTenKH();
@@ -163,10 +166,28 @@ public class FormBanRa extends javax.swing.JFrame {
     void fillTongGiaTri() {
         double tongTien = 0;
         for (int i = 0; i < tblBanRa.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(tblBanRa.getValueAt(i, 3).toString());
-            tongTien += thanhTienValue;
+            Object value = tblBanRa.getValueAt(i, 3);
+            if (value instanceof Number) {
+                double thanhTienValue = ((Number) value).doubleValue();
+                tongTien += thanhTienValue;
+            } else if (value instanceof String) {
+                String thanhTienStr = (String) value;
+                if (isNumber(thanhTienStr)) {
+                    double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                    tongTien += thanhTienValue;
+                }
+            }
         }
-        txtTongTienHang.setText(String.format("%.0f", tongTien));
+        txtTongTienHang.setText(dcf.format(tongTien));
+    }
+
+    boolean isNumber(String str) {
+        try {
+            Double.parseDouble(str.replace(",", ""));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     public void fillToFormCT(int selectedRow) {
@@ -176,16 +197,20 @@ public class FormBanRa extends javax.swing.JFrame {
             txtMaSP.setText(kh.getMASP());
             txtTenSP.setText(kh.getTENSP());
             txtTrongLuong.setText(String.valueOf(kh.getKHOILUONG()));
-            txtDonGia.setText(String.format("%.0f", kh.getDONGIABAN()));
-            txtThanhTien.setText(String.format("%.0f", kh.getTHANHTIEN()));
+            txtDonGia.setText(dcf.format(kh.getDONGIABAN()));
+            txtThanhTien.setText(dcf.format(kh.getTHANHTIEN()));
+
             // Cộng giá trị thành tiền vào tổng tiền
             double tongTien = 0;
             for (int i = 0; i < tblHoaDonCT.getRowCount(); i++) {
-                double thanhTienValue = Double.parseDouble(tblHoaDonCT.getValueAt(i, 5).toString());
-                tongTien += thanhTienValue;
+                String thanhTienStr = tblHoaDonCT.getValueAt(i, 5).toString();
+                if (isNumber(thanhTienStr)) {
+                    double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                    tongTien += thanhTienValue;
+                }
             }
-            txtTongTien.setText(String.format("%.0f", tongTien));
-            txtThanhToan.setText(String.format("%.0f", tongTien));
+//            txtTongTien.setText(String.format("%.0f", tongTien));
+//            txtThanhToan.setText(String.format("%.0f", tongTien));
 
             txtLoaiSP.setText(kh.getLOAISP());
             tblHoaDonCT.setRowSelectionInterval(selectedRow, selectedRow);
@@ -563,7 +588,7 @@ public class FormBanRa extends javax.swing.JFrame {
             }
         });
 
-        btnUpdate.setText("SỬA");
+        btnUpdate.setText("CẬP NHẬT");
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
@@ -577,7 +602,7 @@ public class FormBanRa extends javax.swing.JFrame {
             }
         });
 
-        btnReset.setText("ĐƠN MỚI");
+        btnReset.setText("TẠO HOÁ ĐƠN MỚI");
         btnReset.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnResetActionPerformed(evt);
@@ -604,9 +629,8 @@ public class FormBanRa extends javax.swing.JFrame {
                                 .addComponent(btnUpdate)
                                 .addGap(18, 18, 18)
                                 .addComponent(btnDelete)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnReset)
-                                .addGap(0, 0, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnReset))
                             .addComponent(txtThanhTien)))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -614,7 +638,7 @@ public class FormBanRa extends javax.swing.JFrame {
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(txtMaSP, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE)
@@ -641,12 +665,12 @@ public class FormBanRa extends javax.swing.JFrame {
                     .addComponent(txtLoaiSP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(txtTrongLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTrongLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -816,7 +840,9 @@ public class FormBanRa extends javax.swing.JFrame {
     }//GEN-LAST:event_tblBanRaMouseClicked
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+
         updateSelectedRow();
+
     }//GEN-LAST:event_btnUpdateActionPerformed
 
     private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
@@ -1012,30 +1038,35 @@ public class FormBanRa extends javax.swing.JFrame {
         double trongLuong = 0.0;
         double donGia = 0.0;
         try {
-            trongLuong = Double.parseDouble(txtTrongLuong.getText());
-            donGia = Double.parseDouble(txtDonGia.getText());
+            trongLuong = Double.parseDouble(txtTrongLuong.getText().replace(",", ""));
+            donGia = Double.parseDouble(txtDonGia.getText().replace(",", ""));
         } catch (NumberFormatException e) {
             // Xử lý khi chuỗi không thể chuyển đổi thành số
-            MsgBox.alert(this, "ENTER SẢN PHẨM ĐỂ NHẬP TRỌNG LƯỢNG!!");
+            MsgBox.alert(this, "THIẾU TRỌNG LƯỢNG!! ENTER SẢN PHẨM ĐỂ NHẬP TRỌNG LƯỢNG!!");
             return;
         }
-        double thanhTien = trongLuong * donGia;
+        double thanhTien = (trongLuong * donGia) / 3.75;;
         txtThanhTien.setText(String.format("%.0f", thanhTien));
+
         String loaiSP = txtLoaiSP.getText();
-        String formattedDonGia = String.format("%.0f", donGia);
-        String formattedThanhTien = String.format("%.0f", thanhTien);
+        String formattedDonGia = dcf.format(donGia);
+        String formattedThanhTien = dcf.format(thanhTien);
         Object[] rowData = {maSP, tenSP, loaiSP, trongLuong, formattedDonGia, formattedThanhTien};
         model.addRow(rowData);
         //tblHoaDonCT.setVisible(true);
         reset();
+
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 5).toString());
-            tongTien += thanhTienValue;
+            String thanhTienStr = model.getValueAt(i, 5).toString();
+            if (isNumber(thanhTienStr)) {
+                double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                tongTien += thanhTienValue;
+            }
         }
-        txtTongTien.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTongTien.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
     }
 
     String findMaKhachHangByTen(String tenKhachHang) {
@@ -1052,17 +1083,31 @@ public class FormBanRa extends javax.swing.JFrame {
     private BanRa_Model getFormHoaDon() {
         BanRa_Model kh = new BanRa_Model();
         kh.setMABR(txtMaHD.getText());
+
         // Lấy tên khách hàng từ giao diện và tìm mã khách hàng tương ứng
         String tenKhachHang = txtTenKHang.getText();
         String maKhachHang = findMaKhachHangByTen(tenKhachHang); // Hàm findMaKhachHangByTen() là hàm tìm mã khách hàng từ tên khách hàng 
         kh.setMAKH(maKhachHang);
         kh.setNGAYLAP(txtNgayInHD.getDate());
+
         if (txtMaNV.getText().equals("")) {
             kh.setMANV(Auth.user.getMANV());
         } else {
             kh.setMANV(txtMaNV.getText());
         }
-        kh.setTONGGIATRI(Double.parseDouble(txtTongTien.getText()));
+
+        String tongTienStr = txtTongTien.getText().replace(",", "");
+        double tongTien = 0.0;
+
+        try {
+            tongTien = Double.parseDouble(tongTienStr);
+        } catch (NumberFormatException e) {
+            // Xử lý khi chuỗi không thể chuyển đổi thành số
+            MsgBox.alert(this, "ENTER TỔNG GIÁ TRỊ HÓA ĐƠN!!");
+            return null;
+        }
+
+        kh.setTONGGIATRI(tongTien);
 
         return kh;
     }
@@ -1076,9 +1121,9 @@ public class FormBanRa extends javax.swing.JFrame {
             int rowCount = model.getRowCount();
             for (int i = 0; i < rowCount; i++) {
                 String maSP = model.getValueAt(i, 0).toString();
-                double trongLuong = Double.parseDouble(model.getValueAt(i, 3).toString());
-                double donGia = Double.parseDouble(model.getValueAt(i, 4).toString());
-                double thanhTien = Double.parseDouble(model.getValueAt(i, 5).toString());
+                double trongLuong = Double.parseDouble(model.getValueAt(i, 3).toString().replace(",", ""));
+                double donGia = Double.parseDouble(model.getValueAt(i, 4).toString().replace(",", ""));
+                double thanhTien = Double.parseDouble(model.getValueAt(i, 5).toString().replace(",", ""));
                 // Tạo đối tượng hoá đơn chi tiết
                 BanRaChiTiet_Model ct = new BanRaChiTiet_Model();
                 ct.setMABR(maBR);
@@ -1107,20 +1152,27 @@ public class FormBanRa extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
             return;
         }
-        double trongLuong = Double.parseDouble(tblHoaDonCT.getValueAt(selectedRow, 3).toString());
-        double donGia = Double.parseDouble(tblHoaDonCT.getValueAt(selectedRow, 4).toString());
-        double thanhTien = trongLuong * donGia;
-        String formattedThanhTien = String.format("%.0f", thanhTien);
+        String trongLuongStr = tblHoaDonCT.getValueAt(selectedRow, 3).toString().replace(",", "");
+        // Kiểm tra nếu trongLuongStr không phải là số và không nhỏ hơn 0
+        if (!trongLuongStr.matches("\\d+(\\.\\d+)?") || Double.parseDouble(trongLuongStr) < 0) {
+            JOptionPane.showMessageDialog(this, "TRỌNG LƯỢNG PHẢI LÀ SỐ VÀ KHÔNG ĐƯỢC NHỎ HƠN 0!");
+            return;
+        }
+        double trongLuong = Double.parseDouble(trongLuongStr);
+        double donGia = Double.parseDouble(tblHoaDonCT.getValueAt(selectedRow, 4).toString().replace(",", ""));
+        double thanhTien = (trongLuong * donGia) / 3.75;
+        String formattedThanhTien = dcf.format(thanhTien);
         tblHoaDonCT.setValueAt(trongLuong, selectedRow, 3); // Cập nhật trọng lượng trong bảng
         tblHoaDonCT.setValueAt(formattedThanhTien, selectedRow, 5); // Cập nhật thành tiền trong bảng
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 5).toString());
+            String thanhTienStr = model.getValueAt(i, 5).toString().replace(",", "");
+            double thanhTienValue = Double.parseDouble(thanhTienStr);
             tongTien += thanhTienValue;
         }
-        txtTongTien.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTongTien.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
         MsgBox.alert(this, "CẬP NHẬT TRỌNG LƯỢNG THÀNH CÔNG!");
     }
 

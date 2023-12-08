@@ -454,9 +454,8 @@
                                   <Component id="btnUpdate" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="btnDelete" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                                   <Component id="btnReset" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <Component id="txtThanhTien" max="32767" attributes="0"/>
                           </Group>
@@ -467,7 +466,7 @@
                               <Component id="jLabel9" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
                               <Component id="jLabel8" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
                               <Component id="jLabel3" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
-                              <Component id="jLabel11" alignment="0" min="-2" pref="97" max="-2" attributes="0"/>
+                              <Component id="jLabel11" alignment="1" min="-2" pref="97" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -503,13 +502,13 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTrongLuong" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="txtDonGia" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel11" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtDonGia" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="txtTrongLuong" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
+                      <Component id="jLabel10" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -614,7 +613,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnUpdate">
           <Properties>
-            <Property name="text" type="java.lang.String" value="S&#x1eec;A"/>
+            <Property name="text" type="java.lang.String" value="C&#x1eac;P NH&#x1eac;T"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateActionPerformed"/>
@@ -630,7 +629,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnReset">
           <Properties>
-            <Property name="text" type="java.lang.String" value="&#x110;&#x1a0;N M&#x1eda;I"/>
+            <Property name="text" type="java.lang.String" value="T&#x1ea0;O HO&#xc1; &#x110;&#x1a0;N M&#x1eda;I"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnResetActionPerformed"/>

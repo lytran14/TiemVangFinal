@@ -259,6 +259,7 @@ public class FormLoaiSanPham extends javax.swing.JFrame {
             return;
         } else if (check()) {
             insert();
+            init();
             return;
         }
 

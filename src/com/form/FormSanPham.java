@@ -14,6 +14,7 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.Icon;
@@ -35,6 +36,7 @@ public class FormSanPham extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         init();
     }
+    DecimalFormat dcf = new DecimalFormat("###,###");
 
     private void init() {
         this.fillToTable();
@@ -57,8 +59,8 @@ public class FormSanPham extends javax.swing.JFrame {
                     sp.getMASP(),
                     sp.getTENSP(),
                     sp.getLOAI(),
-                    sp.getDONGIANHAP(),
-                    sp.getDONGIABAN(),
+                    dcf.format(sp.getDONGIANHAP()),
+                    dcf.format(sp.getDONGIABAN()),
                     sp.getDONVITINH()
                 };
                 model.addRow(row);
@@ -107,8 +109,8 @@ public class FormSanPham extends javax.swing.JFrame {
                 Image image = imageIcon.getImage();
                 lblHinh.setIcon(new ImageIcon(image.getScaledInstance(lblHinh.getWidth(), lblHinh.getHeight(), 0)));
             }
-            txtGiaNhap.setText(String.valueOf(sp.getDONGIANHAP()));
-            txtGiaBan.setText(String.valueOf(sp.getDONGIABAN()));
+            txtGiaNhap.setText(dcf.format(sp.getDONGIANHAP()));
+            txtGiaBan.setText(dcf.format(sp.getDONGIABAN()));
             tblSanPham.setRowSelectionInterval(index, index);
         }
     }

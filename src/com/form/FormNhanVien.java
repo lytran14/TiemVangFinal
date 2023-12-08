@@ -491,24 +491,31 @@ public class FormNhanVien extends javax.swing.JPanel {
     }
 
     private void insert() {
-        NhanVien_Model model = getForm();
-        String confirm = new String(txtMatKhau.getPassword());
-        if (confirm.equals(model.getMATKHAU())) {
-            try {
-                dao.insert(model);
-                this.fillToTable();
-                this.reset();
-                MsgBox.alert(this, "THÊM THÀNH CÔNG!");
-            } catch (Exception e) {
-                MsgBox.alert(this, "THÊM THẤT BẠI!");
-                System.out.println(e);
-            }
+        if (!Auth.isManager()) {
+            MsgBox.alert(this, "BẠN KHÔNG CÓ QUYỀN THÊM NHÂN VIÊN");
         } else {
-            MsgBox.alert(this, "XÁC NHẬN MẬT KHẨU SAI!!!");
+            NhanVien_Model model = getForm();
+            String confirm = new String(txtMatKhau.getPassword());
+            if (confirm.equals(model.getMATKHAU())) {
+                try {
+                    dao.insert(model);
+                    this.fillToTable();
+                    this.reset();
+                    MsgBox.alert(this, "THÊM THÀNH CÔNG!");
+                } catch (Exception e) {
+                    MsgBox.alert(this, "THÊM THẤT BẠI!");
+                    System.out.println(e);
+                }
+            } else {
+                MsgBox.alert(this, "XÁC NHẬN MẬT KHẨU SAI!!!");
+            }
         }
     }
 
     private void update() {
+        if (!Auth.isManager()) {
+            MsgBox.alert(this, "BẠN KHÔNG CÓ QUYỀN CẬP NHẬT NHÂN VIÊN");
+        } else {
         NhanVien_Model model = getForm();
         try {
             dao.update(model);
@@ -517,6 +524,7 @@ public class FormNhanVien extends javax.swing.JPanel {
             MsgBox.alert(this, "CẬP NHẬT THÀNH CÔNG!");
         } catch (Exception e) {
             MsgBox.alert(this, "CẬP NHẬT THẤT BẠI");
+        }
         }
     }
 

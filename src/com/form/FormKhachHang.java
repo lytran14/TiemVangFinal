@@ -293,6 +293,9 @@ public class FormKhachHang extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblKhachHangMouseClicked(evt);
             }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblKhachHangMousePressed(evt);
+            }
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
@@ -346,6 +349,10 @@ public class FormKhachHang extends javax.swing.JFrame {
         btnXoa.setEnabled(true);
         btnThem.setEnabled(false);
     }//GEN-LAST:event_tblKhachHangMouseClicked
+
+    private void tblKhachHangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tblKhachHangMousePressed
 
     public static void main(String args[]) {
 

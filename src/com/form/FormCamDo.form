@@ -362,9 +362,9 @@
                               <Component id="btnSua" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Component id="btnXoa" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="btnLamMoi" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
+                              <Component id="btnLamMoi" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="1" max="-2" attributes="0">
@@ -604,7 +604,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnLamMoi">
               <Properties>
-                <Property name="text" type="java.lang.String" value="L&#xc0;M M&#x1eda;I"/>
+                <Property name="text" type="java.lang.String" value="T&#x1ea0;O HO&#xc1; &#x110;&#x1a0;N M&#x1eda;I"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLamMoiActionPerformed"/>
@@ -620,7 +620,7 @@
             </Component>
             <Component class="javax.swing.JButton" name="btnSua">
               <Properties>
-                <Property name="text" type="java.lang.String" value="S&#x1eec;A"/>
+                <Property name="text" type="java.lang.String" value="C&#x1eac;P NH&#x1eac;T"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSuaActionPerformed"/>
