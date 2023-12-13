@@ -45,76 +45,71 @@ public class Main extends javax.swing.JFrame {
         menu.addEventMenuSelected(new EventMenuSelected() {
             @Override
             public void selected(int index) {
-                //System.out.println(".selected(): " + index);
-
-                if (index == 2) {
-                    if (Auth.isLogin()) {
+                System.out.println(".selected(): " + index);
+                if (Auth.isManager()) {
+                    if (index == 2) {
                         setForm(sp);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 3) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 3) {
                         setForm(lsp);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 4) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 4) {
                         setForm(br);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 5) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 5) {
                         setForm(mv);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 6) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 6) {
                         setForm(cd);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 8) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 8) {
                         setForm(kh);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 10) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 10) {
                         setForm(nv);
-                    } else {
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
-                    }
-                } else if (index == 11) {
-                    if (Auth.isLogin()) {
+                    } else if (index == 11) {
                         setForm(tkKe);
-                    } else {
-
-                        MsgBox.alert(null, "Vui lòng đăng nhập.");
+                    } else if (index == 13) {
+                        Auth.clear();
+                        dispose();
+                        new FormDangNhap(Main.this, true).setVisible(true);
+                    } else if (index == 14) {
+                        dispose();
+                        new FormDoiMatKhau(Main.this, true).setVisible(true);
+                    } else if (index == 15) {
+                        if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
+                            System.exit(0);
+                        }
                     }
-                } else if (index == 13) {
-                    Auth.clear();
-                    dispose();
-                    new FormDangNhap(Main.this, true).setVisible(true);
-                } else if (index == 14) {
-                    dispose();
-                    new FormDoiMatKhau(Main.this, true).setVisible(true);
-                } else if (index == 15) {
-                    if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
-                        System.exit(0);
+                } else {
+                    if (index == 2) {
+                        setForm(sp);
+                    } else if (index == 3) {
+                        setForm(lsp);
+                    } else if (index == 4) {
+                        setForm(br);
+                    } else if (index == 5) {
+                        setForm(mv);
+                    } else if (index == 6) {
+                        setForm(cd);
+                    } else if (index == 8) {
+                        setForm(kh);                  
+                    } else if (index == 10) {
+                        Auth.clear();
+                        dispose();
+                        new FormDangNhap(Main.this, true).setVisible(true);
+                    } else if (index == 11) {
+                        dispose();
+                        new FormDoiMatKhau(Main.this, true).setVisible(true);
+                    } else if (index == 12) {
+                        if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
+                            System.exit(0);
+                        }
                     }
                 }
             }
         });
-
-        setForm(new FormThongKe());
-
+        if (Auth.isManager()) {
+            setForm(new FormThongKe());
+        } else {
+            setForm(new FormBanRa());
+        }
     }
-
+    
     private void setForm(JComponent com) {
         mainPanel.removeAll();
         mainPanel.add(com);

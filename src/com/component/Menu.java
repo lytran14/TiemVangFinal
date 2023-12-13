@@ -1,5 +1,6 @@
 package com.component;
 
+import Class_Utils.Auth;
 import com.event.EventMenuSelected;
 import com.model.Model_Menu;
 import java.awt.Color;
@@ -29,7 +30,6 @@ public class Menu extends javax.swing.JPanel {
     }
 
     private void init() {
-
         listMenu1.addItem(new Model_Menu("", "", Model_Menu.MenuType.EMPTY));
 
         listMenu1.addItem(new Model_Menu(" ", "Sản Phẩm", Model_Menu.MenuType.TITLE));
@@ -42,10 +42,11 @@ public class Menu extends javax.swing.JPanel {
         listMenu1.addItem(new Model_Menu(" ", "Khách Hàng", Model_Menu.MenuType.TITLE));
         listMenu1.addItem(new Model_Menu("khachhang", "Khách Hàng", Model_Menu.MenuType.MENU));
 
-        listMenu1.addItem(new Model_Menu(" ", "Quản Trị", Model_Menu.MenuType.TITLE));
-        listMenu1.addItem(new Model_Menu("8", "Nhân Viên", Model_Menu.MenuType.MENU));
-
-        listMenu1.addItem(new Model_Menu("1", "Thống Kê", Model_Menu.MenuType.MENU));
+        if (Auth.isManager()) {
+            listMenu1.addItem(new Model_Menu(" ", "Quản Trị", Model_Menu.MenuType.TITLE));
+            listMenu1.addItem(new Model_Menu("8", "Nhân Viên", Model_Menu.MenuType.MENU));
+            listMenu1.addItem(new Model_Menu("1", "Thống Kê", Model_Menu.MenuType.MENU));
+        }
 
         listMenu1.addItem(new Model_Menu(" ", "Tài Khoản", Model_Menu.MenuType.TITLE));
         listMenu1.addItem(new Model_Menu("9", "Đăng Xuất", Model_Menu.MenuType.MENU));

@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -35,6 +36,7 @@ public class FormMuaVao extends javax.swing.JFrame {
     MuaVaoChiTiet_DAO ctdaoAO = new MuaVaoChiTiet_DAO();
     SanPham_DAO spdao = new SanPham_DAO();
     KhachHang_DAO khdao = new KhachHang_DAO();
+    DecimalFormat dcf = new DecimalFormat("###,###");
 
     public JTable getTblHDCT() {
         return tblHDCT;
@@ -93,16 +95,19 @@ public class FormMuaVao extends javax.swing.JFrame {
         try {
             String keyword = txtTim.getText();
             List<MuaVao_Model> list = dao.selectByKyword(keyword);
+            double tongTien = 0; // Tạo biến tổng tiền để tính toán
             for (MuaVao_Model nh : list) {
                 Object[] row = {
                     nh.getMaMV(),
                     nh.getTenkh(),
                     nh.getNgayLap(),
-                    String.format("%.0f", nh.getTongGiaTri()), //nh.getMaNV()
+                    dcf.format(nh.getTongGiaTri()), //nh.getMaNV()
                 };
                 model.addRow(row);
-                fillTongGiaTri();
+                double thanhTienValue = nh.getTongGiaTri(); // Lấy giá trị tổng tiền từ đối tượng MuaVao_Model
+                tongTien += thanhTienValue; // Cộng giá trị tổng tiền vào biến tongTien
             }
+            txtTongTienHang.setText(dcf.format(tongTien)); // Cập nhật giá trị tổng tiền
         } catch (Exception e) {
             MsgBox.alert(this, "LỖI TRUY VẤN DỮ LIỆU!!!");
             e.printStackTrace();
@@ -120,8 +125,8 @@ public class FormMuaVao extends javax.swing.JFrame {
                     nh.getMASP(),
                     nh.getLOAISP(),
                     nh.getKHOILUONG(),
-                    String.format("%.0f", nh.getDONGIAMUA()),
-                    String.format("%.0f", nh.getTHANHTIEN()),
+                    dcf.format(nh.getDONGIAMUA()),
+                    dcf.format(nh.getTHANHTIEN()),
                     nh.getMACTMV()
                 };
                 model.addRow(row);
@@ -144,8 +149,8 @@ public class FormMuaVao extends javax.swing.JFrame {
             tblHoaDon.setRowSelectionInterval(index, index);
             fillToTenKH();
             double tongGiaTri = hoaDon.getTongGiaTri();
-            txtTongTien.setText(String.format("%.0f", tongGiaTri));
-            txtThanhToan.setText(String.format("%.0f", tongGiaTri));
+            txtTongTien.setText(dcf.format(tongGiaTri));
+            txtThanhToan.setText(dcf.format(tongGiaTri));
         } else {
             // Xử lý lỗi khi chỉ số hàng không hợp lệ
             System.err.println("Invalid row index: " + index);
@@ -160,17 +165,20 @@ public class FormMuaVao extends javax.swing.JFrame {
             txtMaSP.setText(kh.getMASP());
             txtTrongLuong.setText(String.valueOf(kh.getKHOILUONG()));
 
-            txtDonGia.setText(String.format("%.0f", kh.getDONGIAMUA()));
-            txtThanhTien.setText(String.format("%.0f", kh.getTHANHTIEN()));
+            txtDonGia.setText(dcf.format(kh.getDONGIAMUA()));
+            txtThanhTien.setText(dcf.format(kh.getTHANHTIEN()));
 
             // Cộng giá trị thành tiền vào tổng tiền
             double tongTien = 0;
             for (int i = 0; i < tblHDCT.getRowCount(); i++) {
-                double thanhTienValue = Double.parseDouble(tblHDCT.getValueAt(i, 4).toString());
-                tongTien += thanhTienValue;
+                String thanhTienStr = tblHDCT.getValueAt(i, 4).toString();
+                if (isNumber(thanhTienStr)) {
+                    double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                    tongTien += thanhTienValue;
+                }
             }
-            txtTongTien.setText(String.format("%.0f", tongTien));
-            txtThanhToan.setText(String.format("%.0f", tongTien));
+//            txtTongTien.setText(dcf.format(tongTien));
+//            txtThanhToan.setText(dcf.format(tongTien));
             txtLoaiSP.setText(kh.getLOAISP());
             tblHDCT.setRowSelectionInterval(selectedRow, selectedRow);
         }
@@ -210,7 +218,7 @@ public class FormMuaVao extends javax.swing.JFrame {
                     nh.getMaMV(),
                     nh.getTenkh(),
                     nh.getNgayLap(),
-                    String.format("%.0f", nh.getTongGiaTri()), //nh.getMaNV()
+                    dcf.format(nh.getTongGiaTri()), //nh.getMaNV()
                 };
                 model.addRow(row);
             }
@@ -223,10 +231,28 @@ public class FormMuaVao extends javax.swing.JFrame {
     void fillTongGiaTri() {
         double tongTien = 0;
         for (int i = 0; i < tblHoaDon.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(tblHoaDon.getValueAt(i, 3).toString());
-            tongTien += thanhTienValue;
+            Object value = tblHoaDon.getValueAt(i, 3);
+            if (value instanceof Number) {
+                double thanhTienValue = ((Number) value).doubleValue();
+                tongTien += thanhTienValue;
+            } else if (value instanceof String) {
+                String thanhTienStr = (String) value;
+                if (isNumber(thanhTienStr)) {
+                    double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                    tongTien += thanhTienValue;
+                }
+            }
         }
-        txtTongTienHang.setText(String.format("%.0f", tongTien));
+        txtTongTienHang.setText(dcf.format(tongTien));
+    }
+
+    boolean isNumber(String str) {
+        try {
+            Double.parseDouble(str.replace(",", ""));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -339,10 +365,10 @@ public class FormMuaVao extends javax.swing.JFrame {
 
         jLabel2.setText("TÌM KIẾM");
 
-        jLabel16.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel16.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel16.setText("TỔNG GIÁ TRỊ:");
 
-        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtTongTienHang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         jLabel3.setText("Từ");
@@ -364,8 +390,8 @@ public class FormMuaVao extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jLabel16)
-                .addGap(0, 0, 0)
-                .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -644,15 +670,13 @@ public class FormMuaVao extends javax.swing.JFrame {
                     .addComponent(jLabel15)
                     .addComponent(txtLoaiSP, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11))
-                        .addGap(37, 37, 37))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtTrongLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel10)))
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtDonGia, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtTrongLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -850,7 +874,7 @@ public class FormMuaVao extends javax.swing.JFrame {
             double trongLuong = Double.parseDouble(trongLuongText);
             double donGia = Double.parseDouble(txtDonGia.getText());
             double thanhTien = (trongLuong * donGia) / 3.75;
-            txtThanhTien.setText(String.format("%.0f", thanhTien));
+            txtThanhTien.setText(dcf.format(thanhTien));
             if (trongLuong < 0) {
 
                 MsgBox.alert(this, "TRỌNG LƯỢNG KHÔNG ĐƯỢC NHỎ HƠN 0!");
@@ -869,6 +893,8 @@ public class FormMuaVao extends javax.swing.JFrame {
             return;
         } else if (check()) {
             add();
+            btnUpdate.setEnabled(true);
+            btnDelete.setEnabled(true);
         }
         txtMaSP.setEnabled(true);
         txtTrongLuong.setEnabled(false);
@@ -901,8 +927,6 @@ public class FormMuaVao extends javax.swing.JFrame {
             return;
         } else if (checkkh()) {
             insert();
-            XuatHoaDonMua xuatHD = new XuatHoaDonMua(this); // Truyền tham chiếu của FormMuaVao
-            xuatHD.setVisible(true);
             resetAll((DefaultTableModel) tblHDCT.getModel());
             return;
         }
@@ -922,12 +946,12 @@ public class FormMuaVao extends javax.swing.JFrame {
         if (selectedRow >= 0) {
             fillToFormCT(selectedRow);
         }
-        btnUpdate.setEnabled(true);
-        btnDelete.setEnabled(true);
+
     }//GEN-LAST:event_tblHDCTMouseClicked
 
     private void tblHDCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCTMousePressed
         if (evt.getClickCount() == 2) {
+            
             int selectedRow = tblHDCT.getSelectedRow();
             int tlColumnIndex = tblHDCT.getColumnModel().getColumnIndex("TRỌNG LƯỢNG");
 
@@ -1029,18 +1053,18 @@ public class FormMuaVao extends javax.swing.JFrame {
         double trongLuong = 0.0;
         double donGia = 0.0;
         try {
-            trongLuong = Double.parseDouble(txtTrongLuong.getText());
-            donGia = Double.parseDouble(txtDonGia.getText());
+            trongLuong = Double.parseDouble(txtTrongLuong.getText().replace(",", ""));
+            donGia = Double.parseDouble(txtDonGia.getText().replace(",", ""));
         } catch (NumberFormatException e) {
             // Xử lý khi chuỗi không thể chuyển đổi thành số
-            MsgBox.alert(this, "ENTER SẢN PHẨM ĐỂ NHẬP TRỌNG LƯỢNG!!");
+            MsgBox.alert(this, "THIẾU TRỌNG LƯỢNG!! ENTER SẢN PHẨM ĐỂ NHẬP TRỌNG LƯỢNG!!");
             return;
         }
-        double thanhTien = trongLuong * donGia;
-        txtThanhTien.setText(String.format("%.0f", thanhTien));
+        double thanhTien = (trongLuong * donGia) / 3.75;
+        txtThanhTien.setText(dcf.format(thanhTien));
         String loaiSP = txtLoaiSP.getText();
-        String formattedDonGia = String.format("%.0f", donGia);
-        String formattedThanhTien = String.format("%.0f", thanhTien);
+        String formattedDonGia = dcf.format(donGia);
+        String formattedThanhTien = dcf.format(thanhTien);
         Object[] rowData = {maSP, loaiSP, trongLuong, formattedDonGia, formattedThanhTien};
         model.addRow(rowData);
         //tblHoaDonCT.setVisible(true);
@@ -1048,32 +1072,48 @@ public class FormMuaVao extends javax.swing.JFrame {
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 4).toString());
-            tongTien += thanhTienValue;
+            String thanhTienStr = model.getValueAt(i, 4).toString();
+            if (isNumber(thanhTienStr)) {
+                double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                tongTien += thanhTienValue;
+            }
         }
-        txtTongTien.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTongTien.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
 
     }
 //CẬP NHẬT TRỌNG LƯỢNG CÁC SẢN PHẨM
 
     private void updateSelectedRow() {
+
         DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
         int selectedRow = tblHDCT.getSelectedRow();
-        double trongLuong = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 2).toString());
-        double donGia = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 3).toString());
-        double thanhTien = trongLuong * donGia;
-        String formattedThanhTien = String.format("%.0f", thanhTien);
+        // Check if the selected column is the "Trọng lượng" column (assuming it's column index 3)
+        if (tblHDCT.getSelectedColumn() != 2) {
+            JOptionPane.showMessageDialog(this, "CHỈ ĐƯỢC PHÉP CẬP NHẬT 'TRỌNG LƯỢNG' CỦA SẢN PHẨM!");
+            return;
+        }
+        String trongLuongStr = tblHDCT.getValueAt(selectedRow, 2).toString().replace(",", "");
+        // Kiểm tra nếu trongLuongStr không phải là số và không nhỏ hơn 0
+        if (!trongLuongStr.matches("\\d+(\\.\\d+)?") || Double.parseDouble(trongLuongStr) < 0) {
+            JOptionPane.showMessageDialog(this, "TRỌNG LƯỢNG PHẢI LÀ SỐ VÀ KHÔNG ĐƯỢC NHỎ HƠN 0!");
+            return;
+        }
+        double trongLuong = Double.parseDouble(trongLuongStr);
+        double donGia = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 3).toString().replace(",", ""));
+        double thanhTien = (trongLuong * donGia) / 3.75;
+        String formattedThanhTien = dcf.format(thanhTien);
         tblHDCT.setValueAt(trongLuong, selectedRow, 2); // Cập nhật trọng lượng trong bảng
         tblHDCT.setValueAt(formattedThanhTien, selectedRow, 4); // Cập nhật thành tiền trong bảng
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 4).toString());
+            String thanhTienStr = model.getValueAt(i, 4).toString().replace(",", "");
+            double thanhTienValue = Double.parseDouble(thanhTienStr);
             tongTien += thanhTienValue;
         }
-        txtTongTien.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTongTien.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
         MsgBox.alert(this, "CẬP NHẬT TRỌNG LƯỢNG THÀNH CÔNG!");
     }
 //XOÁ CÁC SÀN PHẨM ĐƯỢC CHỌN
@@ -1096,13 +1136,12 @@ public class FormMuaVao extends javax.swing.JFrame {
             double thanhTienValue = Double.parseDouble(tbModel.getValueAt(i, 4).toString());
             tongTien += thanhTienValue;
         }
-        txtTongTien.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTongTien.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
     }
 
     String findMaKhachHangByTen(String tenKhachHang) {
         List<KhachHang_Model> danhSachKhachHang = khdao.selectAll(); // Hàm getDanhSachKhachHang() là hàm lấy danh sách khách hàng
-
         for (KhachHang_Model khachHang : danhSachKhachHang) {
             if (khachHang.getTenKH().equals(tenKhachHang)) {
                 return khachHang.getMaKH();
@@ -1124,7 +1163,10 @@ public class FormMuaVao extends javax.swing.JFrame {
         } else {
             kh.setMaNV(txtMaNV.getText());
         }
-        kh.setTongGiaTri(Double.parseDouble(txtTongTien.getText()));
+        String tongTienStr = txtTongTien.getText().replace(",", "");
+        double tongTien = 0.0;
+        tongTien = Double.parseDouble(tongTienStr);
+        kh.setTongGiaTri(tongTien);
         return kh;
     }
 
@@ -1138,9 +1180,9 @@ public class FormMuaVao extends javax.swing.JFrame {
             int rowCount = model.getRowCount();
             for (int i = 0; i < rowCount; i++) {
                 String maSP = model.getValueAt(i, 0).toString();
-                double trongLuong = Double.parseDouble(model.getValueAt(i, 2).toString());
-                double donGia = Double.parseDouble(model.getValueAt(i, 3).toString());
-                double thanhTien = Double.parseDouble(model.getValueAt(i, 4).toString());
+                double trongLuong = Double.parseDouble(model.getValueAt(i, 2).toString().replace(",", ""));
+                double donGia = Double.parseDouble(model.getValueAt(i, 3).toString().replace(",", ""));
+                double thanhTien = Double.parseDouble(model.getValueAt(i, 4).toString().replace(",", ""));
                 // Tạo đối tượng hoá đơn chi tiết
                 MuaVaoChiTiet_Model ct = new MuaVaoChiTiet_Model();
                 ct.setMAMV(maMV);
@@ -1152,6 +1194,8 @@ public class FormMuaVao extends javax.swing.JFrame {
             }
             MsgBox.confirm(this, "XÁC NHẬN THANH TOÁN!");
             this.fillTableHD();
+            XuatHoaDonMua xuatHD = new XuatHoaDonMua(this); // Truyền tham chiếu của FormMuaVao
+            xuatHD.setVisible(true);
             this.reset();
         } catch (Exception e) {
             MsgBox.alert(this, "THANH TOÁN THẤT BẠI!");

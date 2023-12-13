@@ -113,20 +113,27 @@ public class XuatHopDongCamDo extends javax.swing.JFrame {
         html += "</table>";
         html += "</div>";
         ////add tong bill
-        html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
-        html += "<p style =text-align: left;font-weight: normal;'>Ngày Bắt Đầu : " + txtNgayBatDau.getDate() + "<br></p>";
-        html += "<p style =text-align: left;font-weight: normal;'>Ngày Kết Thúc : " + txtNgayKetThuc.getDate() + "<br></p>";
+//        html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
+//        html += "<p style =text-align: left;font-weight: normal;'>Ngày Bắt Đầu : " + txtNgayBatDau.getDate() + "<br></p>";
+//        html += "<p style =text-align: left;font-weight: normal;'>Ngày Kết Thúc : " + txtNgayKetThuc.getDate() + "<br></p>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
         html += "<p style =text-align: right;'><b> Tiền Chuộc : " + txtTienChuoc.getText() + "<br></b></p>";
         html += "<p style =text-align: right;'><b> Tổng Tiền Nhận: " + txtThanhToan.getText() + "<br></b></p>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
         html += "<table style='font-weight: normal;'>";
-        html += "<tr>";
-        html += "<th style='font-weight: normal;'>Người Nhận Tiền</th>";
-        html += "<td style ='display: flex;"
-                + "align-items: center;\n"
-                + "    justify-content: center;'>Người Phụ Trách</td>";
+        html += "<table style='max-width: 50%;'>";
+        html += "<tr>"
+                + "<th style='font-weight: normal;'>Người Nhận Tiền</th>"
+                + "<th style='font-weight: normal;margin-left: 200px;'>Người Phụ Trách</th>";
         html += "</tr>";
+        html += "<br>";
+        html += "<br>";
+        html += "<br>";
+        html += "<tr>";
+        html += "<td style='text-align:center;font-weight: normal;'>" + txtTenKH.getText() + "</td>";
+        html += "<td style='text-align:center;font-weight: normal;margin-left: 200px;'>" + txtMaNV.getText() + "</td>";
+        html += "</tr>";
+        html += "</table>";
         html += "<br>";
         html += "<br>";
         html += "<br>";

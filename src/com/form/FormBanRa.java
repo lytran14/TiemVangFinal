@@ -45,7 +45,6 @@ public class FormBanRa extends javax.swing.JFrame {
     }
 
     //in Hoá đơn 
-
     public JTable getTblBanRa() {
         return tblHoaDonCT;
     }
@@ -250,7 +249,7 @@ public class FormBanRa extends javax.swing.JFrame {
                     nh.getMABR(),
                     nh.getTenKH(),
                     nh.getNGAYLAP(),
-                    String.format("%.0f", nh.getTONGGIATRI()), //nh.getMANV()
+                    dcf.format(nh.getTONGGIATRI()), //nh.getMANV()
                 };
                 model.addRow(row);
             }
@@ -371,10 +370,10 @@ public class FormBanRa extends javax.swing.JFrame {
 
         jLabel2.setText("TÌM KIẾM");
 
-        jLabel15.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel15.setText("TỔNG GIÁ TRỊ: ");
 
-        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         jLabel16.setText("Từ");
 
@@ -416,8 +415,8 @@ public class FormBanRa extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel15)
-                        .addGap(0, 0, 0)
-                        .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(txtTim, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -617,7 +616,7 @@ public class FormBanRa extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(50, 50, 50)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -646,7 +645,7 @@ public class FormBanRa extends javax.swing.JFrame {
                             .addComponent(txtLoaiSP)
                             .addComponent(txtTrongLuong)
                             .addComponent(txtDonGia, javax.swing.GroupLayout.Alignment.TRAILING))))
-                .addGap(40, 40, 40))
+                .addGap(50, 50, 50))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -748,7 +747,7 @@ public class FormBanRa extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(txtTongTien, javax.swing.GroupLayout.DEFAULT_SIZE, 655, Short.MAX_VALUE))
+                        .addComponent(txtTongTien, javax.swing.GroupLayout.DEFAULT_SIZE, 675, Short.MAX_VALUE))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -850,6 +849,8 @@ public class FormBanRa extends javax.swing.JFrame {
             return;
         } else if (check()) {
             add();
+            btnUpdate.setEnabled(true);
+            btnDelete.setEnabled(true);
         }
         txtMaSP.setEnabled(true);
         txtTrongLuong.setEnabled(false);
@@ -864,8 +865,7 @@ public class FormBanRa extends javax.swing.JFrame {
         if (selectedRow >= 0) {
             fillToFormCT(selectedRow);
         }
-        btnUpdate.setEnabled(true);
-        btnDelete.setEnabled(true);
+
     }//GEN-LAST:event_tblHoaDonCTMouseClicked
 
     private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
@@ -921,6 +921,7 @@ public class FormBanRa extends javax.swing.JFrame {
 
     private void tblHoaDonCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonCTMousePressed
         if (evt.getClickCount() == 2) {
+
             int selectedRow = tblHoaDonCT.getSelectedRow();
             int tlColumnIndex = tblHoaDonCT.getColumnModel().getColumnIndex("TRỌNG LƯỢNG");
             if (tblHoaDonCT.getSelectedColumn() == tlColumnIndex) {
@@ -1045,7 +1046,7 @@ public class FormBanRa extends javax.swing.JFrame {
             MsgBox.alert(this, "THIẾU TRỌNG LƯỢNG!! ENTER SẢN PHẨM ĐỂ NHẬP TRỌNG LƯỢNG!!");
             return;
         }
-        double thanhTien = (trongLuong * donGia) / 3.75;;
+        double thanhTien = (trongLuong * donGia) / 3.75;
         txtThanhTien.setText(String.format("%.0f", thanhTien));
 
         String loaiSP = txtLoaiSP.getText();
@@ -1098,17 +1099,8 @@ public class FormBanRa extends javax.swing.JFrame {
 
         String tongTienStr = txtTongTien.getText().replace(",", "");
         double tongTien = 0.0;
-
-        try {
-            tongTien = Double.parseDouble(tongTienStr);
-        } catch (NumberFormatException e) {
-            // Xử lý khi chuỗi không thể chuyển đổi thành số
-            MsgBox.alert(this, "ENTER TỔNG GIÁ TRỊ HÓA ĐƠN!!");
-            return null;
-        }
-
+        tongTien = Double.parseDouble(tongTienStr);
         kh.setTONGGIATRI(tongTien);
-
         return kh;
     }
 

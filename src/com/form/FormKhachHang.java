@@ -299,7 +299,7 @@ public class FormKhachHang extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, 1280, 300));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, 1280, 250));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setOpaque(true);

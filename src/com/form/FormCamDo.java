@@ -17,6 +17,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -36,6 +37,7 @@ public class FormCamDo extends javax.swing.JFrame {
     KhachHang_DAO khdao = new KhachHang_DAO();
     SanPham_DAO spdao = new SanPham_DAO();
     ChiTietPhieuCam_DAO ctpcdao = new ChiTietPhieuCam_DAO();
+    DecimalFormat dcf = new DecimalFormat("###,###");
 
     public FormCamDo() {
         initComponents();
@@ -131,7 +133,7 @@ public class FormCamDo extends javax.swing.JFrame {
                 Object[] row = {
                     cd.getMaCam(),
                     cd.getTenKH(),
-                    String.format("%.0f", cd.getSoTienCam()),
+                    dcf.format(cd.getSoTienCam()),
                     cd.getNgayLap(),
                     cd.getNgayHetHan(),
                     cd.getSoNgay(),
@@ -155,11 +157,11 @@ public class FormCamDo extends javax.swing.JFrame {
                     nh.getMaSP(),
                     nh.getTenSP(),
                     nh.getKhoiLuong(),
-                    String.format("%.0f", nh.getDonGia()),
-                    String.format("%.0f", nh.getSoTienCam()),
+                    dcf.format(nh.getDonGia()),
+                    dcf.format(nh.getSoTienCam()),
                     nh.getLaiXuat(),
-                    //String.format("%.0f", nh.getLaiXuat()),
-                    String.format("%.0f", nh.getLaiXuatPT()),
+                    //dcf.format( nh.getLaiXuat()),
+                    dcf.format(nh.getLaiXuatPT()),
                     nh.getMaPhieu()
                 };
                 model.addRow(row);
@@ -183,14 +185,24 @@ public class FormCamDo extends javax.swing.JFrame {
             txtNgayLap.setDate(cd.getNgayLap());
             txtNgayBatDau.setDate(cd.getNgayCam());
             txtNgayHetHan.setDate(cd.getNgayHetHan());
-            txtSoNgayCam.setText(String.format("%.0f", cd.getSoNgay()));
+            txtSoNgayCam.setText(dcf.format(cd.getSoNgay()));
             tblHDCD.setRowSelectionInterval(index, index);
             fillToTenKH();
             double tSotienCam = cd.getSoTienCam();
-            txtTongTienCam.setText(String.format("%.0f", tSotienCam));
-            txtThanhToan.setText(String.format("%.0f", tSotienCam));
-
+            txtTongTienCam.setText(dcf.format(tSotienCam));
+            txtThanhToan.setText(dcf.format(tSotienCam));
+            // Cộng giá trị thành tiền vào tổng tiền
+            double tienchuoc = 0;
+            for (int i = 0; i < tblHDCT.getRowCount(); i++) {
+                double laiXuatt = Double.parseDouble(tblHDCT.getValueAt(i, 5).toString().replace(",", ""));
+                double thanhTienn = Double.parseDouble(tblHDCT.getValueAt(i, 4).toString().replace(",", ""));
+                double tien = (laiXuatt / 100) * thanhTienn;
+                double chuoc = tien + thanhTienn;
+                tienchuoc += chuoc;
+            }
+            txtTienChuoc.setText(dcf.format(tienchuoc));
         }
+
     }
 
     public void fillToFormHDCT(int selectedRow) {
@@ -200,24 +212,11 @@ public class FormCamDo extends javax.swing.JFrame {
             txtMaSP.setText(kh.getMaSP());
             txtTenSP.setText(kh.getTenSP());
             txtTrongLuong.setText(String.valueOf(kh.getKhoiLuong()));
-            txtDonGia.setText(String.format("%.0f", kh.getDonGia()));
-            txtSoTienCam.setText(String.format("%.0f", kh.getSoTienCam()));
+            txtDonGia.setText(dcf.format(kh.getDonGia()));
+            txtSoTienCam.setText(dcf.format(kh.getSoTienCam()));
             txtLaiXuat.setText(kh.getLaiXuat() + "");
-            // Cộng giá trị thành tiền vào tổng tiền
-            double tongTien = 0;
-            for (int i = 0; i < tblHDCT.getRowCount(); i++) {
-                double thanhTienValue = Double.parseDouble(tblHDCT.getValueAt(i, 4).toString());
-                tongTien += thanhTienValue;
-            }
-            txtTongTienCam.setText(String.format("%.0f", tongTien));
-            txtThanhToan.setText(String.format("%.0f", tongTien));
 
             String laiXuatText = txtLaiXuat.getText();
-
-//        if (laiXuatText.isEmpty()) {
-//            MsgBox.alert(this, "LÃI XUẤT KHÔNG ĐƯỢC TRỐNG!");
-//            return; // Thoát khỏi phương thức nếu chuỗi rỗng
-//        }
             try {
                 double laiXuat = Double.parseDouble(laiXuatText);
                 if (laiXuat <= 0) {
@@ -225,21 +224,38 @@ public class FormCamDo extends javax.swing.JFrame {
                     return; // Thoát khỏi phương thức nếu lãi xuất không hợp lệ
                 }
                 double trongLuong = Double.parseDouble(txtTrongLuong.getText());
-                double donGia = Double.parseDouble(txtDonGia.getText());
+                double donGia = Double.parseDouble(txtDonGia.getText().replace(",", ""));
                 double thanhTien = trongLuong * donGia;
                 double soTienCam = (thanhTien / 100) * 80;
-                double tienLai = (soTienCam * laiXuat);
-                double soTienChuoc = soTienCam + tienLai;
-                txtLaiPD.setText(String.format("%.0f", tienLai));
-                txtTienChuoc.setText(String.format("%.0f", soTienChuoc));
+                double tienLai = soTienCam * (laiXuat / 100);
+                txtLaiPD.setText(dcf.format(tienLai));
                 txtLaiPD.setEditable(false);
             } catch (NumberFormatException e) {
                 MsgBox.alert(this, "LỖI: LÃI XUẤT KHÔNG HỢP LỆ!");
+                e.printStackTrace();
             }
 
-        } else {
-            // Xử lý lỗi khi chỉ số hàng không hợp lệ
-            System.err.println("Invalid row index: " + selectedRow);
+            // Cộng giá trị thành tiền vào tổng tiền
+            double tongTien = 0;
+            for (int i = 0; i < tblHDCT.getRowCount(); i++) {
+                String thanhTienStr = tblHDCT.getValueAt(i, 4).toString();
+                if (isNumber(thanhTienStr)) {
+                    double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                    tongTien += thanhTienValue;
+                }
+            }
+            txtTongTienCam.setText(dcf.format(tongTien));
+            txtThanhToan.setText(dcf.format(tongTien));
+            // Cộng giá trị tiền chuộc
+            double tienchuoc = 0;
+            for (int i = 0; i < tblHDCT.getRowCount(); i++) {
+                double laiXuatt = Double.parseDouble(tblHDCT.getValueAt(i, 5).toString().replace(",", ""));
+                double thanhTienn = Double.parseDouble(tblHDCT.getValueAt(i, 4).toString().replace(",", ""));
+                double tien = (laiXuatt / 100) * thanhTienn;
+                double chuoc = tien + thanhTienn;
+                tienchuoc += chuoc;
+            }
+            txtTienChuoc.setText(dcf.format(tienchuoc));
         }
         tblHDCT.setRowSelectionInterval(selectedRow, selectedRow);
     }
@@ -257,7 +273,7 @@ public class FormCamDo extends javax.swing.JFrame {
         SanPham_Model sanPham = spdao.selectById(maSP);
         if (sanPham != null) {
             // txtMaSP.setText(sanPham.getMASP());
-            txtDonGia.setText(String.format("%.0f", sanPham.getDONGIABAN()));
+            txtDonGia.setText(dcf.format(sanPham.getDONGIABAN()));
             txtTenSP.setText(sanPham.getTENSP());
         }
     }
@@ -277,7 +293,7 @@ public class FormCamDo extends javax.swing.JFrame {
                 Object[] row = {
                     cd.getMaCam(),
                     cd.getTenKH(),
-                    String.format("%.0f", cd.getSoTienCam()),
+                    dcf.format(cd.getSoTienCam()),
                     cd.getNgayLap(),
                     cd.getNgayHetHan(),
                     cd.getSoNgay(),
@@ -294,10 +310,28 @@ public class FormCamDo extends javax.swing.JFrame {
     void fillTongGiaTri() {
         double tongTien = 0;
         for (int i = 0; i < tblHDCD.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(tblHDCD.getValueAt(i, 2).toString());
-            tongTien += thanhTienValue;
+            Object value = tblHDCD.getValueAt(i, 3);
+            if (value instanceof Number) {
+                double thanhTienValue = ((Number) value).doubleValue();
+                tongTien += thanhTienValue;
+            } else if (value instanceof String) {
+                String thanhTienStr = (String) value;
+                if (isNumber(thanhTienStr)) {
+                    double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                    tongTien += thanhTienValue;
+                }
+            }
         }
-        txtTongTienHang.setText(String.format("%.0f", tongTien));
+        txtTongTienHang.setText(dcf.format(tongTien));
+    }
+
+    boolean isNumber(String str) {
+        try {
+            Double.parseDouble(str.replace(",", ""));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -544,7 +578,7 @@ public class FormCamDo extends javax.swing.JFrame {
 
         jLabel16.setText("SỐ NGÀY CẦM");
 
-        jLabel17.setText("LÃI XUẤT/NGÀY");
+        jLabel17.setText("LÃI XUẤT/THÁNG");
 
         btnSanPham.setText("+");
         btnSanPham.addActionListener(new java.awt.event.ActionListener() {
@@ -581,7 +615,7 @@ public class FormCamDo extends javax.swing.JFrame {
             }
         });
 
-        jLabel21.setText("LÃI PHẢI ĐÓNG");
+        jLabel21.setText("TIỀN/ THÁNG");
 
         txtLaiPD.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtLaiPD.setEnabled(false);
@@ -607,8 +641,7 @@ public class FormCamDo extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btnXoa)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLamMoi)
-                        .addContainerGap())
+                        .addComponent(btnLamMoi))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtSoTienCam, javax.swing.GroupLayout.Alignment.LEADING)
@@ -637,8 +670,8 @@ public class FormCamDo extends javax.swing.JFrame {
                             .addComponent(txtTenSP, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
                             .addComponent(txtNgayHetHan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtDonGia)
-                            .addComponent(txtLaiPD))
-                        .addGap(41, 41, 41))))
+                            .addComponent(txtLaiPD))))
+                .addGap(41, 41, 41))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -691,10 +724,11 @@ public class FormCamDo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtLaiPD, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -880,10 +914,10 @@ public class FormCamDo extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblHDCD);
 
-        jLabel22.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel22.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel22.setText("TỔNG GIÁ TRỊ:");
 
-        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtTongTienHang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -1009,6 +1043,8 @@ public class FormCamDo extends javax.swing.JFrame {
             return;
         } else if (check()) {
             add();
+            btnXoa.setEnabled(true);
+            btnSua.setEnabled(true);
         }
         txtMaSP.setEnabled(true);
         txtTrongLuong.setEnabled(false);
@@ -1047,7 +1083,7 @@ public class FormCamDo extends javax.swing.JFrame {
             btnSua.setEnabled(false);
             btnXoa.setEnabled(false);
             btnThanhToan.setEnabled(false);
-            btnXemHD.setEnabled(false);
+            btnXemHD.setEnabled(true);
         }
         tblHDCT.setVisible(true);
 
@@ -1088,10 +1124,10 @@ public class FormCamDo extends javax.swing.JFrame {
                 MsgBox.alert(this, " TRỌNG LƯỢNG PHẢI LỚN HƠN 0!");
                 return; // Thoát khỏi phương thức nếu trọng lượng không hợp lệ
             }
-            double donGia = Double.parseDouble(txtDonGia.getText());
+            double donGia = Double.parseDouble(txtDonGia.getText().replace(",", ""));
             double thanhTien = (trongLuong * donGia) / 3.75;
             double soTienCam = (thanhTien / 100) * 80;
-            txtSoTienCam.setText(String.format("%.0f", soTienCam));
+            txtSoTienCam.setText(dcf.format(soTienCam));
             txtSoTienCam.setEditable(false);
             // Lấy ngày bắt đầu và ngày kết thúc từ các trường ngày
             LocalDate ngayBatDau = txtNgayBatDau.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -1109,21 +1145,21 @@ public class FormCamDo extends javax.swing.JFrame {
             txtSoNgayCam.setText(String.valueOf(soNgay));
             txtSoNgayCam.setEditable(false);
 
-            if (soNgay < 30) {
-                double laiXuat = (0.02 / 30) * soNgay;
-                txtLaiXuat.setText(String.format("%.3f", laiXuat));
-                double laidong = soTienCam * laiXuat;
-                txtLaiPD.setText(String.format("%.3f", laidong));
-            } else if (soNgay >= 30 && soNgay <= 180) {
-                double laiXuat = (0.025 / 30) * soNgay;
-                txtLaiXuat.setText(String.format("%.3f", laiXuat));
-                double laidong = soTienCam * laiXuat;
-                txtLaiPD.setText(String.format("%.3f", laidong));
+            if (soNgay < 90) {
+                double laiXuat = 0.02;
+                txtLaiXuat.setText("2%");
+                double laidong = (soTienCam * laiXuat);
+                txtLaiPD.setText(dcf.format(laidong));
+            } else if (soNgay >= 90 && soNgay <= 360) {
+                double laiXuat = 0.025;
+                txtLaiXuat.setText("2.5%");
+                double laidong = (soTienCam * laiXuat);
+                txtLaiPD.setText(dcf.format(laidong));
             } else {
-                double laiXuat = (0.05 / 30) * soNgay;
-                txtLaiXuat.setText(String.format("%.3f", laiXuat));
-                double laidong = soTienCam * laiXuat;
-                txtLaiPD.setText(String.format("%.3f", laidong));
+                double laiXuat = 0.04;
+                txtLaiXuat.setText("4%");
+                double laidong = (soTienCam * laiXuat);
+                txtLaiPD.setText(dcf.format(laidong));
             }
 
         } catch (NumberFormatException e) {
@@ -1140,8 +1176,7 @@ public class FormCamDo extends javax.swing.JFrame {
         if (selectedRow >= 0) {
             fillToFormHDCT(selectedRow);
         }
-        btnXoa.setEnabled(true);
-        btnSua.setEnabled(true);
+
     }//GEN-LAST:event_tblHDCTMouseClicked
 
     private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
@@ -1158,6 +1193,7 @@ public class FormCamDo extends javax.swing.JFrame {
 
     private void tblHDCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCTMousePressed
         if (evt.getClickCount() == 2) {
+            
             int selectedRow = tblHDCT.getSelectedRow();
             int tlColumnIndex = tblHDCT.getColumnModel().getColumnIndex("KHỐI LƯỢNG ");
             if (tblHDCT.getSelectedColumn() == tlColumnIndex) {
@@ -1280,21 +1316,21 @@ public class FormCamDo extends javax.swing.JFrame {
         double donGia = 0.0;
         double laiXuat = 0.0;
         try {
-            trongLuong = Double.parseDouble(txtTrongLuong.getText());
-            donGia = Double.parseDouble(txtDonGia.getText());
-            laiXuat = Double.parseDouble(txtLaiXuat.getText());
-
+            trongLuong = Double.parseDouble(txtTrongLuong.getText().replace(",", ""));
+            donGia = Double.parseDouble(txtDonGia.getText().replace(",", ""));
+            laiXuat = Double.parseDouble(txtLaiXuat.getText().replace("%", ""));
         } catch (NumberFormatException e) {
             // Xử lý khi chuỗi không thể chuyển đổi thành số
             MsgBox.alert(this, "ENTER SẢN PHẨM ĐỂ NHẬP TRỌNG LƯỢNG!!");
+            e.printStackTrace();
             return;
         }
         double thanhTien = ((trongLuong * donGia) / 3.75 / 100) * 80;
-        txtSoTienCam.setText(String.format("%.0f", thanhTien));
+        txtSoTienCam.setText(dcf.format(thanhTien));
 
         String tenSP = txtTenSP.getText();
-        String formattedDonGia = String.format("%.0f", donGia);
-        String formattedThanhTien = String.format("%.0f", thanhTien);
+        String formattedDonGia = dcf.format(donGia);
+        String formattedThanhTien = dcf.format(thanhTien);
 
         Object[] rowData = {maSP, tenSP, trongLuong, formattedDonGia,
             formattedThanhTien, laiXuat};
@@ -1304,47 +1340,53 @@ public class FormCamDo extends javax.swing.JFrame {
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 4).toString());
-            tongTien += thanhTienValue;
+            String thanhTienStr = model.getValueAt(i, 4).toString();
+            if (isNumber(thanhTienStr)) {
+                double thanhTienValue = Double.parseDouble(thanhTienStr.replace(",", ""));
+                tongTien += thanhTienValue;
+            }
         }
         double tienchuoc = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double tien = laiXuat * thanhTien;
-            double chuoc = tien + thanhTien;
+            double laiXuatt = Double.parseDouble(model.getValueAt(i, 5).toString().replace(",", ""));
+            double thanhTienn = Double.parseDouble(model.getValueAt(i, 4).toString().replace(",", ""));
+            double tien = (laiXuatt / 100) * thanhTienn;
+            double chuoc = tien + thanhTienn;
             tienchuoc += chuoc;
         }
-
-        txtTienChuoc.setText(String.format("%.0f", tienchuoc));
-        txtTongTienCam.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTienChuoc.setText(dcf.format(tienchuoc));
+        txtTongTienCam.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
 
     }
 
     private void updateSelectedRow() {
         DefaultTableModel model = (DefaultTableModel) tblHDCT.getModel();
         int selectedRow = tblHDCT.getSelectedRow();
-        double trongLuong = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 2).toString());
-        double donGia = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 3).toString());
-        double laiXuat = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 5).toString());
-        double thanhTien = (trongLuong * donGia) / 3.75;
-        String formattedThanhTien = String.format("%.0f", thanhTien);
+        double trongLuong = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 2).toString().replace(",", ""));
+        double donGia = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 3).toString().replace(",", ""));
+        double laiXuat = Double.parseDouble(tblHDCT.getValueAt(selectedRow, 5).toString().replace("%", ""));
+        double thanhTien = ((trongLuong * donGia) / 3.75 / 100) * 80;
+        String formattedThanhTien = dcf.format(thanhTien);
         tblHDCT.setValueAt(trongLuong, selectedRow, 2); // Cập nhật trọng lượng trong bảng
         tblHDCT.setValueAt(formattedThanhTien, selectedRow, 4); // Cập nhật thành tiền trong bảng
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 4).toString());
+            double thanhTienValue = Double.parseDouble(model.getValueAt(i, 4).toString().replace(",", ""));
             tongTien += thanhTienValue;
         }
         double tienchuoc = 0;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double tien = laiXuat * thanhTien;
-            double chuoc = tien + thanhTien;
+            double laiXuatt = Double.parseDouble(model.getValueAt(i, 5).toString().replace(",", ""));
+            double thanhTienn = Double.parseDouble(model.getValueAt(i, 4).toString().replace(",", ""));
+            double tien = (laiXuatt / 100) * thanhTienn;
+            double chuoc = tien + thanhTienn;
             tienchuoc += chuoc;
         }
-        txtTienChuoc.setText(String.format("%.0f", tienchuoc));
-        txtTongTienCam.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        txtTienChuoc.setText(dcf.format(tienchuoc));
+        txtTongTienCam.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
 
         MsgBox.alert(this, "CẬP NHẬT KHỐI LƯỢNG THÀNH CÔNG!");
     }
@@ -1364,11 +1406,20 @@ public class FormCamDo extends javax.swing.JFrame {
         // Cộng giá trị thành tiền vào tổng tiền
         double tongTien = 0;
         for (int i = 0; i < tbModel.getRowCount(); i++) {
-            double thanhTienValue = Double.parseDouble(tbModel.getValueAt(i, 4).toString());
+            double thanhTienValue = Double.parseDouble(tbModel.getValueAt(i, 4).toString().replace(",", ""));
             tongTien += thanhTienValue;
         }
-        txtTongTienCam.setText(String.format("%.0f", tongTien));
-        txtThanhToan.setText(String.format("%.0f", tongTien));
+        double tienchuoc = 0;
+        for (int i = 0; i < tbModel.getRowCount(); i++) {
+            double laiXuat = Double.parseDouble(tbModel.getValueAt(i, 5).toString().replace(",", ""));
+            double thanhTien = Double.parseDouble(tbModel.getValueAt(i, 4).toString().replace(",", ""));
+            double tien = (laiXuat / 100) * thanhTien;
+            double chuoc = tien + thanhTien;
+            tienchuoc += chuoc;
+        }
+        txtTienChuoc.setText(dcf.format(tienchuoc));
+        txtTongTienCam.setText(dcf.format(tongTien));
+        txtThanhToan.setText(dcf.format(tongTien));
     }
 
     String findMaKhachHangByTen(String tenKhachHang) {
@@ -1399,7 +1450,7 @@ public class FormCamDo extends javax.swing.JFrame {
         }
 
         kh.setSoNgay(Float.parseFloat(txtSoNgayCam.getText()));
-        kh.setSoTienCam(Float.parseFloat(txtTongTienCam.getText()));
+        kh.setSoTienCam(Float.parseFloat(txtTongTienCam.getText().replace(",", "")));
 
         return kh;
     }
@@ -1414,10 +1465,10 @@ public class FormCamDo extends javax.swing.JFrame {
             int rowCount = model.getRowCount();
             for (int i = 0; i < rowCount; i++) {
                 String maSP = model.getValueAt(i, 0).toString();
-                float trongLuong = Float.parseFloat(model.getValueAt(i, 2).toString());
-                float donGia = Float.parseFloat(model.getValueAt(i, 3).toString());
-                float thanhTien = Float.parseFloat(model.getValueAt(i, 4).toString());
-                float laiXuat = Float.parseFloat(model.getValueAt(i, 5).toString());
+                float trongLuong = Float.parseFloat(model.getValueAt(i, 2).toString().replace(",", ""));
+                float donGia = Float.parseFloat(model.getValueAt(i, 3).toString().replace(",", ""));
+                float thanhTien = Float.parseFloat(model.getValueAt(i, 4).toString().replace(",", ""));
+                float laiXuat = Float.parseFloat(model.getValueAt(i, 5).toString().replace(",", ""));
 
                 // Tạo đối tượng hoá đơn chi tiết
                 ChiTietPhieuCam_Model ct = new ChiTietPhieuCam_Model();
@@ -1434,6 +1485,8 @@ public class FormCamDo extends javax.swing.JFrame {
 
             MsgBox.confirm(this, "XÁC NHẬN THANH TOÁN!");
             this.fillTableHDCD();
+            XuatHopDongCamDo xuatHD = new XuatHopDongCamDo(this); // Truyền tham chiếu của FormMuaVao
+            xuatHD.setVisible(true);
             this.reset();
         } catch (Exception e) {
             MsgBox.alert(this, "THANH TOÁN THẤT BẠI!");
@@ -1447,7 +1500,7 @@ public class FormCamDo extends javax.swing.JFrame {
         txtDonGia.setText("");
         txtTenSP.setText("");
         txtSoTienCam.setText("");
-        txtLaiXuat.setText("");
+        //txtLaiXuat.setText("");
         txtLaiPD.setText("");
     }
 
@@ -1505,7 +1558,10 @@ public class FormCamDo extends javax.swing.JFrame {
             txtNgayHetHan.requestFocus();
             return false;
         }
-
+        if (txtTrongLuong.getText().equals("")) {
+            MsgBox.alert(this, "TRỌNG LƯỢNG KHÔNG ĐƯỢC TRỐNG!");
+            return false;
+        }
         if (txtNgayBatDau.getDate().after(txtNgayHetHan.getDate())) {
             MsgBox.alert(this, "NGÀY HẾT HẠN PHẢI SAU NGÀY BẮT ĐẦU!");
             return false;
