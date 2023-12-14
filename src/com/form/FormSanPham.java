@@ -9,8 +9,10 @@ import Class_Model.SanPham_Model;
 import Class_Utils.MsgBox;
 import Class_Utils.XImage;
 import static com.model.AutoString.autoID;
+import com.model.Excel;
 import java.awt.Image;
 import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -174,6 +176,7 @@ public class FormSanPham extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSanPham = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
+        btnXuatSanPham = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -297,7 +300,7 @@ public class FormSanPham extends javax.swing.JFrame {
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(cboLoaiVang, 0, 894, Short.MAX_VALUE))
+                                        .addComponent(cboLoaiVang, 0, 938, Short.MAX_VALUE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -322,7 +325,7 @@ public class FormSanPham extends javax.swing.JFrame {
                                 .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jScrollPane2))
-                        .addGap(50, 50, 50))))
+                        .addContainerGap())))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -391,8 +394,17 @@ public class FormSanPham extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblSanPham);
 
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 1250, 240));
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 1250, 200));
         jPanel3.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 500, 34));
+
+        btnXuatSanPham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatSanPham.setText("XUẤT FILE");
+        btnXuatSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnXuatSanPham, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 280, 100, 40));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 1340, 330));
 
@@ -444,6 +456,21 @@ public class FormSanPham extends javax.swing.JFrame {
         chonAnh();
     }//GEN-LAST:event_lblHinhMouseClicked
 
+     public void excelProducts() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
+        Excel.outExcel(model);     
+    }
+     
+    private void btnXuatSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatSanPhamActionPerformed
+        
+        try {
+            excelProducts();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnXuatSanPhamActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -458,6 +485,7 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatSanPham;
     private javax.swing.JComboBox<String> cboDVT;
     private javax.swing.JComboBox<String> cboLoaiVang;
     private javax.swing.JLabel jLabel1;

@@ -30,6 +30,8 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
+        
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         tkKe = new FormThongKe();
         sp = new FormSanPham();

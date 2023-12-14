@@ -2,9 +2,13 @@ package com.form;
 
 import Class_DAO.BanRa_DAO;
 import Class_DAO.ThongKe_DAO;
+import com.model.Excel;
+import java.io.IOException;
+import java.lang.System.Logger;
 import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -244,6 +248,7 @@ public class FormThongKe extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         txtDateDen = new com.toedter.calendar.JDateChooser();
         btnLocBanRa = new javax.swing.JButton();
+        btnXuatBanRa = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMuaVao = new javax.swing.JTable();
@@ -252,6 +257,7 @@ public class FormThongKe extends javax.swing.JPanel {
         txtDateTu1 = new com.toedter.calendar.JDateChooser();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
+        btnXuatMuaVao = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblCamDo = new javax.swing.JTable();
@@ -260,6 +266,7 @@ public class FormThongKe extends javax.swing.JPanel {
         txtDateTu2 = new com.toedter.calendar.JDateChooser();
         jLabel15 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
+        btnXuatCamDo = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
@@ -268,6 +275,7 @@ public class FormThongKe extends javax.swing.JPanel {
         btnLocDoanhThu = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblDoanhThu = new javax.swing.JTable();
+        btnDoanhThu = new javax.swing.JButton();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -377,7 +385,7 @@ public class FormThongKe extends javax.swing.JPanel {
 
             },
             new String [] {
-                "NGÀY", "TÊN KHÁCH HÀNG", "SỐ LƯỢNG ", "TỔNG THU"
+                "NGÀY", "TÊN SẢN PHẨM", "SỐ LƯỢNG ", "TỔNG THU"
             }
         ));
         jScrollPane1.setViewportView(tblBanRa);
@@ -393,6 +401,14 @@ public class FormThongKe extends javax.swing.JPanel {
         btnLocBanRa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLocBanRaActionPerformed(evt);
+            }
+        });
+
+        btnXuatBanRa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatBanRa.setText("XUẤT FILE");
+        btnXuatBanRa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatBanRaActionPerformed(evt);
             }
         });
 
@@ -417,7 +433,10 @@ public class FormThongKe extends javax.swing.JPanel {
                                 .addComponent(txtDateDen, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(38, 38, 38)
                                 .addComponent(btnLocBanRa)))
-                        .addGap(0, 746, Short.MAX_VALUE)))
+                        .addGap(0, 746, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnXuatBanRa, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -433,7 +452,9 @@ public class FormThongKe extends javax.swing.JPanel {
                     .addComponent(txtDateDen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLocBanRa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnXuatBanRa, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -446,7 +467,7 @@ public class FormThongKe extends javax.swing.JPanel {
 
             },
             new String [] {
-                "NGÀY", "TÊN KHÁCH HÀNG", "SỐ LƯỢNG", "TỔNG  CHI"
+                "NGÀY", "TÊN SẢN PHẨM", "SỐ LƯỢNG", "TỔNG  CHI"
             }
         ));
         jScrollPane2.setViewportView(tblMuaVao);
@@ -464,6 +485,14 @@ public class FormThongKe extends javax.swing.JPanel {
 
         jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel12.setText("Từ");
+
+        btnXuatMuaVao.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatMuaVao.setText("XUẤT FILE");
+        btnXuatMuaVao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatMuaVaoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -486,8 +515,11 @@ public class FormThongKe extends javax.swing.JPanel {
                                 .addComponent(txtDateDen1, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(38, 38, 38)
                                 .addComponent(btnLocMuaVao)))
-                        .addGap(0, 746, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(0, 1202, Short.MAX_VALUE)
+                .addComponent(btnXuatMuaVao, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,7 +534,9 @@ public class FormThongKe extends javax.swing.JPanel {
                     .addComponent(txtDateDen1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLocMuaVao, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnXuatMuaVao, javax.swing.GroupLayout.DEFAULT_SIZE, 42, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -515,7 +549,7 @@ public class FormThongKe extends javax.swing.JPanel {
 
             },
             new String [] {
-                "NGÀY", "TÊN KHÁCH HÀNG", "SỐ LƯỢNG ", "TỔNG CHI"
+                "NGÀY", "TÊN SẢN PHẨM", "SỐ LƯỢNG ", "TỔNG CHI"
             }
         ));
         jScrollPane3.setViewportView(tblCamDo);
@@ -533,6 +567,14 @@ public class FormThongKe extends javax.swing.JPanel {
 
         jLabel18.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel18.setText("Từ");
+
+        btnXuatCamDo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatCamDo.setText("XUẤT FILE");
+        btnXuatCamDo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatCamDoActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -555,7 +597,10 @@ public class FormThongKe extends javax.swing.JPanel {
                                 .addComponent(txtDateDen2, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(38, 38, 38)
                                 .addComponent(btnLocCamDo)))
-                        .addGap(0, 746, Short.MAX_VALUE)))
+                        .addGap(0, 746, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnXuatCamDo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -571,7 +616,9 @@ public class FormThongKe extends javax.swing.JPanel {
                     .addComponent(txtDateDen2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLocCamDo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnXuatCamDo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -603,6 +650,14 @@ public class FormThongKe extends javax.swing.JPanel {
         ));
         jScrollPane4.setViewportView(tblDoanhThu);
 
+        btnDoanhThu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnDoanhThu.setText("XUẤT FILE");
+        btnDoanhThu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDoanhThuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
@@ -624,7 +679,10 @@ public class FormThongKe extends javax.swing.JPanel {
                                 .addComponent(txtDateDen3, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(38, 38, 38)
                                 .addComponent(btnLocDoanhThu)))
-                        .addGap(0, 746, Short.MAX_VALUE)))
+                        .addGap(0, 746, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnDoanhThu, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -640,13 +698,15 @@ public class FormThongKe extends javax.swing.JPanel {
                     .addComponent(txtDateDen3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnLocDoanhThu, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 311, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(btnDoanhThu, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         jTabbedPane1.addTab("DOANH THU", jPanel5);
 
-        add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 1310, 420));
+        add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 330, 1310, 440));
     }// </editor-fold>//GEN-END:initComponents
 
     private void cboNamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboNamActionPerformed
@@ -722,12 +782,55 @@ public class FormThongKe extends javax.swing.JPanel {
 
     }//GEN-LAST:event_btnLocDoanhThuActionPerformed
 
+    private void btnDoanhThuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDoanhThuActionPerformed
+        
+        try {
+            excelProducts();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnDoanhThuActionPerformed
+
+    private void btnXuatBanRaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatBanRaActionPerformed
+       
+        try {
+            excelProductsBanRa();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnXuatBanRaActionPerformed
+
+    private void btnXuatMuaVaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatMuaVaoActionPerformed
+       
+        try {
+            excelProductsMuaVao();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnXuatMuaVaoActionPerformed
+
+    private void btnXuatCamDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatCamDoActionPerformed
+       
+        try {
+            excelProductsCamDo();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnXuatCamDoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDoanhThu;
     private javax.swing.JButton btnLocBanRa;
     private javax.swing.JButton btnLocCamDo;
     private javax.swing.JButton btnLocDoanhThu;
     private javax.swing.JButton btnLocMuaVao;
+    private javax.swing.JButton btnXuatBanRa;
+    private javax.swing.JButton btnXuatCamDo;
+    private javax.swing.JButton btnXuatMuaVao;
     private javax.swing.JComboBox<String> cboNam;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -777,4 +880,27 @@ public class FormThongKe extends javax.swing.JPanel {
     private javax.swing.JLabel txtKhachHang;
     private javax.swing.JLabel txtMuaVao;
     // End of variables declaration//GEN-END:variables
+
+
+    public void excelProducts() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblDoanhThu.getModel();
+        Excel.outExcel(model);     
+    }
+    
+    public void excelProductsBanRa() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblBanRa.getModel();
+        Excel.outExcel(model);     
+    }
+    
+    public void excelProductsMuaVao() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblMuaVao.getModel();
+        Excel.outExcel(model);     
+    }
+    
+    public void excelProductsCamDo() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblCamDo.getModel();
+        Excel.outExcel(model);     
+    }
+    
+   
 }

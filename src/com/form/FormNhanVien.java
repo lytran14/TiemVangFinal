@@ -12,6 +12,8 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static com.model.AutoString.generateAutoID;
+import com.model.Excel;
+import java.io.IOException;
 
 public class FormNhanVien extends javax.swing.JPanel {
 
@@ -120,8 +122,9 @@ public class FormNhanVien extends javax.swing.JPanel {
         btnLamMoi = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblNhanVien = new javax.swing.JTable();
-        jLabel1 = new javax.swing.JLabel();
+        btnXuatNhanVien = new javax.swing.JButton();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -369,11 +372,16 @@ public class FormNhanVien extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(tblNhanVien);
 
-        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 457, 1250, 290));
+        add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(43, 457, 1250, 260));
 
-        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setOpaque(true);
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 80, 1340, 710));
+        btnXuatNhanVien.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatNhanVien.setText("XUẤT FILE");
+        btnXuatNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatNhanVienActionPerformed(evt);
+            }
+        });
+        add(btnXuatNhanVien, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 740, 100, 40));
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
@@ -424,6 +432,21 @@ public class FormNhanVien extends javax.swing.JPanel {
         fillNV();
     }//GEN-LAST:event_txtTenActionPerformed
 
+     public void excelProducts() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblNhanVien.getModel();
+        Excel.outExcel(model);     
+    }
+     
+    private void btnXuatNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatNhanVienActionPerformed
+        
+        try {
+            excelProducts();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnXuatNhanVienActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup btgGioiTinh;
@@ -432,7 +455,7 @@ public class FormNhanVien extends javax.swing.JPanel {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnXuatNhanVien;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;

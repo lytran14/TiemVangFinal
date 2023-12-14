@@ -5,6 +5,8 @@ import Class_Model.KhachHang_Model;
 import Class_Utils.Auth;
 import Class_Utils.MsgBox;
 import static com.model.AutoString.autoID;
+import com.model.Excel;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -95,6 +97,7 @@ public class FormKhachHang extends javax.swing.JFrame {
         txtSoDT = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
+        btnXuatKhachHang = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -299,7 +302,16 @@ public class FormKhachHang extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 520, 1280, 250));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, 1280, 250));
+
+        btnXuatKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatKhachHang.setText("XUẤT FILE");
+        btnXuatKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatKhachHangActionPerformed(evt);
+            }
+        });
+        getContentPane().add(btnXuatKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(1205, 733, 100, 40));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setOpaque(true);
@@ -354,6 +366,21 @@ public class FormKhachHang extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tblKhachHangMousePressed
 
+    public void excelProducts() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+        Excel.outExcel(model);
+     }
+    
+    private void btnXuatKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatKhachHangActionPerformed
+        
+        try {
+            excelProducts();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_btnXuatKhachHangActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -368,6 +395,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     private javax.swing.JButton btnSua;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatKhachHang;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

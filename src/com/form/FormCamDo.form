@@ -980,6 +980,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="txtTongTienHang" min="-2" pref="201" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
+                      <Component id="btnXuatCamDo" min="-2" pref="107" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                   </Group>
                   <Component id="jScrollPane1" alignment="0" pref="557" max="32767" attributes="0"/>
               </Group>
@@ -991,7 +993,8 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel22" alignment="0" max="32767" attributes="0"/>
-                          <Component id="txtTongTienHang" alignment="0" min="-2" pref="44" max="-2" attributes="0"/>
+                          <Component id="txtTongTienHang" alignment="0" pref="44" max="32767" attributes="0"/>
+                          <Component id="btnXuatCamDo" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="42" max="32767" attributes="0"/>
                   </Group>
@@ -1083,6 +1086,17 @@
                 </Property>
                 <Property name="horizontalAlignment" type="int" value="2"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnXuatCamDo">
+              <Properties>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Segoe UI" size="14" style="1"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="XU&#x1ea4;T FILE"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXuatCamDoActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

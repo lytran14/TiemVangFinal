@@ -13,6 +13,8 @@ import Class_Utils.Auth;
 import Class_Utils.MsgBox;
 import Class_Utils.XDate;
 import static com.model.AutoString.autoID;
+import com.model.Excel;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -274,6 +276,7 @@ public class FormMuaVao extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         btnLoc = new javax.swing.JButton();
+        btnXuatMuaVao = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         txtNgay = new com.toedter.calendar.JDateChooser();
@@ -382,13 +385,23 @@ public class FormMuaVao extends javax.swing.JFrame {
             }
         });
 
+        btnXuatMuaVao.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatMuaVao.setText("XUẤT FILE");
+        btnXuatMuaVao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatMuaVaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(btnXuatMuaVao, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel16)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -443,7 +456,8 @@ public class FormMuaVao extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTongTienHang, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(btnXuatMuaVao, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -951,7 +965,7 @@ public class FormMuaVao extends javax.swing.JFrame {
 
     private void tblHDCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCTMousePressed
         if (evt.getClickCount() == 2) {
-            
+
             int selectedRow = tblHDCT.getSelectedRow();
             int tlColumnIndex = tblHDCT.getColumnModel().getColumnIndex("TRỌNG LƯỢNG");
 
@@ -983,6 +997,21 @@ public class FormMuaVao extends javax.swing.JFrame {
         new FormSanPham().setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public void excelProducts() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblHoaDon.getModel();
+        Excel.outExcel(model);
+    }
+
+    private void btnXuatMuaVaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatMuaVaoActionPerformed
+
+        try {
+            excelProducts();
+        } catch (IOException ex) {
+            //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnXuatMuaVaoActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1002,6 +1031,7 @@ public class FormMuaVao extends javax.swing.JFrame {
     private javax.swing.JButton btnTim;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnXemTruoc;
+    private javax.swing.JButton btnXuatMuaVao;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

@@ -12,7 +12,9 @@ import Class_Utils.Auth;
 import Class_Utils.MsgBox;
 import Class_Utils.XDate;
 import static com.model.AutoString.autoID;
+import com.model.Excel;
 import com.toedter.calendar.JDateChooser;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -98,6 +100,7 @@ public class FormCamDo extends javax.swing.JFrame {
         this.fillTableHDCD();
         fillTongGiaTri();
         txtNgayLap.setEnabled(false);
+        txtNgayBatDau.setEnabled(false);
         txtMaPhieu.setEditable(false);
         txtMaNV.setEditable(false);
         txtLaiXuat.setEditable(false);
@@ -118,6 +121,14 @@ public class FormCamDo extends javax.swing.JFrame {
         } else {
             cd.setNgayLap(txtNgayLap.getDate());
         }
+        
+         if (txtNgayBatDau.getDate() == null) {
+            txtNgayBatDau.setDate(now);
+            cd.setNgayCam(XDate.toDate(nowFormatted, "yyyy-MM-dd"));
+        } else {
+            cd.setNgayCam(txtNgayBatDau.getDate());
+        }
+         
         txtNgayTu.setDate(now);
         txtNgayDen.setDate(now);
         txtMaNV.setText((Auth.user.getMANV()));
@@ -310,7 +321,7 @@ public class FormCamDo extends javax.swing.JFrame {
     void fillTongGiaTri() {
         double tongTien = 0;
         for (int i = 0; i < tblHDCD.getRowCount(); i++) {
-            Object value = tblHDCD.getValueAt(i, 3);
+            Object value = tblHDCD.getValueAt(i, 2);
             if (value instanceof Number) {
                 double thanhTienValue = ((Number) value).doubleValue();
                 tongTien += thanhTienValue;
@@ -408,6 +419,7 @@ public class FormCamDo extends javax.swing.JFrame {
         tblHDCD = new javax.swing.JTable();
         jLabel22 = new javax.swing.JLabel();
         txtTongTienHang = new javax.swing.JLabel();
+        btnXuatCamDo = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -920,6 +932,14 @@ public class FormCamDo extends javax.swing.JFrame {
         txtTongTienHang.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         txtTongTienHang.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
 
+        btnXuatCamDo.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXuatCamDo.setText("XUẤT FILE");
+        btnXuatCamDo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXuatCamDoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -929,7 +949,9 @@ public class FormCamDo extends javax.swing.JFrame {
                 .addComponent(jLabel22)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnXuatCamDo, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
@@ -939,7 +961,8 @@ public class FormCamDo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(txtTongTienHang, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTongTienHang, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                    .addComponent(btnXuatCamDo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -1226,6 +1249,21 @@ public class FormCamDo extends javax.swing.JFrame {
         xuatHD.setVisible(true);
     }//GEN-LAST:event_btnXemHDActionPerformed
 
+    public void excelProducts() throws IOException {
+        DefaultTableModel model = (DefaultTableModel) tblHDCD.getModel();
+        Excel.outExcel(model);
+    }
+    
+    private void btnXuatCamDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatCamDoActionPerformed
+        
+         try {
+            excelProducts();
+        }catch (IOException ex){
+      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        }
+         
+    }//GEN-LAST:event_btnXuatCamDoActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -1245,6 +1283,7 @@ public class FormCamDo extends javax.swing.JFrame {
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXemHD;
     private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXuatCamDo;
     private javax.swing.ButtonGroup grTrangThai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

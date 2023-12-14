@@ -13,7 +13,7 @@ public class DBHelder_SQL {
     public static Connection getDbConnection() {
         Connection con = null;
         String connectionUrl = "jdbc:sqlserver://localhost:1433;"
-                + "databaseName=QL_TIEMVANG;"
+                + "databaseName=QL_TIEMVANG1;"
                 + "user=sa;" + "password=123;"
                 + "encrypt=true;trustServerCertificate=true;";
         try {
