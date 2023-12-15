@@ -275,10 +275,10 @@ public class FormKhachHang extends javax.swing.JFrame {
                         .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(79, 79, 79))
         );
 
@@ -296,9 +296,6 @@ public class FormKhachHang extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblKhachHangMouseClicked(evt);
             }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblKhachHangMousePressed(evt);
-            }
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
@@ -311,7 +308,7 @@ public class FormKhachHang extends javax.swing.JFrame {
                 btnXuatKhachHangActionPerformed(evt);
             }
         });
-        getContentPane().add(btnXuatKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(1205, 733, 100, 40));
+        getContentPane().add(btnXuatKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(1195, 733, 110, 30));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setOpaque(true);
@@ -362,23 +359,19 @@ public class FormKhachHang extends javax.swing.JFrame {
         btnThem.setEnabled(false);
     }//GEN-LAST:event_tblKhachHangMouseClicked
 
-    private void tblKhachHangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblKhachHangMousePressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tblKhachHangMousePressed
-
     public void excelProducts() throws IOException {
         DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
         Excel.outExcel(model);
-     }
-    
+    }
+
     private void btnXuatKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatKhachHangActionPerformed
-        
+
         try {
             excelProducts();
-        }catch (IOException ex){
-      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_btnXuatKhachHangActionPerformed
 
     public static void main(String args[]) {

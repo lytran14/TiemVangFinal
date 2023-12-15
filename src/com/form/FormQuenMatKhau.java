@@ -14,18 +14,21 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.net.ssl.SSLContext;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 public class FormQuenMatKhau extends javax.swing.JFrame {
-    
+
     public FormQuenMatKhau() {
         initComponents();
         setLocationRelativeTo(null);
+        txtOTP.setEnabled(false);
     }
     int randomCode;
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -47,6 +50,12 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
         jLabel2.setText("Mã Xác Nhận");
 
         jLabel3.setText("Email");
+
+        txtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtEmailActionPerformed(evt);
+            }
+        });
 
         btnGuiMa.setText("GỬI MÃ");
         btnGuiMa.addActionListener(new java.awt.event.ActionListener() {
@@ -141,6 +150,7 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
             return;
         } else if (checkkh()) {
             guima();
+            txtOTP.setEnabled(true);
             return;
         }
     }//GEN-LAST:event_btnGuiMaActionPerformed
@@ -148,7 +158,11 @@ public class FormQuenMatKhau extends javax.swing.JFrame {
     private void btnHuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyActionPerformed
         new FormDangNhap((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true);
     }//GEN-LAST:event_btnHuyActionPerformed
-    
+
+    private void txtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEmailActionPerformed
+        btnGuiMa.setEnabled(true);
+    }//GEN-LAST:event_txtEmailActionPerformed
+
     public static void main(String args[]) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -176,7 +190,7 @@ void guima() {
             String pass = "srtn muhd yaiv pbjs";
             String to = txtEmail.getText();
             String subject = "Reseting Code";
-            String message = "Mã xác nhận là " + randomCode;
+            String message = "Mã Xác Nhận Là: " + randomCode + "\nMã Chỉ Có Hiệu Lực Trong 1 Phút";
             boolean sessionDebug = false;
             Properties pros = System.getProperties();
 //  pros.put("SMTP","ssl://smtp.gmail.com");
@@ -203,15 +217,23 @@ void guima() {
             transport.close();
             JOptionPane.showMessageDialog(null, "VUI LÒNG CHECK EMAIL ĐỂ LẤY MÃ OTP!!");
             btnGuiMa.setEnabled(false);
+            // Hủy bỏ mã OTP sau 60 giây
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    randomCode = rand.nextInt(999999);// đặt mã về dãy random khác
+                    btnGuiMa.setEnabled(true);
+                }
+            }, 60000); // 60 giây
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(rootPane, ex);
         }
-        
     }
 //BẮT LỖI
 
     boolean validates() {
-        
+
         if (txtEmail.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "EMAIL KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtEmail.requestFocus();
@@ -219,7 +241,7 @@ void guima() {
         }
         return true;
     }
-    
+
     boolean checkkh() {
         // Kiểm tra mã khách hàng
         String khName = txtEmail.getText().trim();
@@ -242,5 +264,5 @@ void guima() {
         }
         return true;
     }
-    
+
 }

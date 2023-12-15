@@ -30,7 +30,7 @@ public class Main extends javax.swing.JFrame {
 
     public Main() {
         initComponents();
-        
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
 
         tkKe = new FormThongKe();
@@ -53,26 +53,26 @@ public class Main extends javax.swing.JFrame {
                         setForm(sp);
                     } else if (index == 3) {
                         setForm(lsp);
-                    } else if (index == 4) {
-                        setForm(br);
                     } else if (index == 5) {
-                        setForm(mv);
+                        setForm(br);
                     } else if (index == 6) {
+                        setForm(mv);
+                    } else if (index == 7) {
                         setForm(cd);
-                    } else if (index == 8) {
+                    } else if (index == 9) {
                         setForm(kh);
-                    } else if (index == 10) {
-                        setForm(nv);
                     } else if (index == 11) {
+                        setForm(nv);
+                    } else if (index == 12) {
                         setForm(tkKe);
-                    } else if (index == 13) {
+                    } else if (index == 14) {
                         Auth.clear();
                         dispose();
                         new FormDangNhap(Main.this, true).setVisible(true);
-                    } else if (index == 14) {
+                    } else if (index == 15) {
                         dispose();
                         new FormDoiMatKhau(Main.this, true).setVisible(true);
-                    } else if (index == 15) {
+                    } else if (index == 16) {
                         if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
                             System.exit(0);
                         }
@@ -82,22 +82,22 @@ public class Main extends javax.swing.JFrame {
                         setForm(sp);
                     } else if (index == 3) {
                         setForm(lsp);
-                    } else if (index == 4) {
-                        setForm(br);
                     } else if (index == 5) {
-                        setForm(mv);
+                        setForm(br);
                     } else if (index == 6) {
+                        setForm(mv);
+                    } else if (index == 7) {
                         setForm(cd);
-                    } else if (index == 8) {
-                        setForm(kh);                  
-                    } else if (index == 10) {
+                    } else if (index == 9) {
+                        setForm(kh);
+                    } else if (index == 11) {
                         Auth.clear();
                         dispose();
                         new FormDangNhap(Main.this, true).setVisible(true);
-                    } else if (index == 11) {
+                    } else if (index == 12) {
                         dispose();
                         new FormDoiMatKhau(Main.this, true).setVisible(true);
-                    } else if (index == 12) {
+                    } else if (index == 13) {
                         if (MsgBox.confirm(null, "BẠN CHẮC CHẮN MUỐN THOÁT?")) {
                             System.exit(0);
                         }
@@ -111,7 +111,7 @@ public class Main extends javax.swing.JFrame {
             setForm(new FormBanRa());
         }
     }
-    
+
     private void setForm(JComponent com) {
         mainPanel.removeAll();
         mainPanel.add(com);

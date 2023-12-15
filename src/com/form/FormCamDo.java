@@ -121,17 +121,18 @@ public class FormCamDo extends javax.swing.JFrame {
         } else {
             cd.setNgayLap(txtNgayLap.getDate());
         }
-        
-         if (txtNgayBatDau.getDate() == null) {
+
+        if (txtNgayBatDau.getDate() == null) {
             txtNgayBatDau.setDate(now);
             cd.setNgayCam(XDate.toDate(nowFormatted, "yyyy-MM-dd"));
         } else {
             cd.setNgayCam(txtNgayBatDau.getDate());
         }
-         
+
         txtNgayTu.setDate(now);
         txtNgayDen.setDate(now);
         txtMaNV.setText((Auth.user.getMANV()));
+        btnThanhLy.setEnabled(false);
     }
 
     void fillTableHDCD() {
@@ -203,17 +204,7 @@ public class FormCamDo extends javax.swing.JFrame {
             txtTongTienCam.setText(dcf.format(tSotienCam));
             txtThanhToan.setText(dcf.format(tSotienCam));
             // Cộng giá trị thành tiền vào tổng tiền
-            double tienchuoc = 0;
-            for (int i = 0; i < tblHDCT.getRowCount(); i++) {
-                double laiXuatt = Double.parseDouble(tblHDCT.getValueAt(i, 5).toString().replace(",", ""));
-                double thanhTienn = Double.parseDouble(tblHDCT.getValueAt(i, 4).toString().replace(",", ""));
-                double tien = (laiXuatt / 100) * thanhTienn;
-                double chuoc = tien + thanhTienn;
-                tienchuoc += chuoc;
-            }
-            txtTienChuoc.setText(dcf.format(tienchuoc));
         }
-
     }
 
     public void fillToFormHDCT(int selectedRow) {
@@ -395,6 +386,7 @@ public class FormCamDo extends javax.swing.JFrame {
         btnThem = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
         txtLaiPD = new javax.swing.JTextField();
+        btnThanhLy = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblHDCT = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
@@ -632,29 +624,28 @@ public class FormCamDo extends javax.swing.JFrame {
         txtLaiPD.setDisabledTextColor(new java.awt.Color(0, 0, 0));
         txtLaiPD.setEnabled(false);
 
+        btnThanhLy.setText("THANH LÝ HỢP ĐỒNG");
+        btnThanhLy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThanhLyActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(50, 50, 50)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addComponent(btnThem)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSua)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnXoa)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnLamMoi))
-                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtSoTienCam, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtTrongLuong, javax.swing.GroupLayout.Alignment.LEADING)
@@ -663,7 +654,15 @@ public class FormCamDo extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addComponent(txtNgayBatDau, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(txtSoNgayCam))
+                            .addComponent(txtSoNgayCam)))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(btnThem)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSua)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnXoa)))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
                                 .addGap(26, 26, 26)
@@ -679,11 +678,17 @@ public class FormCamDo extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtLaiXuat)
-                            .addComponent(txtTenSP, javax.swing.GroupLayout.DEFAULT_SIZE, 218, Short.MAX_VALUE)
+                            .addComponent(txtTenSP)
                             .addComponent(txtNgayHetHan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtDonGia)
-                            .addComponent(txtLaiPD))))
-                .addGap(41, 41, 41))
+                            .addComponent(txtLaiPD))
+                        .addGap(41, 41, 41))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addGap(67, 67, 67)
+                        .addComponent(btnLamMoi)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnThanhLy)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -738,11 +743,13 @@ public class FormCamDo extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btnThem)
+                        .addComponent(btnSua)
+                        .addComponent(btnXoa))
+                    .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(btnLamMoi)
+                        .addComponent(btnThanhLy)))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         tblHDCT.setModel(new javax.swing.table.DefaultTableModel(
@@ -810,7 +817,7 @@ public class FormCamDo extends javax.swing.JFrame {
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addComponent(btnXemHD, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnThanhToan))
+                        .addComponent(btnThanhToan, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(txtTienChuoc)
                         .addComponent(txtThanhToan, javax.swing.GroupLayout.Alignment.LEADING)
@@ -883,7 +890,7 @@ public class FormCamDo extends javax.swing.JFrame {
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
@@ -922,6 +929,9 @@ public class FormCamDo extends javax.swing.JFrame {
         tblHDCD.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblHDCDMouseClicked(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblHDCDMousePressed(evt);
             }
         });
         jScrollPane1.setViewportView(tblHDCD);
@@ -962,7 +972,9 @@ public class FormCamDo extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(txtTongTienHang, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
-                    .addComponent(btnXuatCamDo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(btnXuatCamDo)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -1107,6 +1119,16 @@ public class FormCamDo extends javax.swing.JFrame {
             btnXoa.setEnabled(false);
             btnThanhToan.setEnabled(false);
             btnXemHD.setEnabled(true);
+            btnThanhLy.setEnabled(true);
+        }
+        double tienchuoc = 0;
+        for (int i = 0; i < tblHDCT.getRowCount(); i++) {
+            double laiXuatt = Double.parseDouble(tblHDCT.getValueAt(i, 5).toString().replace(",", ""));
+            double thanhTienn = Double.parseDouble(tblHDCT.getValueAt(i, 4).toString().replace(",", ""));
+            double tien = (laiXuatt / 100) * thanhTienn;
+            double chuoc = tien + thanhTienn;
+            tienchuoc += chuoc;
+            txtTienChuoc.setText(dcf.format(tienchuoc));
         }
         tblHDCT.setVisible(true);
 
@@ -1216,7 +1238,7 @@ public class FormCamDo extends javax.swing.JFrame {
 
     private void tblHDCTMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCTMousePressed
         if (evt.getClickCount() == 2) {
-            
+
             int selectedRow = tblHDCT.getSelectedRow();
             int tlColumnIndex = tblHDCT.getColumnModel().getColumnIndex("KHỐI LƯỢNG ");
             if (tblHDCT.getSelectedColumn() == tlColumnIndex) {
@@ -1253,16 +1275,24 @@ public class FormCamDo extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblHDCD.getModel();
         Excel.outExcel(model);
     }
-    
+
     private void btnXuatCamDoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXuatCamDoActionPerformed
-        
-         try {
+
+        try {
             excelProducts();
-        }catch (IOException ex){
-      //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            //      Logger.getLogger(FormThongKe.class.getName()).log(Level.SEVERE, null, ex);
         }
-         
+
     }//GEN-LAST:event_btnXuatCamDoActionPerformed
+
+    private void tblHDCDMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHDCDMousePressed
+
+    }//GEN-LAST:event_tblHDCDMousePressed
+
+    private void btnThanhLyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhLyActionPerformed
+        thanhLyHopDong();
+    }//GEN-LAST:event_btnThanhLyActionPerformed
 
     public static void main(String args[]) {
 
@@ -1279,6 +1309,7 @@ public class FormCamDo extends javax.swing.JFrame {
     private javax.swing.JButton btnLoc;
     private javax.swing.JButton btnSanPham;
     private javax.swing.JButton btnSua;
+    private javax.swing.JButton btnThanhLy;
     private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnThem;
     private javax.swing.JButton btnXemHD;
@@ -1508,17 +1539,14 @@ public class FormCamDo extends javax.swing.JFrame {
                 float donGia = Float.parseFloat(model.getValueAt(i, 3).toString().replace(",", ""));
                 float thanhTien = Float.parseFloat(model.getValueAt(i, 4).toString().replace(",", ""));
                 float laiXuat = Float.parseFloat(model.getValueAt(i, 5).toString().replace(",", ""));
-
                 // Tạo đối tượng hoá đơn chi tiết
                 ChiTietPhieuCam_Model ct = new ChiTietPhieuCam_Model();
-
                 ct.setMaCam(maCam);
                 ct.setKhoiLuong(trongLuong);
                 ct.setDonGia(donGia);
                 ct.setSoTienCam(thanhTien);
                 ct.setMaSP(maSP);
                 ct.setLaiXuat(laiXuat);
-
                 ctpcdao.insert(ct);
             }
 
@@ -1530,6 +1558,44 @@ public class FormCamDo extends javax.swing.JFrame {
         } catch (Exception e) {
             MsgBox.alert(this, "THANH TOÁN THẤT BẠI!");
             e.printStackTrace();
+        }
+    }
+
+    public String getMaPhieu(String maCam) {
+        String maPhieu = null;
+        try {
+            Connection con = Class_DBHelder.DBHelder_SQL.getDbConnection();
+            String sql = "SELECT MAPHIEU FROM PHIEUCAMDO WHERE MACAM = ?";
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setString(1, maCam);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                maPhieu = resultSet.getString("MAPHIEU");
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maPhieu;
+    }
+
+    void thanhLyHopDong() {
+        String maHDC = txtMaPhieu.getText();
+        String maPhieu = getMaPhieu(maHDC);
+        if (MsgBox.confirm(this, "XÁC NHẬN THANH LÝ HỢP ĐỒNG?")) {
+            try {
+                ctpcdao.delete(maPhieu);
+                dao.delete(maHDC);
+                MsgBox.alert(this, "THANH LÝ THÀNH CÔNG!");
+                this.fillTableHDCD();
+                XuatHopDongCamDo xuatHD = new XuatHopDongCamDo(this); // Truyền tham chiếu của FormMuaVao
+                xuatHD.setVisible(true);
+                this.reset();
+            } catch (Exception e) {
+                MsgBox.alert(this, "THANH LÝ THẤT BẠI!");
+                e.printStackTrace();
+            }
         }
     }
 
