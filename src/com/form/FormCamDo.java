@@ -1687,6 +1687,7 @@ public class FormCamDo extends javax.swing.JFrame {
         txtMaKH.setEnabled(true);
         btnSua.setEnabled(false);
         btnXoa.setEnabled(false);
+        txtTienLaiThang.setText("");
         txtNgayHetHan.setEnabled(true);
         reset();
         // Ẩn bảng tblHoaDonCT
