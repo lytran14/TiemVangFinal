@@ -22,6 +22,7 @@ public class FormDoiMatKhau extends javax.swing.JDialog {
         Auth.user.setMATKHAU(matKhauMoi);
         dao.update(Auth.user);
         MsgBox.alert(this, "ĐỔI MẬT KHẨU THÀNH CÔNG!");
+        Auth.clear();
         dispose();
         new FormDangNhap((JFrame) SwingUtilities.getWindowAncestor(this), true).setVisible(true);
     }
