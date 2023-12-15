@@ -58,9 +58,9 @@ public class AutoString {
         // Kiểm tra sự tồn tại của mã
         while (isIDExists(generatedID)) {
             counter++;
-            if (counter > 10000) {
-                counter = 1;
-            }
+//            if (counter > 10000) {
+//                counter = 1;
+//            }
             autoNumber = counter;
             generatedID = removeAccents(namee).toLowerCase() + spf.toString() + autoNumber;
         }

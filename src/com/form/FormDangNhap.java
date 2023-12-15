@@ -35,7 +35,7 @@ public class FormDangNhap extends javax.swing.JDialog {
         String matKhau = new String(txtPass.getPassword());
         NhanVien_Model nhanVien = dao.selectById(maNV);
         if (nhanVien == null) {
-            JOptionPane.showMessageDialog(this, "TÊN ĐĂNG NHẬP KHÔNG ĐƯỢC TRỐNG!!!");
+            JOptionPane.showMessageDialog(this, "TÀI KHOẢN HOẶC MẬT KHẨU SAI!!!");
         } else if (!matKhau.equals(nhanVien.getMATKHAU())) {
             JOptionPane.showMessageDialog(this, "TÀI KHOẢN HOẶC MẬT KHẨU SAI!!!");
             return;
@@ -58,10 +58,8 @@ public class FormDangNhap extends javax.swing.JDialog {
 
     void QuenMK() {
         this.dispose();
-
         FormQuenMatKhau formQuenMatKhau = new FormQuenMatKhau();
         formQuenMatKhau.setVisible(true);
-        //new Main().setVisible(false);
     }
 
     @SuppressWarnings("unchecked")

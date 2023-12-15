@@ -517,8 +517,8 @@ public class FormSanPham extends javax.swing.JFrame {
         LoaiSanPham_Model selectedLoai = (LoaiSanPham_Model) cboLoaiVang.getSelectedItem();
         model.setMALOAISP(selectedLoai.getMaLSP());
         model.setLOAI(selectedLoai.getTenLSP());
-        model.setDONGIANHAP(Double.parseDouble(txtGiaNhap.getText()));
-        model.setDONGIABAN(Double.parseDouble(txtGiaBan.getText()));
+        model.setDONGIANHAP(Double.parseDouble(txtGiaNhap.getText().replace(",", "")));
+        model.setDONGIABAN(Double.parseDouble(txtGiaBan.getText().replace(",", "")));
         DonViTinh_Model selectedDV = (DonViTinh_Model) cboDVT.getSelectedItem();
         model.setMADVTINH(selectedDV.getMaDVT()); // Sửa thành selectedDV.getMaDVT()
         model.setDONVITINH(selectedDV.getTenDVT());
@@ -600,7 +600,7 @@ public class FormSanPham extends javax.swing.JFrame {
             txtTenSP.requestFocus();
             return false;
         }
-        String giaNhapText = txtGiaNhap.getText();
+        String giaNhapText = txtGiaNhap.getText().replace(",", "");
         if (giaNhapText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "GIÁ NHẬP KHÔNG ĐƯỢC TRỐNG!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
             txtGiaNhap.requestFocus();
@@ -620,7 +620,7 @@ public class FormSanPham extends javax.swing.JFrame {
             return false;
         }
 
-        String giaBanText = txtGiaBan.getText();
+        String giaBanText = txtGiaBan.getText().replace(",", "");
         if (giaBanText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "GIÁ BÁN KHÔNG ĐƯỢC TRỐNG!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
             txtGiaBan.requestFocus();

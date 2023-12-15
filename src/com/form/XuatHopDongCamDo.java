@@ -34,7 +34,7 @@ public class XuatHopDongCamDo extends javax.swing.JFrame {
         JTextField txtMaNV = form1.getTxtMaNV();
         JTextField txtSoDT = form1.getSoDT();
         JTextField txtMaHD = form1.getTxtMaHD();
-        JTextField txtlaiXuat = form1.getlaiXuat();
+        JTextField txtlaiXuat = form1.getTienLaiThang();
         JTextField txtTienChuoc = form1.getTxtTienPhaiTra();
         JTextField txtThanhToan = form1.getTxtThanhToan();
         JDateChooser txtNgayBatDau = form1.getNgayBatDau();
@@ -91,7 +91,7 @@ public class XuatHopDongCamDo extends javax.swing.JFrame {
                 + "<th style='font-weight: normal;'>Khối Lượng</th>"
                 + "<th style='font-weight: normal;'>Đơn Giá</th>"
                 + "<th style='font-weight: normal;'>Số Tiền Cầm</th>"
-                + "<th style='font-weight: normal;'>Lãi Xuất/Ngày</th>"
+                + "<th style='font-weight: normal;'>Lãi Xuất/Tháng</th>"
                 + "</tr>";
 //thêm sp vào hoá đơn
         DefaultTableModel dt = (DefaultTableModel) tblHDCT.getModel();
@@ -117,6 +117,7 @@ public class XuatHopDongCamDo extends javax.swing.JFrame {
 //        html += "<p style =text-align: left;font-weight: normal;'>Ngày Bắt Đầu : " + txtNgayBatDau.getDate() + "<br></p>";
 //        html += "<p style =text-align: left;font-weight: normal;'>Ngày Kết Thúc : " + txtNgayKetThuc.getDate() + "<br></p>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
+        html += "<p style =text-align: right;'><b> Lãi Đóng/Tháng : " + txtlaiXuat.getText() + "<br></b></p>";
         html += "<p style =text-align: right;'><b> Tiền Chuộc : " + txtTienChuoc.getText() + "<br></b></p>";
         html += "<p style =text-align: right;'><b> Tổng Tiền Nhận: " + txtThanhToan.getText() + "<br></b></p>";
         html += "<div style='text-align: center;font-weight: normal;'>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - </div><br/>";
