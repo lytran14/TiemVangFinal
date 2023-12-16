@@ -55,7 +55,29 @@ public class FormSanPham extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
         model.setRowCount(0);
         try {
-            List<SanPham_Model> list = dao.selectAll();
+           List<SanPham_Model> list = dao.selectAll();
+            for (SanPham_Model sp : list) {
+                Object[] row = {
+                    sp.getMASP(),
+                    sp.getTENSP(),
+                    sp.getLOAI(),
+                    dcf.format(sp.getDONGIANHAP()),
+                    dcf.format(sp.getDONGIABAN()),
+                    sp.getDONVITINH()
+                };
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "LỖI TRUY VẤN DỮ LIỆU");
+        }
+    }
+    
+     private void fillToTableTim() {
+        DefaultTableModel model = (DefaultTableModel) tblSanPham.getModel();
+        model.setRowCount(0);
+        try {
+          String keyword = txtTimSP.getText();
+            List<SanPham_Model> list = dao.selectByKyword(keyword);
             for (SanPham_Model sp : list) {
                 Object[] row = {
                     sp.getMASP(),
@@ -175,8 +197,9 @@ public class FormSanPham extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblSanPham = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        txtTimSP = new javax.swing.JTextField();
         btnXuatSanPham = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -316,11 +339,11 @@ public class FormSanPham extends javax.swing.JFrame {
                             .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(btnThem)
-                                .addGap(18, 18, 18)
+                                .addGap(30, 30, 30)
                                 .addComponent(btnSua)
-                                .addGap(18, 18, 18)
+                                .addGap(31, 31, 31)
                                 .addComponent(btnXoa)
-                                .addGap(18, 18, 18)
+                                .addGap(30, 30, 30)
                                 .addComponent(btnLamMoi)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -364,10 +387,10 @@ public class FormSanPham extends javax.swing.JFrame {
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnThem)
-                    .addComponent(btnSua)
-                    .addComponent(btnXoa)
-                    .addComponent(btnLamMoi))
+                    .addComponent(btnThem, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSua, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnXoa, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
 
@@ -393,7 +416,13 @@ public class FormSanPham extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblSanPham);
 
         jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 1250, 200));
-        jPanel3.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 500, 34));
+
+        txtTimSP.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimSPActionPerformed(evt);
+            }
+        });
+        jPanel3.add(txtTimSP, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 20, 310, 34));
 
         btnXuatSanPham.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXuatSanPham.setText("XUẤT FILE");
@@ -403,6 +432,10 @@ public class FormSanPham extends javax.swing.JFrame {
             }
         });
         jPanel3.add(btnXuatSanPham, new org.netbeans.lib.awtextra.AbsoluteConstraints(1190, 280, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setText("TÌM KIẾM");
+        jPanel3.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 70, 20));
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 470, 1340, 330));
 
@@ -469,6 +502,11 @@ public class FormSanPham extends javax.swing.JFrame {
         
     }//GEN-LAST:event_btnXuatSanPhamActionPerformed
 
+    private void txtTimSPActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimSPActionPerformed
+        
+        fillToTableTim();
+    }//GEN-LAST:event_txtTimSPActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -491,6 +529,7 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -500,7 +539,6 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel lblHinh;
     private javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtGiaBan;
@@ -508,6 +546,7 @@ public class FormSanPham extends javax.swing.JFrame {
     private javax.swing.JTextField txtMaSP;
     private javax.swing.JTextArea txtMota;
     private javax.swing.JTextField txtTenSP;
+    private javax.swing.JTextField txtTimSP;
     // End of variables declaration//GEN-END:variables
 
     private SanPham_Model getForm() {
@@ -517,8 +556,8 @@ public class FormSanPham extends javax.swing.JFrame {
         LoaiSanPham_Model selectedLoai = (LoaiSanPham_Model) cboLoaiVang.getSelectedItem();
         model.setMALOAISP(selectedLoai.getMaLSP());
         model.setLOAI(selectedLoai.getTenLSP());
-        model.setDONGIANHAP(Double.parseDouble(txtGiaNhap.getText().replace(",", "")));
-        model.setDONGIABAN(Double.parseDouble(txtGiaBan.getText().replace(",", "")));
+        model.setDONGIANHAP(Double.parseDouble(txtGiaNhap.getText()));
+        model.setDONGIABAN(Double.parseDouble(txtGiaBan.getText()));
         DonViTinh_Model selectedDV = (DonViTinh_Model) cboDVT.getSelectedItem();
         model.setMADVTINH(selectedDV.getMaDVT()); // Sửa thành selectedDV.getMaDVT()
         model.setDONVITINH(selectedDV.getTenDVT());
@@ -600,7 +639,7 @@ public class FormSanPham extends javax.swing.JFrame {
             txtTenSP.requestFocus();
             return false;
         }
-        String giaNhapText = txtGiaNhap.getText().replace(",", "");
+        String giaNhapText = txtGiaNhap.getText();
         if (giaNhapText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "GIÁ NHẬP KHÔNG ĐƯỢC TRỐNG!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
             txtGiaNhap.requestFocus();
@@ -620,7 +659,7 @@ public class FormSanPham extends javax.swing.JFrame {
             return false;
         }
 
-        String giaBanText = txtGiaBan.getText().replace(",", "");
+        String giaBanText = txtGiaBan.getText();
         if (giaBanText.isEmpty()) {
             JOptionPane.showMessageDialog(this, "GIÁ BÁN KHÔNG ĐƯỢC TRỐNG!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
             txtGiaBan.requestFocus();

@@ -1642,7 +1642,7 @@ public class FormCamDo extends javax.swing.JFrame {
                 dao.delete(maHDC);
                 MsgBox.alert(this, "THANH LÝ THÀNH CÔNG!");
                 this.fillTableHDCD();
-                XuatHopDongCamDo xuatHD = new XuatHopDongCamDo(this); // Truyền tham chiếu của FormMuaVao
+                XuatThanhLyHopDongCamDo xuatHD = new XuatThanhLyHopDongCamDo(this); // Truyền tham chiếu của FormMuaVao
                 xuatHD.setVisible(true);
                 this.reset();
             } catch (Exception e) {
@@ -1704,6 +1704,13 @@ public class FormCamDo extends javax.swing.JFrame {
     }
 
     boolean validatesSP() {
+        
+        if (txtMaKH.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "MÃ KHÁCH HÀNG KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
+            txtMaSP.requestFocus();
+            return false;
+        }
+        
         if (txtMaSP.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "MÃ SẢN PHẨM KHÔNG ĐƯỢC TRỐNG!! ", "CHÚ Ý!!!", 1);
             txtMaSP.requestFocus();

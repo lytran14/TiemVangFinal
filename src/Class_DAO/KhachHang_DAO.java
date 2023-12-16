@@ -91,5 +91,10 @@ public class KhachHang_DAO extends EduSysDAO<KhachHang_Model, String> {
         }
         return list;
     }
+    
+     public List<KhachHang_Model> selectByKyword(String kyword) {
+        String sql = "SELECT * FROM KHACHHANG WHERE MAKH like ? OR TENKH like ? or SDTKH like ?";
+        return this.selectBySql(sql, "%" + kyword + "%", "%" + kyword + "%");
+    }
 
 }

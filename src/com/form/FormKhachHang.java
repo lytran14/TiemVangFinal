@@ -54,6 +54,29 @@ public class FormKhachHang extends javax.swing.JFrame {
             MsgBox.alert(this, "lỗi try vấn dữ liệu");
         }
     }
+    
+    private void fillToTableTim() {
+        DefaultTableModel model = (DefaultTableModel) tblKhachHang.getModel();
+        model.setRowCount(0);
+        try {
+            String keyword = txtTimKH.getText();
+            List<KhachHang_Model> list = dao.selectByKyword(keyword);
+            for (KhachHang_Model kh : list) {
+                Object[] row = {
+                    kh.getMaKH(),
+                    kh.getTenKH(),
+                    kh.getSoCCCD(),
+                    kh.getDiaChi(),
+                    kh.getEmail(),
+                    kh.getSoDTKH(),
+                    kh.getGhiChu()};
+                model.addRow(row);
+            }
+        } catch (Exception e) {
+            MsgBox.alert(this, "lỗi try vấn dữ liệu");
+        }
+    }
+
 
     public void fillToForm(int index) {
         List<KhachHang_Model> list = dao.selectAll();
@@ -98,6 +121,8 @@ public class FormKhachHang extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblKhachHang = new javax.swing.JTable();
         btnXuatKhachHang = new javax.swing.JButton();
+        jLabel8 = new javax.swing.JLabel();
+        txtTimKH = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -282,7 +307,7 @@ public class FormKhachHang extends javax.swing.JFrame {
                 .addGap(79, 79, 79))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 1280, 350));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 1280, 320));
 
         tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -299,7 +324,7 @@ public class FormKhachHang extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tblKhachHang);
 
-        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 470, 1280, 250));
+        getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, 1280, 220));
 
         btnXuatKhachHang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXuatKhachHang.setText("XUẤT FILE");
@@ -309,6 +334,17 @@ public class FormKhachHang extends javax.swing.JFrame {
             }
         });
         getContentPane().add(btnXuatKhachHang, new org.netbeans.lib.awtextra.AbsoluteConstraints(1195, 733, 110, 30));
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel8.setText("TÌM KIẾM");
+        getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 470, -1, -1));
+
+        txtTimKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimKHActionPerformed(evt);
+            }
+        });
+        getContentPane().add(txtTimKH, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 462, 780, 30));
 
         jLabel5.setBackground(new java.awt.Color(255, 255, 255));
         jLabel5.setOpaque(true);
@@ -374,6 +410,11 @@ public class FormKhachHang extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnXuatKhachHangActionPerformed
 
+    private void txtTimKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKHActionPerformed
+        
+        fillToTableTim();
+    }//GEN-LAST:event_txtTimKHActionPerformed
+
     public static void main(String args[]) {
 
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -398,6 +439,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -411,6 +453,7 @@ public class FormKhachHang extends javax.swing.JFrame {
     private javax.swing.JTextField txtSoCCCD;
     private javax.swing.JTextField txtSoDT;
     private javax.swing.JTextField txtTenKH;
+    private javax.swing.JTextField txtTimKH;
     // End of variables declaration//GEN-END:variables
 
     private KhachHang_Model getForm() {
@@ -495,11 +538,11 @@ public class FormKhachHang extends javax.swing.JFrame {
             txtSoCCCD.requestFocus();
             return false;
         } else if (!txtSoCCCD.getText().matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(this, "SỐ CĂN CƯỚC PHẢI LÀ SỐ! ", "CHÚ Ý!!!", 1);
+            JOptionPane.showMessageDialog(this, "SỐ CĂN CƯỚC PHẢI LÀ SỐ VÀ LỚN HƠN 0! ", "CHÚ Ý!!!", 1);
             txtSoCCCD.requestFocus();
             return false;
         } else if (txtSoCCCD.getText().length() != 12) {
-            JOptionPane.showMessageDialog(this, "SỐ CĂN CƯỚC PHẢI ĐỦ 12 SỐ!", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "SỐ CĂN CƯỚC PHẢI ĐỦ 12 SỐ !", "CHÚ Ý!!!", JOptionPane.WARNING_MESSAGE);
             txtSoCCCD.requestFocus();
             return false;
         }
@@ -508,7 +551,7 @@ public class FormKhachHang extends javax.swing.JFrame {
             txtSoDT.requestFocus();
             return false;
         } else if (!txtSoDT.getText().matches("\\d+(\\.\\d+)?")) {
-            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI LÀ SỐ! ", "CHÚ Ý!!!", 1);
+            JOptionPane.showMessageDialog(this, "SỐ ĐIỆN THOẠI PHẢI LÀ SỐ VÀ LỚN HƠN 0! ", "CHÚ Ý!!!", 1);
             txtSoDT.requestFocus();
             return false;
         } else if (txtSoDT.getText().length() != 10) {

@@ -87,4 +87,9 @@ public class SanPham_DAO extends EduSysDAO<SanPham_Model, String> {
         }
         return list;
     }
+    
+    public List<SanPham_Model> selectByKyword(String kyword) {
+        String sql = "SELECT * FROM SANPHAM WHERE MASP like ? OR TENSP like ?";
+        return this.selectBySql(sql, "%" + kyword + "%", "%" + kyword + "%");
+    }
 }
